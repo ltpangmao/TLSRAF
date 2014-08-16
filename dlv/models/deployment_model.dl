@@ -1,0 +1,11 @@
+% facts of deployment model
+deploy(smart_meter_application,smart_meter_device).
+connect(smart_meter_device,personal_computer).
+connect(personal_computer,smart_meter_device).
+connect(smart_meter_device,home_gateway).
+connect(home_gateway,smart_meter_device).
+
+%temporal facts regarding to application information
+support(support_encrypt_data,encrypt_data).
+
+

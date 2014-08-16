@@ -1,0 +1,25 @@
+% security attribute model
+isa(confidentiality, security).
+isa(integrity, security).
+isa(availability, security).
+isa(data_confidentiality, confidentiality).
+isa(service_integrity, integrity).
+isa(data_integrity, integrity).
+isa(service_availability, availability).
+
+
+
+
+% contribution link: make/help(SM, SA)
+% business layer security model
+s_make(cryptographic_control,data_confidentiality).
+s_make(cryptographic_control,data_integrity).
+s_make(access_control,data_confidentiality).
+s_help(access_control,data_integrity).
+s_help(access_control,service_integrity).
+s_help(access_control,service_availability).
+s_make(auditing,data_integrity).
+s_make(auditing,service_integrity).
+s_help(auditing,service_availability).
+s_make(backup,service_availability).
+s_help(backup,service_integrity).

@@ -1,0 +1,46 @@
+% security attribute model
+isa(confidentiality, security).
+isa(integrity, security).
+isa(availability, security).
+isa(data_confidentiality, confidentiality).
+isa(service_integrity, integrity).
+isa(data_integrity, integrity).
+isa(application_integrity, integrity).
+isa(hardware_integrity, integrity).
+isa(service_availability, availability).
+isa(application_availability, availability).
+isa(hardware_availability, availability).
+
+
+
+
+% contribution link: make/help(SM, SA)
+
+
+% application layer security model
+s_make(full_view_with_errors, data_confidentiality).
+s_make(limited_view, data_confidentiality).
+s_make(secure_pipe, data_confidentiality).
+s_make(secure_pipe, data_integrity).
+s_make(encrypted_storage, data_confidentiality).
+s_make(encrypted_storage, data_integrity).
+s_make(secure_access_layer, data_confidentiality).
+s_make(secure_access_layer, data_integrity).
+s_make(data_backup, data_integrity).
+s_make(server_sand_box, application_integrity).
+s_help(server_sand_box, application_availability).
+s_make(input_guard, application_integrity).
+s_help(input_guard, application_availability).
+s_help(firewall, application_integrity).
+s_help(firewall, application_availability).
+s_make(replicated_system, application_availability).
+s_make(load_balancer, application_availability).
+
+
+%new contextual pattern related stuff
+%s_help(audit, application_security).
+s_help(audit, application_integrity).
+s_help(audit, data_integrity).
+s_make(ids, application_integrity).
+
+

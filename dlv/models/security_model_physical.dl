@@ -1,0 +1,32 @@
+% security attribute model
+isa(confidentiality, security).
+isa(integrity, security).
+isa(availability, security).
+isa(data_confidentiality, confidentiality).
+isa(service_integrity, integrity).
+isa(data_integrity, integrity).
+isa(application_integrity, integrity).
+isa(hardware_integrity, integrity).
+isa(service_availability, availability).
+isa(application_availability, availability).
+isa(hardware_availability, availability).
+
+
+
+
+% contribution link: make/help(SM, SA)
+
+
+
+% physical layer security model
+s_help(secure_office, data_confidentiality).
+s_help(secure_office, data_integrity).
+s_make(physical_entry_control, data_confidentiality).
+s_make(physical_entry_control, data_integrity).
+s_help(physical_entry_control, hardware_integrity).
+s_help(physical_entry_control, hardware_availability).
+s_help(monitor, hardware_integrity).
+s_help(monitor, hardware_availability).
+s_make(anti_tamper_protection, hardware_integrity).
+s_help(anti_tamper_protection, hardware_availability).
+s_make(ups, hardware_availability).
