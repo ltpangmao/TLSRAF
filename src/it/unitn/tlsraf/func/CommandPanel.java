@@ -357,15 +357,16 @@ public class CommandPanel {
 		});
 		btnStep_2.setBounds(10, 319, 100, 55);
 		frmMuserControlPanel.getContentPane().add(btnStep_2);
-		
-		final JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(160, 339, 268, 286);
-		frmMuserControlPanel.getContentPane().add(scrollPane);
-		
+
+		//add scroll to text 
 		final JTextArea alternative_list = new JTextArea();
 		alternative_list.setEditable(false);
-		scrollPane.setColumnHeaderView(alternative_list);
+//		scrollPane.setColumnHeaderView(alternative_list);
 		
+		final JScrollPane scrollPane = new JScrollPane(alternative_list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(160, 339, 268, 286);
+		frmMuserControlPanel.getContentPane().add(scrollPane);
 		
 		JButton btnStep_3 = new JButton("<html>Step 3:<br/>Operationalize</html>");
 		btnStep_3.addActionListener(new ActionListener() {

@@ -1,36 +1,8 @@
 package it.unitn.tlsraf.func;
 
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import it.unitn.tlsraf.ds.Actor;
 import it.unitn.tlsraf.ds.ActorAssociationGraph;
-import it.unitn.tlsraf.ds.Element;
 import it.unitn.tlsraf.ds.InfoEnum;
-import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.ds.RequirementGraph;
-import it.unitn.tlsraf.ds.RequirementLink;
-import it.unitn.tlsraf.ds.SecurityGoal;
 
 /**
  * A collection of models that are involved in our analysis

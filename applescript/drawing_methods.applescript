@@ -47,7 +47,7 @@ on draw_isolated_element(target_canvas_name, target_layer_name, target_size, tar
 		set target_container to my find_container(target_canvas_name, target_layer_name)
 		
 		tell target_container
-			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:24, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_ridius}
+			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:14, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_ridius}
 			id of test_node
 		end tell
 		
@@ -74,7 +74,7 @@ on draw_referred_element(reference_element_id, target_canvas_name, target_layer_
 		set target_origin to {(item 1 of target_offset) + (item 1 of reference_origin), (item 2 of target_offset) + (item 2 of reference_origin)}
 		
 		tell target_container
-			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:24, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_radius}
+			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:14, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_radius}
 			id of test_node
 		end tell
 	end tell

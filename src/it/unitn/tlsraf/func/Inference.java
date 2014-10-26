@@ -10,6 +10,7 @@ import it.unitn.tlsraf.ds.RequirementGraph;
 import it.unitn.tlsraf.ds.RequirementLink;
 import it.unitn.tlsraf.ds.SecurityGoal;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -26,10 +27,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 /**
@@ -1387,11 +1384,25 @@ public class Inference {
 		String script = readFile(script_path, Charset.defaultCharset());
 //		System.out.println(script);
 
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScript");
-		Object s = engine.eval(script);
-//		System.out.println(s);
-		return s;
+		// call runtime to execut applescript by using osa
+		Runtime runtime = Runtime.getRuntime();
+		String[] argus = { "osascript", "-e", script };
+		Process process = runtime.exec(argus);
+		// get the output of the "process"
+		BufferedInputStream bio = (BufferedInputStream) process.getInputStream();		
+		String method_output="";
+		int read_int;
+		while ((read_int=bio.read())!=-1)
+			method_output+=(char)read_int;
+//		System.out.println(method_output);		
+		
+		
+		//has been depleted in the new released OS X
+//		ScriptEngineManager mgr = new ScriptEngineManager();
+//		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+//		Object s = engine.eval(script);
+
+		return method_output;
 	}
 
 	static String readFile(String path, Charset encoding) throws IOException {

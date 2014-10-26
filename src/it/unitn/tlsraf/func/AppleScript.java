@@ -1,5 +1,6 @@
 package it.unitn.tlsraf.func;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -12,12 +13,7 @@ import java.util.List;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.ds.RequirementLink;
-import it.unitn.tlsraf.ds.SecurityGoal;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.sound.midi.MidiDevice.Info;
 
 /**
  * This class is designed to directly interact with OmniGraffle with AppleScript
@@ -180,13 +176,13 @@ public class AppleScript {
 
 		//execute methods
 		//TODO: need to decide throw exception or handle it here?
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		String id = String.valueOf((long) scriptEngine.eval(script));
+		String id = executeAppleScript(script);
+		
 		//System.out.println(id);
 		return id;
 	}
 
-	
+
 	public static String drawRequirementElement(RequirementElement target, RequirementElement reference, String direction)
 			throws ScriptException {
 		// customized parameters
@@ -281,10 +277,7 @@ public class AppleScript {
 		}
 		//System.out.println(script);
 
-		//execute methods
-		//TODO: need to decide throw exception or handle it here?
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		String id = String.valueOf((long) scriptEngine.eval(script));
+		String id = executeAppleScript(script);
 		//System.out.println(id);
 		return id;
 	}
@@ -339,9 +332,7 @@ public class AppleScript {
 		}
 		//System.out.println(script);
 
-		//execute methods
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		String id = String.valueOf((long) scriptEngine.eval(script));
+		String id = executeAppleScript(script);
 		//System.out.println(id);
 		return id;
 	}
@@ -365,9 +356,8 @@ public class AppleScript {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//execute methods
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		scriptEngine.eval(script);
+		//execute methods & no return required
+		executeAppleScript(script);
 	}
 	
 	public static void changeAttributeOfLink(String canvas, String layer, String target_id, String thickness, String color, String layer_value) throws ScriptException {
@@ -390,8 +380,7 @@ public class AppleScript {
 			e.printStackTrace();
 		}
 		//execute methods
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		scriptEngine.eval(script);
+		executeAppleScript(script);
 	}
 	
 	
@@ -415,10 +404,7 @@ public class AppleScript {
 		//System.out.println(script);
 
 		//execute methods
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		//				String result = 
-		scriptEngine.eval(script);
-		//System.out.println(result);
+		executeAppleScript(script);
 	}
 	
 	
@@ -436,9 +422,20 @@ public class AppleScript {
 		}
 		//System.out.println(script);
 
-		//execute methods
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
-		ArrayList<Long> result = (ArrayList<Long>) scriptEngine.eval(script);
+		// execute methods
+		String output = executeAppleScript(script);
+//		output = output.trim();
+		ArrayList<Long> result = new ArrayList<Long>();
+		// if there are more than one selected element, i.e., multiple returned elements
+		if (output.contains(",")) {
+			String[] ids = output.split(",");
+			for (String id : ids) {
+				result.add(Long.valueOf(id.trim()));
+			}
+		} else {// otherwise, directly add the output
+			result.add(Long.valueOf(output));
+		}
+		
 		return result;
 		//System.out.println(result);
 	}
@@ -486,5 +483,31 @@ public class AppleScript {
 		}
 		
 		return "{"+graph_width+","+graph_height+"}";
+	}
+	
+	private static String executeAppleScript(String script) throws ScriptException {
+
+		// call runtime to execut applescript by using osa
+		Runtime runtime = Runtime.getRuntime();
+		String[] argus = { "osascript", "-e", script };
+		Process process;
+
+		String method_output = "";
+		try {
+			process = runtime.exec(argus);
+			// get the output of the "process"
+			BufferedInputStream bio = (BufferedInputStream) process.getInputStream();
+			int read_int;
+			while ((read_int = bio.read()) != -1)
+				method_output += (char) read_int;
+			method_output = method_output.trim();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		
+		// ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("AppleScript");
+		// String id = String.valueOf((long) scriptEngine.eval(script));
+		return method_output;
 	}
 }
