@@ -1,0 +1,68 @@
+16:55:47.611	SERVER	admin	OK	Server was started (port: 1984)
+16:56:01.532	127.0.0.1:49924	admin	OK	QUERY[0] declare variable $x as xs:string :="Hello World!"; $x	29.65 ms
+16:56:02.073	127.0.0.1:49924	admin	OK	FULL[0]	529.81 ms
+16:56:02.237	127.0.0.1:49924	admin	REQUEST	EXIT
+16:56:02.238	127.0.0.1:49924	admin	OK		159.23 ms
+17:01:19.247	SERVER	admin	OK	Server was stopped (port: 1984)
+17:01:25.776	SERVER	admin	OK	Server was started (port: 1984)
+17:02:25.655	SERVER	admin	OK	Server was stopped (port: 1984)
+17:12:31.153	SERVER	admin	OK	Server was started (port: 1984)
+17:15:29.709	127.0.0.1:50277	admin	OK	QUERY[0] for $i in (1) return 'abc'	28.44 ms
+17:15:30.202	127.0.0.1:50277	admin	OK	FULL[0]	481.37 ms
+17:15:30.377	127.0.0.1:50277	admin	REQUEST	EXIT
+17:15:30.378	127.0.0.1:50277	admin	OK		132.35 ms
+17:16:58.713	127.0.0.1:50309	admin	OK	QUERY[0] for $country in ('factbook')return 'dd'	0.71 ms
+17:16:58.715	127.0.0.1:50309	admin	OK	FULL[0]	1.61 ms
+17:16:58.725	127.0.0.1:50309	admin	REQUEST	EXIT
+17:16:58.725	127.0.0.1:50309	admin	OK		1.27 ms
+17:17:11.650	127.0.0.1:50313	admin	OK	QUERY[0] for $country in ('factbook')let $name := $country/name[1]return 'dd'	0.43 ms
+17:17:11.823	127.0.0.1:50313	admin	OK	FULL[0]	172.15 ms
+17:17:11.838	127.0.0.1:50313	admin	REQUEST	EXIT
+17:17:11.838	127.0.0.1:50313	admin	OK		1.35 ms
+17:17:24.537	127.0.0.1:50317	admin	OK	QUERY[0] for $country in ('factbook')let $name := $country/name[1]return $name	0.39 ms
+17:17:24.675	127.0.0.1:50317	admin	REQUEST	FULL[0]
+17:17:24.676	127.0.0.1:50317	admin	ERROR	Stopped at ., 1/58: [XPTY0019] Steps within a path expression must yield nodes; xs:string found.	138.18 ms
+17:18:13.107	127.0.0.1:50334	admin	OK	QUERY[0] for $country in db:open('factbook')let $name := $country/name[1]return $name	0.42 ms
+17:18:13.194	127.0.0.1:50334	admin	REQUEST	FULL[0]
+17:18:13.194	127.0.0.1:50334	admin	ERROR	Stopped at ., 1/25: [bxerr:BXDB0002] Database 'factbook' was not found.	87.42 ms
+17:23:33.355	SERVER	admin	OK	Server was stopped (port: 1984)
+17:44:08.092	SERVER	admin	OK	Server was started (port: 1984)
+17:44:15.652	127.0.0.1:51343	admin	OK	QUERY[0] doc(factbook.xml)//country	29.97 ms
+17:44:16.384	127.0.0.1:51343	admin	REQUEST	FULL[0]
+17:44:16.402	127.0.0.1:51343	admin	ERROR	Stopped at ., 1/17: [XPDY0002] No context item defined to evaluate 'factbook.xml'.	749.32 ms
+17:44:26.877	127.0.0.1:51350	admin	OK	QUERY[0] doc(factbook)//country	0.35 ms
+17:44:26.881	127.0.0.1:51350	admin	REQUEST	FULL[0]
+17:44:26.882	127.0.0.1:51350	admin	ERROR	Stopped at ., 1/13: [XPDY0002] No context item defined to evaluate 'factbook'.	2.07 ms
+17:44:34.891	127.0.0.1:51355	admin	OK	QUERY[0] factbook//country	0.38 ms
+17:44:34.927	127.0.0.1:51355	admin	REQUEST	FULL[0]
+17:44:34.927	127.0.0.1:51355	admin	ERROR	Stopped at ., 1/9: [XPDY0002] No context item defined to evaluate 'factbook'.	1.91 ms
+17:44:41.082	127.0.0.1:51356	admin	OK	QUERY[0] //country	0.43 ms
+17:44:41.084	127.0.0.1:51356	admin	REQUEST	FULL[0]
+17:44:41.085	127.0.0.1:51356	admin	ERROR	Stopped at ., 1/2: [XPDY0002] No context item defined to evaluate 'root()'.	1.84 ms
+17:48:22.184	127.0.0.1:51450	admin	OK	QUERY[0] doc(factbook.xml)//country	0.42 ms
+17:48:22.208	127.0.0.1:51450	admin	REQUEST	FULL[0]
+17:48:22.208	127.0.0.1:51450	admin	ERROR	Stopped at ., 1/17: [XPDY0002] No context item defined to evaluate 'factbook.xml'.	1.43 ms
+17:51:22.065	127.0.0.1:51520	admin	OK	QUERY[0] doc(factbook.xml)//country	0.28 ms
+17:51:22.066	127.0.0.1:51520	admin	REQUEST	FULL[0]
+17:51:22.067	127.0.0.1:51520	admin	ERROR	Stopped at ., 1/17: [XPDY0002] No context item defined to evaluate 'factbook.xml'.	1.57 ms
+18:17:24.601	SERVER	admin	OK	Server was stopped (port: 1984)
+18:26:39.162	SERVER	admin	OK	Server was started (port: 1984)
+18:26:45.354	127.0.0.1:52986	admin	REQUEST	doc('factbook.xml')//country
+18:26:45.354	127.0.0.1:52986	admin	ERROR	Stopped at , 1/29: Unknown command: doc('factbook.xml')//country. Try HELP.	267.28 ms
+18:28:24.562	127.0.0.1:53044	admin	REQUEST	XQUERY doc('factbook.xml')//country
+18:28:24.621	127.0.0.1:53044	admin	ERROR	Stopped at ., 1/5: [FODC0002] Resource "/Users/litong30/basex/bin/factbook.xml" does not exist.	494.9 ms
+18:29:14.293	127.0.0.1:53064	admin	REQUEST	XQUERY doc('factbook.xml')//country
+18:29:15.701	127.0.0.1:53064	admin	OK	Query executed in 1407.22 ms.	1410.35 ms
+21:10:27.697	127.0.0.1:53174	admin	REQUEST	XQUERY doc('factbook.xml')//country
+21:10:28.104	127.0.0.1:53174	admin	OK	Query executed in 385.87 ms.	412.31 ms
+21:24:46.345	127.0.0.1:53959	admin	REQUEST	XQUERY doc('All_attack_patterns.xml')//capect:Attack_Pattern
+21:24:46.366	127.0.0.1:53959	admin	ERROR	Stopped at ., 1/40: [XPST0081] No namespace declared for 'capect:Attack_Pattern'.	27.28 ms
+21:45:20.138	127.0.0.1:54923	admin	REQUEST	declare namespace capec='http://capec.mitre.org/capec-2';XQUERY doc('All_attack_patterns.xml')//capect:Attack_Pattern
+21:45:20.149	127.0.0.1:54923	admin	ERROR	Stopped at , 1/8: Unknown command: declare. Try HELP.	26.68 ms
+21:45:30.158	127.0.0.1:54926	admin	REQUEST	DECLARE namespace capec='http://capec.mitre.org/capec-2';XQUERY doc('All_attack_patterns.xml')//capect:Attack_Pattern
+21:45:30.158	127.0.0.1:54926	admin	ERROR	Stopped at , 1/8: Unknown command: DECLARE. Try HELP.	1.08 ms
+21:49:06.225	127.0.0.1:55004	admin	REQUEST	XQUERY declare namespace capec = 'http://capec.mitre.org/capec-2'; doc('All_attack_patterns.xml')//capect:Attack_Pattern
+21:49:06.225	127.0.0.1:55004	admin	ERROR	Stopped at ., 1/100: [XPST0081] No namespace declared for 'capect:Attack_Pattern'.	1.56 ms
+21:49:19.457	127.0.0.1:55008	admin	REQUEST	XQUERY declare namespace capec = 'http://capec.mitre.org/capec-2'; doc('All_attack_patterns.xml')//capec:Attack_Pattern
+21:49:19.482	127.0.0.1:55008	admin	ERROR	Stopped at ., 1/65: [FODC0002] Resource "/Users/litong30/basex/bin/All_attack_patterns.xml" does not exist.	26.84 ms
+21:49:33.753	SERVER	admin	OK	Server was stopped (port: 1984)

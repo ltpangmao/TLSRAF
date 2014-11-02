@@ -117,7 +117,6 @@ public class InfoEnum {
 		pattern_context_question.put("question(audit_c1q1)", "does the system handle sensitive data?");
 		pattern_context_question.put("question(audit_c1q1)y", "handle(system, sensitive_data).");
 		pattern_context_question.put("question(audit_c1q1)n", "not_handle(system, sensitive_data).");
-	
 	}
 	
 
@@ -133,14 +132,12 @@ public class InfoEnum {
 	 */
 	public enum RequirementElementType {
 		ACTOR, GOAL, TASK, SOFTGOAL, DOMAIN_ASSUMPTION, QUALITY_CONSTRAINT, SECURITY_GOAL, SECURITY_MECHANISM, ACTOR_BOUNDARY, MIDDLE_POINT, LABEL // syntax
-
 	}
 
 	public enum RequirementLinkType {
 		REFINE, AND_REFINE, OPERATIONALIZE, PREFERRED_TO, DEPEND, TRUST, SUPPORT, MAKE, HELP, HURT, BREAK,
 		USE, MAINTAIN, OWN, // used here as 
 		AND_REFINE_ARROW//REDUNDANT_LINK
-
 	}
 
 	public enum ResourceElementType {
@@ -180,6 +177,16 @@ public class InfoEnum {
 	// Additional remark
 	public enum RefineType {
 		ATTRIBUTE, ASSET, INTERVAL
+	}
+	
+	// Security Property
+	public enum SecurityProperty {
+		Confidentiality, Integrity, Availability, All
+	}
+	
+	// Attack Domain (according to CAPEC)
+	public enum AttackDomain {
+		SOCIAL, SUPPLY, COMMU, SOFTWARE, PHYSICAL, HARDWARE, ALL
 	}
 	
 	/*

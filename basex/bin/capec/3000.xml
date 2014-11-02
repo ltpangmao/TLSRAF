@@ -1,0 +1,2100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+            <capec:Attack_Pattern_Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:capec="http://capec.mitre.org/capec-2" xmlns:observables="http://capec.mitre.org/observables" Catalog_Name="VIEW LIST: CAPEC-3000: Domains of Attack" Catalog_Version="2.6" Catalog_Date="2014-06-23"><capec:Views>
+                    <capec:View ID="3000" Name="Domains of Attack" Status="Draft">
+         <capec:View_Structure>Graph</capec:View_Structure>
+         <capec:View_Objective>
+            <capec:Text>This view organizes attack patterns hierarchically based on the attack domain.</capec:Text>
+         </capec:View_Objective>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>513<!--Software--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>515<!--Hardware--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>512<!--Communications--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>437<!--Supply Chain--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>403<!--Social Engineering--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>514<!--Physical Security--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:View></capec:Views><capec:Categories>
+                    <capec:Category Status="Draft" Name="Social Engineering" ID="403">
+         <capec:Description>
+            <capec:Description_Summary>Attack patterns within this category focus on the manipulation and exploitation of people. The techniques defined by each pattern are used to convince someone into performing actions or divulging confidential information, often resulting in access to computer systems or facilities. While similar to a confidence trick or simple fraud, the term typically applies to trickery or deception for the purpose of information gathering, fraud, or computer system access. In most cases the adversary never comes face-to-face with the victim.</capec:Description_Summary>
+         </capec:Description>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>404<!--Social Information Gathering Attacks--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>410<!--Information Elicitation via Social Engineering--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>416<!--Target Influence via Social Engineering--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Category>
+                    <capec:Category Status="Draft" Name="Supply Chain" ID="437">
+         <capec:Description>
+            <capec:Description_Summary>Attack patterns within this category focus on the disruption of the supply chain lifecycle by manipulating computer system hardware, software, or services for the purpose of espionage, theft of critical data or technology, or the disruption of mission-critical operations or infrastructure. Supply chain operations are usually multi-national with parts, components, assembly, and delivery occurring across multiple countries offering an attacker multiple points for disruption.</capec:Description_Summary>
+         </capec:Description>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>438<!--Integrity Modification During Manufacture--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>439<!--Integrity Modification During Distribution--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>440<!--Integrity Modification During Deployed Use--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>441<!--Malicious Logic Inserted Into Product--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Category>
+                    <capec:Category Status="Draft" Name="Communications" ID="512">
+         <capec:Description>
+            <capec:Description_Summary>Attack patterns within this category focus on the exploitation of communications and related protocols. The techniques defined by each pattern are used by an adversary to block, manipulate, and steal communications in an attempt to achieve a desired negative technical impact.</capec:Description_Summary>
+         </capec:Description>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>272<!--Protocol Manipulation--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>117<!--Interception--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Category>
+                    <capec:Category Status="Draft" Name="Software" ID="513">
+         <capec:Description>
+            <capec:Description_Summary>Attack patterns within this category focus on the exploitation of software applications. The techniques defined by each pattern are used to exploit these weaknesses in the application's design or implementation in an attempt to achieve a desired negative technical impact.</capec:Description_Summary>
+         </capec:Description>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>112<!--Brute Force--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>114<!--Authentication Abuse--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>115<!--Authentication Bypass--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>116<!--Excavation--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>123<!--Buffer Manipulation--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>125<!--Flooding--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>126<!--Path Traversal--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>128<!--Integer Attacks--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>129<!--Pointer Attack--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>130<!--Excessive Allocation--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>131<!--Resource Leak Exposure--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>137<!--Parameter Injection--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>148<!--Content Spoofing--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>151<!--Identity Spoofing--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>154<!--Resource Location Spoofing--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>169<!--Footprinting--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>173<!--Action Spoofing--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>175<!--Code Inclusion--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>188<!--Reverse Engineering--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>224<!--Fingerprinting--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>227<!--Sustained Client Engagement--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>131<!--Resource Leak Exposure--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>212<!--Functionality Misuse--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>242<!--Code Injection--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>248<!--Command Injection--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Category>
+                    <capec:Category ID="514" Name="Physical Security" Status="Draft">
+         <capec:Description>
+            <capec:Description_Summary>Attack patterns within this category focus on physical security. The techniques defined by each pattern are used to exploit weaknesses in the physical security of a system in an attempt to achieve a desired negative technical impact.</capec:Description_Summary>
+         </capec:Description>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>390<!--Bypassing Physical Security--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>507<!--Physical Theft--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>547<!--Physical Destruction of Device or Component--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Category>
+                    <capec:Category Status="Draft" Name="Hardware" ID="515">
+         <capec:Description>
+            <capec:Description_Summary>Attack patterns within this category focus on the exploitation of the physical hardware used in computing systems. The techniques defined by each pattern reflect the replacement, destruction and general modification of components that make up a system in an attempt to achieve a desired negative technical impact.</capec:Description_Summary>
+         </capec:Description>
+         <capec:Relationships>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>169<!--Footprinting--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+            <capec:Relationship>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">3000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Attack Pattern</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>401<!--Hacking Hardware Devices or Components--></capec:Relationship_Target_ID>
+            </capec:Relationship>
+         </capec:Relationships>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Category></capec:Categories><capec:Attack_Patterns>
+                    <capec:Attack_Pattern ID="112" Name="Brute Force" Pattern_Abstraction="Standard" Pattern_Completeness="Complete" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>In this attack, some asset (information, functionality, identity, etc.) is protected by a finite secret value. The attacker attempts to gain access to this asset by using trial-and-error to exhaustively explore all the possible secret values in the hope of finding the secret (or a value that is functionally equivalent) that will unlock the asset. Examples of secrets can include, but are not limited to, passwords, encryption keys, database lookup keys, and initial values to one-way functions.</capec:Text>
+               <capec:Text>The key factor in this attack is the attackers' ability to explore the possible secret space rapidly. This, in turn, is a function of the size of the secret space and the computational power the attacker is able to bring to bear on the problem. If the attacker has modest resources and the secret space is large, the challenge facing the attacker is intractable. While the defender cannot control the resources available to an attacker, they can control the size of the secret space. Creating a large secret space involves selecting one's secret from as large a field of equally likely alternative secrets as possible and ensuring that an attacker is unable to reduce the size of this field using available clues or cryptanalysis. Doing this is more difficult than it sounds since elimination of patterns (which, in turn, would provide an attacker clues that would help them reduce the space of potential secrets) is difficult to do using deterministic machines, such as computers. Assuming a finite secret space, a brute force attack will eventually succeed. The defender must rely on making sure that the time and resources necessary to do so will exceed the value of the information. For example, a secret space that will likely take hundreds of years to explore is likely safe from raw-brute force attacks.</capec:Text>
+            </capec:Summary>
+            <capec:Attack_Execution_Flow>
+               <capec:Attack_Phases>
+                  <capec:Attack_Phase ID="1" Name="Explore">
+                     <capec:Attack_Steps>
+                        <capec:Attack_Step ID="1">
+                           <capec:Custom_Attack_Step>
+                              <capec:Attack_Step_Title>Determine secret testing procedure</capec:Attack_Step_Title>
+                              <capec:Attack_Step_Description>
+                                 <capec:Text>Determine how a potential guess of the secret may be tested. This may be accomplished by comparing some manipulation of the secret to a known value, use of the secret to manipulate some known set of data and determining if the result displays specific characteristics (for example, turning cryptotext into plaintext), or by submitting the secret to some external authority and having the external authority respond as to whether the value was the correct secret. Ideally, the attacker will want to determine the correctness of their guess independently since involvement of an external authority is usually slower and can provide an indication to the defender that a brute-force attack is being attempted.</capec:Text>
+                              </capec:Attack_Step_Description>
+                              <capec:Attack_Step_Techniques>
+                                 <capec:Attack_Step_Technique ID="1">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>Determine if there is a way to parallelize the attack. Most brute force attacks can take advantage of parallel techniques by dividing the search space among available resources, thus dividing the average time to success by the number of resources available. If there is a single choke point, such as a need to check answers with an external authority, the attackers' position is significantly degraded.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-All</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                              </capec:Attack_Step_Techniques>
+                           </capec:Custom_Attack_Step>
+                        </capec:Attack_Step>
+                        <capec:Attack_Step ID="2">
+                           <capec:Custom_Attack_Step>
+                              <capec:Attack_Step_Title>Reduce search space</capec:Attack_Step_Title>
+                              <capec:Attack_Step_Description>
+                                 <capec:Text>Find ways to reduce the secret space. The smaller the attacker can make the space they need to search for the secret value, the greater their chances for success. There are a great many ways in which the search space may be reduced.</capec:Text>
+                              </capec:Attack_Step_Description>
+                              <capec:Attack_Step_Techniques>
+                                 <capec:Attack_Step_Technique ID="1">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>If possible, determine how the secret was selected. If the secret was determined algorithmically (such as by a random number generator) the algorithm may have patterns or dependencies that reduce the size of the secret space. If the secret was created by a human, behavioral factors may, if not completely reduce the space, make some types of secrets more likely than others. (For example, humans may use the same secrets in multiple places or use secrets that look or sound familiar for ease of recall.)</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-All</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                                 <capec:Attack_Step_Technique ID="2">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>If the secret was chosen algorithmically, cryptanalysis can be applied to the algorithm to discover patterns in this algorithm. (This is true even if the secret is not used in cryptography.) Periodicity, the need for seed values, or weaknesses in the generator all can result in a significantly smaller secret space.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-All</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                                 <capec:Attack_Step_Technique ID="3">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>If the secret was chosen by a person, social engineering and simple espionage can indicate patterns in their secret selection. If old secrets can be learned (and a target may feel they have little need to protect a secret that has been replaced) hints as to their selection preferences can be gleaned. These can include character substitutions a target employs, patterns in sources (dates, famous phrases, music lyrics, family members, etc.). Once these patterns have been determined, the initial efforts of a brute-force attack can focus on these areas.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-All</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                                 <capec:Attack_Step_Technique ID="4">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>Some algorithmic techniques for secret selection may leave indicators that can be tested for relatively easily and which could then be used to eliminate large areas of the search space for consideration. For example, it may be possible to determine that a secret does or does not start with a given character after a relatively small number of tests. Alternatively, it might be possible to discover the length of the secret relatively easily. These discoveries would significantly reduce the search space, thus increasing speed with which the attacker discovers the secret.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-All</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                              </capec:Attack_Step_Techniques>
+                           </capec:Custom_Attack_Step>
+                        </capec:Attack_Step>
+                        <capec:Attack_Step ID="3">
+                           <capec:Custom_Attack_Step>
+                              <capec:Attack_Step_Title>Expand victory conditions</capec:Attack_Step_Title>
+                              <capec:Attack_Step_Description>
+                                 <capec:Text>It is sometimes possible to expand victory conditions. For example, the attacker might not need to know the exact secret but simply needs a value that produces the same result using a one-way function. While doing this does not reduce the size of the search space, the presence of multiple victory conditions does reduce the likely amount of time that the attacker will need to explore the space before finding a workable value.</capec:Text>
+                              </capec:Attack_Step_Description>
+                           </capec:Custom_Attack_Step>
+                        </capec:Attack_Step>
+                     </capec:Attack_Steps>
+                  </capec:Attack_Phase>
+                  <capec:Attack_Phase ID="2" Name="Exploit">
+                     <capec:Attack_Steps>
+                        <capec:Attack_Step ID="1">
+                           <capec:Custom_Attack_Step>
+                              <capec:Attack_Step_Title>Gather information so attack can be performed independently.</capec:Attack_Step_Title>
+                              <capec:Attack_Step_Description>
+                                 <capec:Text>If possible, gather the necessary information so a successful search can be determined without consultation of an external authority. This can be accomplished by capturing cryptotext (if the goal is decoding the text) or the encrypted password dictionary (if the goal is learning passwords).</capec:Text>
+                              </capec:Attack_Step_Description>
+                           </capec:Custom_Attack_Step>
+                        </capec:Attack_Step>
+                     </capec:Attack_Steps>
+                  </capec:Attack_Phase>
+               </capec:Attack_Phases>
+            </capec:Attack_Execution_Flow>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The attacker must be able to determine when they have successfully guessed the secret. As such, one-time pads are immune to this type of attack since there is no way to determine when a guess is correct.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>High</capec:Typical_Severity>
+         <capec:Methods_of_Attack>
+            <capec:Method_of_Attack>Brute Force</capec:Method_of_Attack>
+         </capec:Methods_of_Attack>
+         <capec:Attacker_Skills_or_Knowledge_Required>
+            <capec:Attacker_Skill_or_Knowledge_Required>
+               <capec:Skill_or_Knowledge_Level>Low</capec:Skill_or_Knowledge_Level>
+               <capec:Skill_or_Knowledge_Type>
+                  <capec:Text>The attack simply requires basic scripting ability to automate the exploration of the search space. More sophisticated attackers may be able to use more advanced methods to reduce the search space and increase the speed with which the secret is located.</capec:Text>
+               </capec:Skill_or_Knowledge_Type>
+            </capec:Attacker_Skill_or_Knowledge_Required>
+         </capec:Attacker_Skills_or_Knowledge_Required>
+         <capec:Resources_Required>
+            <capec:Text>Ultimately, the speed with which an attacker discovers a secret is directly proportional to the computational resources the attacker has at their disposal. This attack method is resource expensive: having large amounts of computational power do not guarantee timely success, but having only minimal resources makes the problem intractable against all but the weakest secret selection procedures.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Indicators-Warnings_of_Attack>
+            <capec:Indicator-Warning_of_Attack>
+               <capec:Description>
+                  <capec:Text>Repeated submissions of incorrect secret values may indicate a brute force attack. For example, repeated bad passwords when accessing user accounts or repeated queries to databases using non-existent keys.</capec:Text>
+               </capec:Description>
+            </capec:Indicator-Warning_of_Attack>
+            <capec:Indicator-Warning_of_Attack>
+               <capec:Description>
+                  <capec:Text>Attempts to download files protected by secrets (usually using encryption) may be a precursor to an offline attack to break the file's encryption and read its contents. This is especially significant if the file itself contains other secret values, such as password files.</capec:Text>
+               </capec:Description>
+            </capec:Indicator-Warning_of_Attack>
+            <capec:Indicator-Warning_of_Attack>
+               <capec:Description>
+                  <capec:Text>If the attacker is able to perform the checking offline then there will likely be no indication that an attack is ongoing.</capec:Text>
+               </capec:Description>
+            </capec:Indicator-Warning_of_Attack>
+         </capec:Indicators-Warnings_of_Attack>
+         <capec:Obfuscation_Techniques>
+            <capec:Obfuscation_Technique>
+               <capec:Description>
+                  <capec:Text>The attack is impossible to detect if the attacker can test for successful discovery of the secret value independently, without needing to consult an external authority.</capec:Text>
+               </capec:Description>
+            </capec:Obfuscation_Technique>
+            <capec:Obfuscation_Technique>
+               <capec:Description>
+                  <capec:Text>If an external authority must be consulted, the attacker can attempt to space out their guesses to avoid a large number of failed guesses in a short period of time, but doing so slows the attack to the point of making it unworkable against all but the most trivial secret spaces. As such, if an external authority must be consulted the attacked is unlikely to be able to keep the attack secret.</capec:Text>
+               </capec:Description>
+            </capec:Obfuscation_Technique>
+         </capec:Obfuscation_Techniques>
+         <capec:Solutions_and_Mitigations>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Select a provably large secret space for selection of the secret. Provably large means that the procedure by which the secret is selected does not have artifacts that significantly reduce the size of the total secret space.</capec:Text>
+            </capec:Solution_or_Mitigation>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Do not provide the means for an attacker to determine success independently. This forces the attacker to check their guesses against an external authority, which can slow the attack and warn the defender. This mitigation may not be possible if testing material must appear externally, such as with a transmitted cryptotext.</capec:Text>
+            </capec:Solution_or_Mitigation>
+         </capec:Solutions_and_Mitigations>
+         <capec:Attack_Motivation-Consequences>
+            <capec:Attack_Motivation-Consequence>
+               <capec:Consequence_Scope>Confidentiality</capec:Consequence_Scope>
+               <capec:Consequence_Technical_Impact>Read application data</capec:Consequence_Technical_Impact>
+            </capec:Attack_Motivation-Consequence>
+            <capec:Attack_Motivation-Consequence>
+               <capec:Consequence_Scope>Confidentiality</capec:Consequence_Scope>
+               <capec:Consequence_Scope>Access_Control</capec:Consequence_Scope>
+               <capec:Consequence_Scope>Authorization</capec:Consequence_Scope>
+               <capec:Consequence_Technical_Impact>Gain privileges / assume identity</capec:Consequence_Technical_Impact>
+            </capec:Attack_Motivation-Consequence>
+         </capec:Attack_Motivation-Consequences>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>330<!--Use of Insufficiently Random Values--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Secondary</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>326<!--Inadequate Encryption Strength--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Secondary</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>521<!--Weak Password Requirements--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Secondary</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>223<!--Probabilistic Techniques--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>333</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>344<!--WASC-11 - Brute Force--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Relevant_Security_Requirements>
+            <capec:Relevant_Security_Requirement>
+               <capec:Text>Protect sensitive data, even when the data is encrypted. If an attacker can gain access to encrypted data, they can mount a brute-force attack independently. The defender will not be aware of this attack or be able to do anything about it and at that point it is purely a function of the attackers' available resources as to how long it takes them to learn the secret.</capec:Text>
+            </capec:Relevant_Security_Requirement>
+            <capec:Relevant_Security_Requirement>
+               <capec:Text>Monitor activity logs for suspicious activity. An attacker that must use an external authority to check their brute-force guesses is easy to detect, but only if that external authority is monitoring activity and detects the abnormally large number of failed guesses.</capec:Text>
+            </capec:Relevant_Security_Requirement>
+         </capec:Relevant_Security_Requirements>
+         <capec:Related_Guidelines>
+            <capec:Related_Guideline>
+               <capec:Text>Do not assume secrets will protect sensitive data in the long-term</capec:Text>
+            </capec:Related_Guideline>
+            <capec:Related_Guideline>
+               <capec:Text>Monitor systems for suspicious activity.</capec:Text>
+            </capec:Related_Guideline>
+         </capec:Related_Guidelines>
+         <capec:Purposes>
+            <capec:Purpose>Penetration</capec:Purpose>
+         </capec:Purposes>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="114" Name="Authentication Abuse" Pattern_Abstraction="Standard" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker obtains unauthorized access to an application, service or device either through knowledge of the inherent weaknesses of an authentication mechanism, or by exploiting a flaw in the authentication scheme's implementation. In such an attack an authentication mechanism is functioning but a carefully controlled sequence of events causes the mechanism to grant access to the attacker. This attack may exploit assumptions made by the target's authentication procedures, such as assumptions regarding trust relationships or assumptions regarding the generation of secret values. This attack differs from Authentication Bypass attacks in that Authentication Abuse allows the attacker to be certified as a valid user through illegitimate means, while Authentication Bypass allows the user to access protected material without ever being certified as an authenticated user. This attack does not rely on prior sessions established by successfully authenticating users, as relied upon for the "Exploitation of Session Variables, Resource IDs and other Trusted Credentials" attack patterns.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>An authentication mechanism or subsystem implementing some form of authentication such as passwords, digest authentication, security certificates, etc. which is flawed in some way.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>A client application, command-line access to a binary, or scripting language capable of interacting with the authentication mechanism.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>287<!--Improper Authentication--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>225<!--Exploitation of Authentication--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="115" Name="Authentication Bypass" Pattern_Abstraction="Standard" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker gains access to application, service, or device with the privileges of an authorized or privileged user by evading or circumventing an authentication mechanism. The attacker is therefore able to access protected data without authentication ever having taken place. This refers to an attacker gaining access equivalent to an authenticated user without ever going through an authentication procedure. This is usually the result of the attacker using an unexpected access procedure that does not go through the proper checkpoints where authentication should occur. For example, a web site might assume that all users will click through a given link in order to get to secure material and simply authenticate everyone that clicks the link. However, an attacker might be able to reach secured web content by explicitly entering the path to the content rather than clicking through the authentication link, thereby avoiding the check entirely. This attack pattern differs from other authentication attacks in that attacks of this pattern avoid authentication entirely, rather than faking authentication by exploiting flaws or by stealing credentials from legitimate users.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>An authentication mechanism or subsystem implementing some form of authentication such as passwords, digest authentication, security certificates, etc.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>A client application, such as a web browser, or a scripting language capable of interacting with the target.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>592<!--Authentication Bypass Issues--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>225<!--Exploitation of Authentication--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="116" Name="Excavation" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker probes the target in a manner that is designed to solicit information relevant to system security. This is achieved by sending data that is syntactically invalid or non-standard relative to a given service, protocol, or expected-input, or by exploring the target via ordinary interactions for the purpose of gathering intelligence about the target. As a result the attacker is able to obtain information from the target that aids the attacker in making inferences about its security, configuration, or potential vulnerabilities. Some exchanges with the target may trigger unhandled exceptions or verbose error messages. When this happens error messages may reveal information like stack traces, configuration information, path information, or database messages. This type of attack also includes manipulation of query strings in a URI, such as by attempting to produce invalid SQL queries or by trying alternative path values, in the hope that the server will return useful information. This attack differs from Data Interception and other data collection attacks in that the attacker actively queries the target rather than simply watching for the target to reveal information.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>Verbose error handling routines or components that provide the user feedback related to system or application properties.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>A web browser or a client application capable of sending custom protocol messages, such as a MITM Proxy or a fuzzer, or a similar scanner or packet injection tool.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="117" Name="Interception" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker monitors data streams to or from a target in order to gather information. This attack may be undertaken to gather information to support a later attack or the data collected may be the end goal of the attack. This attack usually involves sniffing network traffic, but may include observing other types of data streams, such as radio. In most varieties of this attack, the attacker is passive and simply observes regular communication, however in some variants the attacker may attempt to initiate the establishment of a data stream or influence the nature of the data transmitted. However, in all variants of this attack, and distinguishing this attack from other data collection methods, the attacker is not the intended recipient of the data stream. Unlike some other data leakage attacks, the attacker is observing explicit data channels (e.g. network traffic) and reading the content. This differs from attacks that collect more qualitative information, such as communication volume, or other information not explicitly communicated via a data stream.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>All targets that transmit information over a network is potentially vulnerable to this attack.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>The attacker must have the necessary technology to intercept information passing between the nodes of a network. For TCP/IP, the capability to run tcpdump, ethereal, etc. can be useful. Depending upon the data being targeted the technological requirements will change.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>311<!--Missing Encryption of Sensitive Data--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="123" Name="Buffer Manipulation" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary manipulates an application's interaction with a buffer in an attempt to read or modify data they shouldn't have access to. Buffer attacks are distinguished in that it is the buffer space itself that is the target of the attack rather than any code responsible for interpreting the content of the buffer. In virtually all buffer attacks the content that is placed in the buffer is immaterial. Instead, most buffer attacks involve retrieving or providing more input than can be stored in the allocated buffer, resulting in the reading or overwriting of other unintended program memory.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The adversary must identify a programmatic means for interacting with a buffer, such as vulnerable C code, and be able to provide input to this interaction.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Very High</capec:Typical_Severity>
+         <capec:Typical_Likelihood_of_Exploit>
+            <capec:Likelihood>High</capec:Likelihood>
+         </capec:Typical_Likelihood_of_Exploit>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>255<!--Manipulate Data Structures--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="125" Name="Flooding" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker consumes the resources of a target by rapidly engaging in a large number of interactions with the target. This type of attack generally exposes a weakness in rate limiting or flow control in management of interactions. Since each request consumes some of the target's resources, if a sufficiently large number of requests must be processed at the same time then the target's resources can be exhausted.</capec:Text>
+               <capec:Text>The degree to which the attack is successful depends upon the volume of requests in relation to the amount of the resource the target has access to, and other mitigating circumstances such as the target's ability to shift load or acquired additional resources to deal with the depletion. The more protected the resource and the greater the quantity of it that must be consumed, the more resources the attacker may need to have at their disposal. A typical TCP/IP flooding attack is a Distributed Denial-of-Service attack where many machines simultaneously make a large number of requests to a target. Against a target with strong defenses and a large pool of resources, many tens of thousands of attacking machines may be required.</capec:Text>
+               <capec:Text>When successful this attack prevents legitimate users from accessing the service and can cause the target to crash. This attack differs from resource depletion through leaks or allocations in that the latter attacks do not rely on the volume of requests made to the target but instead focus on manipulation of the target's operations. The key factor in a flooding attack is the number of requests the attacker can make in a given period of time. The greater this number, the more likely an attack is to succeed against a given target.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>Any target that services requests is vulnerable to this attack on some level of scale.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>A script or program capable of generating more requests than the target can handle, or a network or cluster of objects all capable of making simultaneous requests.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>404<!--Improper Resource Shutdown or Release--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>770<!--Allocation of Resources Without Limits or Throttling--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="126" Name="Path Traversal" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary uses path manipulation methods to exploit insufficient input validation of a target to obtain access to data that should be not be retrievable by ordinary well-formed requests. A typical variety of this attack involves specifying a path to a desired file together with dot-dot-slash characters, resulting in the file access API or function traversing out of the intended directory structure and into the root file system. By replacing or modifying the expected path information the access function or API retrieves the file desired by the attacker. These attacks either involve the attacker providing a complete path to a targeted file or using control characters (e.g. path separators (/ or \) and/or dots (.)) to reach desired directories or files.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The attacker must be able to control the path that is requested of the target.</capec:Text>
+            </capec:Attack_Prerequisite>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target must fail to adequately sanitize incoming paths</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Resources_Required>
+            <capec:Text>The ability to manually manipulate path information either directly through a client application relative to the service or application or via a proxy application.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="128" Name="Integer Attacks" Pattern_Abstraction="Standard" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker takes advantage of the structure of integer variables to cause these variables to assume values that are not expected by an application. For example, adding one to the largest positive integer in a signed integer variable results in a negative number. Negative numbers may be illegal in an application and the application may prevent an attacker from providing them directly, but the application may not consider that adding two positive numbers can create a negative number do to the structure of integer storage formats.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must have an integer variable for which only some of the possible integer values are expected by the application and where there are no checks on the value of the variable before use.</capec:Text>
+            </capec:Attack_Prerequisite>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The attacker must be able to manipulate the targeted integer variable such that normal operations result in non-standard values due to the storage structure of integers.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>682<!--Incorrect Calculation--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>255<!--Manipulate Data Structures--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="129" Name="Pointer Attack" Pattern_Abstraction="Standard" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>This attack involves an attacker manipulating a pointer within a target application resulting in the application accessing an unintended memory location. This can result in the crashing of the application or, for certain pointer values, access to data that would not normally be possible or the execution of arbitrary code. Since pointers are simply integer variables, Integer Attacks may often be used in Pointer Attacks.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must have a pointer variable that the attacker can influence to hold an arbitrary value.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required for most forms of this attack.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>682<!--Incorrect Calculation--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>255<!--Manipulate Data Structures--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="130" Name="Excessive Allocation" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker causes the target to allocate excessive resources to servicing the attackers' request, thereby reducing the resources available for legitimate services and degrading or denying services. Usually, this attack focuses on memory allocation, but any finite resource on the target could be the attacked, including bandwidth, processing cycles, or other resources. This attack does not attempt to force this allocation through a large number of requests (that would be Resource Depletion through Flooding) but instead uses one or a small number of requests that are carefully formatted to force the target to allocate excessive resources to service this request(s). Often this attack takes advantage of a bug in the target to cause the target to allocate resources vastly beyond what would be needed for a normal request. For example, using an Integer Attack, the attacker could cause a variable that controls allocation for a request to hold an excessively large value. Excessive allocation of resources can render a service degraded or unavailable to legitimate users and can even lead to crashing of the target.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target must accept service requests from the attacker and the attacker must be able to control the resource allocation associated with this request to be in excess of the normal allocation. The latter is usually accomplished through the presence of a bug on the target that allows the attacker to manipulate variables used in the allocation.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required for this attack beyond the ability of the attacker to have the target service requests.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>770<!--Allocation of Resources Without Limits or Throttling--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>404<!--Improper Resource Shutdown or Release--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="131" Name="Resource Leak Exposure" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker utilizes a resource leak on the target to deplete the quantity of the resource available to service legitimate requests. Resource leaks most often come in the form of memory leaks where memory is allocated but never released after it has served its purpose, however, theoretically, any other resource that can be reserved can be targeted if the target fails to release the reservation when the reserved resource block is no longer needed. In this attack, the attacker determines what activity results in leaked resources and then triggers that activity on the target. Since some leaks may be small, this may require a large number of requests by the attacker. However, this attack differs from a flooding attack in that the rate of requests is generally not significant. This is because the lost resources due to the leak accumulate until the target is reset, usually by restarting it. Thus, a resource-poor attacker who would be unable to flood the target can still utilize this attack.</capec:Text>
+               <capec:Text>Resource depletion through leak differs from resource depletion through allocation in that, in the former, the attacker may not be able to control the size of each leaked allocation, but instead allows the leak to accumulate until it is large enough to affect the target's performance. When depleting resources through allocation, the allocated resource may eventually be released by the target so the attack relies on making sure that the allocation size itself is prohibitive of normal operations by the target.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target must have a resource leak that the attacker can repeatedly trigger.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required beyond the ability to trigger the targeted leak.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>404<!--Improper Resource Shutdown or Release--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="137" Name="Parameter Injection" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker exploits weaknesses in input validation by manipulating the content of request parameters for the purpose of undermining the security of the target. Some parameter encodings use text characters as separators. For example, parameters in a HTTP GET message are encoded as name-value pairs separated by an ampersand (&amp;). If an attacker can supply text strings that are used to fill in these parameters, then they can inject special characters used in the encoding scheme to add or modify parameters. For example, if user input is fed directly into an HTTP GET request and the user provides the value "myInput&amp;new_param=myValue", then the input parameter is set to myInput, but a new parameter (new_param) is also added with a value of myValue. This can significantly change the meaning of the query that is processed by the server. Any encoding scheme where parameters are identified and separated by text characters is potentially vulnerable to this attack - the HTTP GET encoding used above is just one example.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must use a parameter encoding where separators and parameter identifiers are expressed in regular text.</capec:Text>
+            </capec:Attack_Prerequisite>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must accept a string as user input, fail to sanitize characters that have a special meaning in the parameter encoding, and insert the user-supplied string in an encoding which is then processed.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required beyond the ability to provide string input to the target.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="148" Name="Content Spoofing" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker modifies content to make it contain something other than what the original content producer intended while keeping the apparent source of the content unchanged. The term content spoofing is most often used to describe modification of web pages hosted by a target to display the attackers' content instead of the owner's content. However, any content can be spoofed, including the content of email messages, file transfers, or the content of other network communication protocols. Content can be modified at the source (e.g. modifying the source file for a web page) or in transit (e.g. intercepting and modifying a message between the sender and recipient). Usually, the attacker will attempt to hide the fact that the content has been modified, but in some cases, such as with web site defacement, this is not necessary. Content Spoofing can lead to malware exposure, financial fraud if the content governs financial transactions, privacy violations, and other results.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target must provide content but fail to adequately protect it against modification.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required by the client for most forms of the attack. If the content is to be modified in transit, the attacker must be able to intercept the targeted messages. In some variants, the targeted content is altered so that all or some of it is redirected towards content published by the attacker (for example, images and frames in the target's web site might be modified to be loaded from a source controlled by the attacker). In these cases, the attacker must be able to host the replacement content.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>333</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>345<!--WASC-12 - Content Spoofing--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="151" Name="Identity Spoofing" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>Identity Spoofing refers to the action of assuming (i.e., taking on) the identity of some other entity (human or non-human) and then using that identity to accomplish a goal. An adversary may craft messages that appear to come from a different principle or use stolen / spoofed authentication credentials. Alternatively, an attacker may intercept a message from a legitimate sender and attempt to make it look like the message comes from them without changing its content. The latter form of this attack can be used to hijack credentials from legitimate users. Identity Spoofing attacks need not be limited to transmitted messages - any resource that is associated with an identity (for example, a file with a signature) can be the target of an attack where the adversary attempts to change the apparent identity. This attack differs from Content Spoofing attacks where the adversary does not wish to change the apparent identity of the message but instead wishes to change what the message says. In an Identity Spoofing attack, the adversary is attempting to change the identity of the content.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The identity associated with the message or resource must be removable or modifiable in an undetectable way for the attacker to perform this attack.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resource are required for most variants of this attack.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="154" Name="Resource Location Spoofing" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary, in an attempt to leverage an alternate of malicious resource, causes an application to look for a resource in an unintended location. This differs from a resource manipulation attack in which the contents of the resource are affected or where the resources themselves are physically altered or moved. Instead, this attack simply concerns itself with the paths used to find or create resources.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>None. All applications rely on file paths and so, in theory, they or their resources could be affected by this attack.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>No special resources are required for most variants of this attack.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="169" Name="Footprinting" Pattern_Abstraction="Meta" Pattern_Completeness="Complete" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker engages in probing and exploration activity to identify constituents and properties of the target. Footprinting is a general term to describe a variety of information gathering techniques, often used by attackers in preparation for some attack. It consists of using tools to learn as much as possible about the composition, configuration, and security mechanisms of the targeted application, system or network. Information that might be collected during a footprinting effort could include open ports, applications and their versions, network topology, and similar information. While footprinting is not intended to be damaging (although certain activities, such as network scans, can sometimes cause disruptions to vulnerable applications inadvertently) it may often pave the way for more damaging attacks.</capec:Text>
+            </capec:Summary>
+            <capec:Attack_Execution_Flow>
+               <capec:Attack_Phases>
+                  <capec:Attack_Phase ID="1" Name="Explore">
+                     <capec:Attack_Steps>
+                        <capec:Attack_Step ID="1">
+                           <capec:Custom_Attack_Step>
+                              <capec:Attack_Step_Title>Request Footprinting</capec:Attack_Step_Title>
+                              <capec:Attack_Step_Description>
+                                 <capec:Text>The attacker examines the website information and source code of the website and uses automated tools to get as much information as possible about the system and organization.</capec:Text>
+                              </capec:Attack_Step_Description>
+                              <capec:Attack_Step_Techniques>
+                                 <capec:Attack_Step_Technique ID="1">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>Open Source Footprinting: Examine the website about the organization and skim through the webpage's HTML source to look for comments.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-Web</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                                 <capec:Attack_Step_Technique ID="2">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>Network Enumeration: Perform various queries (Registrar Query, Organizational Query, Domain Query, Network Query, POC Query) on the many whois databases found on the internet to identify domain names and associated networks.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-Web</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                                 <capec:Attack_Step_Technique ID="3">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>DNS Interrogation: Once basic information is gathered the attack could begin to query DNS.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-Web</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                                 <capec:Attack_Step_Technique ID="4">
+                                    <capec:Attack_Step_Technique_Description>
+                                       <capec:Text>Other Techniques: Use ping sweep, TCP scan, UDP scan, OS Identification various techniques to gain more information about the system and network.</capec:Text>
+                                    </capec:Attack_Step_Technique_Description>
+                                    <capec:Environments>env-Web</capec:Environments>
+                                 </capec:Attack_Step_Technique>
+                              </capec:Attack_Step_Techniques>
+                              <capec:Indicators>
+                                 <capec:Indicator ID="1" type="Positive">
+                                    <capec:Indicator_Description>
+                                       <capec:Text>The response contains sensitive information such as ports open, network block, server version etc.</capec:Text>
+                                    </capec:Indicator_Description>
+                                    <capec:Environments>env-Web</capec:Environments>
+                                 </capec:Indicator>
+                                 <capec:Indicator ID="2" type="Inconclusive">
+                                    <capec:Indicator_Description>
+                                       <capec:Text>The response does not contain sensitive information about the system and network.</capec:Text>
+                                    </capec:Indicator_Description>
+                                    <capec:Environments>env-Local</capec:Environments>
+                                 </capec:Indicator>
+                              </capec:Indicators>
+                              <capec:Outcomes>
+                                 <capec:Outcome ID="1" type="Success">
+                                    <capec:Outcome_Description>A list of sensitive information about the system and network.</capec:Outcome_Description>
+                                 </capec:Outcome>
+                                 <capec:Outcome ID="2" type="Failure">
+                                    <capec:Outcome_Description>There is no information available about the system and network.</capec:Outcome_Description>
+                                 </capec:Outcome>
+                              </capec:Outcomes>
+                              <capec:Security_Controls>
+                                 <capec:Security_Control ID="1" type="Detective">
+                                    <capec:Security_Control_Description>The server may detect a large amount of port scan request, illegal ICMP and TCP packets.</capec:Security_Control_Description>
+                                 </capec:Security_Control>
+                              </capec:Security_Controls>
+                           </capec:Custom_Attack_Step>
+                        </capec:Attack_Step>
+                     </capec:Attack_Steps>
+                  </capec:Attack_Phase>
+               </capec:Attack_Phases>
+            </capec:Attack_Execution_Flow>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>None. Any system or network that can be detected can be footprinted. However, some configuration choices may limit the useful information that can be collected during a footprinting attack.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Very Low</capec:Typical_Severity>
+         <capec:Typical_Likelihood_of_Exploit>
+            <capec:Likelihood>High</capec:Likelihood>
+            <capec:Explanation/>
+         </capec:Typical_Likelihood_of_Exploit>
+         <capec:Methods_of_Attack>
+            <capec:Method_of_Attack>Protocol Manipulation</capec:Method_of_Attack>
+            <capec:Method_of_Attack>Injection</capec:Method_of_Attack>
+            <capec:Method_of_Attack>Analysis</capec:Method_of_Attack>
+            <capec:Method_of_Attack>Social Engineering</capec:Method_of_Attack>
+         </capec:Methods_of_Attack>
+         <capec:Examples-Instances>
+            <capec:Example-Instance>
+               <capec:Example-Instance_Description>
+                  <capec:Text>In this example let us look at the website http://www.example.com to get much information we can about Alice. From the website, we find that Alice also runs foobar.org. We type in www example.com into the prompt of the Name Lookup window in a tool, and our result is this IP address: 192.173.28.130 We type the domain into the Name Lookup prompt and we are given the same IP. We can safely say that example and foobar.org are hosted on the same box. But if we were to do a reverse name lookup on the IP, which domain will come up? www.example.com or foobar.org? Neither, the result is nijasvspirates.org. So nijasvspirates.org is the name of the box hosting 31337squirrel.org and foobar.org. So now that we have the IP, let's check to see if nijasvspirates is awake. We type the IP into the prompt in the Ping window. We'll set the interval between packets to 1 millisecond. We'll set the number of seconds to wait until a ping times out to 5. We'll set the ping size to 500 bytes and we'll send ten pings. Ten packets sent and ten packets received. nijasvspirates.org returned a message to my computer within an average of 0.35 seconds for every packet sent. nijasvspirates is alive. We open the Whois window and type nijasvspirates.org into the Query prompt, and whois.networksolutions.com into the Server prompt. This means we'll be asking Network Solutions to tell us everything they know about nijasvspirates.org. The result is this laundry list of info: Registrant: FooBar (nijasvspirates -DOM) p.o.box 11111 SLC, UT 84151 US Domain Name: nijasvspirates.ORG Administrative Contact, Billing Contact: Smith, John jsmith@anonymous.net FooBar p.o.box 11111 SLC, UT 84151 555-555-6103 Technical Contact: Johnson, Ken kj@fierymonkey.org fierymonkey p.o.box 11111 SLC, UT 84151 555-555-3849 Record last updated on 17-Aug-2001. Record expires on 11-Aug-2002. Record created on 11-Aug-2000. Database last updated on 12-Dec-2001 04:06:00 EST. Domain servers in listed order: NS1. fierymonkey.ORG 192.173.28.130 NS2. fierymonkey.ORG 64.192.168.80 A corner stone of footprinting is Port Scanning. Let's port scan nijasvspirates.org and see what kind of services are running on that box. We type in the nijasvspirates IP into the Host prompt of the Port Scan window. We'll start searching from port number 1, and we'll stop at the default Sub7 port, 27374. Our results are: 21 TCP ftp 22 TCP ssh SSH-1.99-OpenSSH_2.30 25 TCP smtp 53 TCP domain 80 TCP www 110 TCP pop3 111 TCP sunrpc 113 TCP ident Just by this we know that Alice is running a website and email, using POP3, SUNRPC (SUN Remote Procedure Call), and ident.</capec:Text>
+               </capec:Example-Instance_Description>
+            </capec:Example-Instance>
+         </capec:Examples-Instances>
+         <capec:Attacker_Skills_or_Knowledge_Required>
+            <capec:Attacker_Skill_or_Knowledge_Required>
+               <capec:Skill_or_Knowledge_Level>Low</capec:Skill_or_Knowledge_Level>
+               <capec:Skill_or_Knowledge_Type>
+                  <capec:Text>Attacker knows how to send HTTP request, run the scan tool.</capec:Text>
+               </capec:Skill_or_Knowledge_Type>
+            </capec:Attacker_Skill_or_Knowledge_Required>
+         </capec:Attacker_Skills_or_Knowledge_Required>
+         <capec:Resources_Required>
+            <capec:Text>The attacker requires a variety of tools to collect information about the target. These include port and network scanners and tools to analyze responses from applications to determine version and configuration information. Footprinting a system adequately may also take a few days if the attacker wishes the footprinting attempt to go undetected.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Solutions_and_Mitigations>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Configuration: Keep patches up to date by installing weekly or daily if possible.</capec:Text>
+            </capec:Solution_or_Mitigation>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Configuration: Shut down unnecessary services/ports.</capec:Text>
+            </capec:Solution_or_Mitigation>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Policy: Change default passwords by choosing strong passwords.</capec:Text>
+            </capec:Solution_or_Mitigation>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Implementation: Curtail unexpected input.</capec:Text>
+            </capec:Solution_or_Mitigation>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Design: Encrypt and password-protect sensitive data.</capec:Text>
+            </capec:Solution_or_Mitigation>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Policy: Place offline any information that has the potential to identify and compromise your organization's security such as access to business plans, formulas, and proprietary documents.</capec:Text>
+            </capec:Solution_or_Mitigation>
+         </capec:Solutions_and_Mitigations>
+         <capec:Attack_Motivation-Consequences>
+            <capec:Attack_Motivation-Consequence>
+               <capec:Consequence_Scope>Confidentiality</capec:Consequence_Scope>
+               <capec:Consequence_Technical_Impact>"Varies by context"</capec:Consequence_Technical_Impact>
+               <capec:Consequence_Note>
+                  <capec:Text>Information Leakage</capec:Text>
+               </capec:Consequence_Note>
+            </capec:Attack_Motivation-Consequence>
+         </capec:Attack_Motivation-Consequences>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>497<!--Exposure of System Data to an Unauthorized Control Sphere--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>200<!--Information Exposure--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>202<!--Exposure of Sensitive Data Through Data Queries--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>538<!--File and Directory Information Exposure--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>311<!--Missing Encryption of Sensitive Data--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>312<!--Cleartext Storage of Sensitive Information--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>319<!--Cleartext Transmission of Sensitive Information--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>276<!--Incorrect Default Permissions--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Purposes>
+            <capec:Purpose>Exploitation</capec:Purpose>
+         </capec:Purposes>
+         <capec:CIA_Impact>
+            <capec:Confidentiality_Impact>Medium</capec:Confidentiality_Impact>
+            <capec:Integrity_Impact>Low</capec:Integrity_Impact>
+            <capec:Availability_Impact>Low</capec:Availability_Impact>
+         </capec:CIA_Impact>
+         <capec:Technical_Context>
+            <capec:Architectural_Paradigms>
+               <capec:Architectural_Paradigm>Client-Server</capec:Architectural_Paradigm>
+               <capec:Architectural_Paradigm>n-Tier</capec:Architectural_Paradigm>
+               <capec:Architectural_Paradigm>SOA</capec:Architectural_Paradigm>
+            </capec:Architectural_Paradigms>
+            <capec:Frameworks>
+               <capec:Framework>All</capec:Framework>
+            </capec:Frameworks>
+            <capec:Platforms>
+               <capec:Platform>All</capec:Platform>
+            </capec:Platforms>
+            <capec:Languages>
+               <capec:Language>All</capec:Language>
+            </capec:Languages>
+         </capec:Technical_Context>
+         <capec:References>
+            <capec:Reference Local_Reference_ID="R.169.1">
+               <capec:Reference_Author>Manic Velocity</capec:Reference_Author>
+               <capec:Reference_Title>Footprinting And The Basics Of Hacking</capec:Reference_Title>
+               <capec:Reference_Publication>Web Textfiles</capec:Reference_Publication>
+               <capec:Reference_Link>http://web.textfiles.com/hacking/footprinting.txt</capec:Reference_Link>
+            </capec:Reference>
+            <capec:Reference Local_Reference_ID="R.169.2">
+               <capec:Reference_Author>Eddie Sutton</capec:Reference_Author>
+               <capec:Reference_Title>Footprint: What Is And How Do You Erase Them</capec:Reference_Title>
+               <capec:Reference_Link>http://www.infosecwriters.com/text_resources/pdf/Footprinting.pdf</capec:Reference_Link>
+            </capec:Reference>
+            <capec:Reference Reference_ID="REF-20" Local_Reference_ID="R.169.3">
+               <capec:Reference_Author>Stuart McClure</capec:Reference_Author>
+               <capec:Reference_Author>Joel Scambray</capec:Reference_Author>
+               <capec:Reference_Author>George Kurtz</capec:Reference_Author>
+               <capec:Reference_Title>Hacking Exposed: Network Security Secrets &amp; Solutions</capec:Reference_Title>
+               <capec:Reference_Section>Chapter 2: Scanning, pp. 38-39</capec:Reference_Section>
+               <capec:Reference_Edition>6th Edition</capec:Reference_Edition>
+               <capec:Reference_Publisher>McGraw Hill</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2009</capec:Reference_PubDate>
+            </capec:Reference>
+            <capec:Reference Reference_ID="REF-22" Local_Reference_ID="R.169.4">
+               <capec:Reference_Author>Gordon "Fyodor" Lyon</capec:Reference_Author>
+               <capec:Reference_Title>Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning</capec:Reference_Title>
+               <capec:Reference_Section>Section 3.1 Introduction, pg. 47</capec:Reference_Section>
+               <capec:Reference_Edition>3rd "Zero Day" Edition,</capec:Reference_Edition>
+               <capec:Reference_Publisher>Insecure.com LLC, ISBN: 978-0-9799587-1-7</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2008</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="173" Name="Action Spoofing" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker is able to disguise one action for another and therefore trick a user into initiating one type of action when they intend to initiate a different action. For example, a user might be led to believe that clicking a button will submit a query, but in fact it downloads software. Attackers may perform this attack through social means, such as by simply convincing a victim to perform the action or relying on a user's natural inclination to do so, or through technical means, such as a clickjacking attack where a user sees one interface but is actually interacting with a second, invisible, interface.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The victim must be convinced into performing the decoy action.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Very High</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>The attacker must have enough control over a user's interface to present them with a decoy action as well as the actual malicious action. Simple versions of this attack can be performed using web pages requiring only that the attacker be able to host (or control) content that the user visits.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="175" Name="Code Inclusion" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker exploits a weakness in input validation on the target to force arbitrary code to be retrieved from a remote location and executed. This differs from code injection in that code injection involves the direct inclusion of code while code inclusion involves the addition or replacement of a reference to a code file, which is subsequently loaded by the target and used as part of the code of some application. One example of this sort of attack is PHP file include attacks where the parameter of an include() function is set by a variable that an attacker is able to control. The result is that arbitrary code could be loaded into the PHP application and executed.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must include external code/libraries that are executed when the application runs and the attacker must be able to influence the specific files that get included.</capec:Text>
+            </capec:Attack_Prerequisite>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The victim must run the targeted application, possibly using the crafted parameters that the attacker uses to identify the code to include.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Very High</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>The attacker may need to be able to host code modules if they wish their own code files to be included.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="188" Name="Reverse Engineering" Pattern_Abstraction="Meta" Pattern_Completeness="Complete" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker discovers the structure, function, and composition of an object, resource, or system by using a variety of analysis techniques to effectively determine how the analyzed entity was constructed or operates. The goal of reverse engineering is often to duplicate the function, or a part of the function, of an object in order to duplicate or "back engineer" some aspect of its functioning. Reverse engineering techniques can be applied to mechanical objects, electronic devices or components, or to software, although the methodology and techniques involved in each type of analysis differ widely.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Typical_Severity>Low</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>Access to or control of an object, resource, or system, to be analyzed. The technical resources required to engage in reverse engineering differ in accordance with the type of object, resource, or system being analyzed.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Injection_Vector/>
+         <capec:Payload/>
+         <capec:Activation_Zone/>
+         <capec:Payload_Activation_Impact/>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>798<!--Use of Hard-coded Credentials--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>259<!--Use of Hard-coded Password--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Secondary</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID Ordinal="Primary">1000</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>ChildOf</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>281<!--Analyze Target--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-6" Local_Reference_ID="R.188.1">
+               <capec:Reference_Title>Wikipedia</capec:Reference_Title>
+               <capec:Reference_Section>Reverse engineering</capec:Reference_Section>
+               <capec:Reference_Publisher>The Wikimedia Foundation, Inc</capec:Reference_Publisher>
+               <capec:Reference_Link>http://en.wikipedia.org/wiki/Reverse_engineering</capec:Reference_Link>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="212" Name="Functionality Misuse" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary misuses the functionality of an application in order to achieve a negative technical impact.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="224" Name="Fingerprinting" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary compares output from a target system to known "fingerprints" that uniquely identify specific details about the target. Fingerprinting by itself is not usually detrimental to the target. However, the information gathered through fingerprinting often enables an adversary to discover existing weaknesses in the target.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Typical_Severity>Very Low</capec:Typical_Severity>
+         <capec:Related_Weaknesses>
+            <capec:Related_Weakness>
+               <capec:CWE_ID>208<!--Information Exposure Through Timing Discrepancy--></capec:CWE_ID>
+               <capec:Weakness_Relationship_Type>Targeted</capec:Weakness_Relationship_Type>
+            </capec:Related_Weakness>
+         </capec:Related_Weaknesses>
+         <capec:Related_Attack_Patterns>
+            <capec:Related_Attack_Pattern>
+               <capec:Relationship_Views>
+                  <capec:Relationship_View_ID>333</capec:Relationship_View_ID>
+               </capec:Relationship_Views>
+               <capec:Relationship_Target_Form>Category</capec:Relationship_Target_Form>
+               <capec:Relationship_Nature>HasMember</capec:Relationship_Nature>
+               <capec:Relationship_Target_ID>378<!--WASC-45 - Fingerprinting--></capec:Relationship_Target_ID>
+            </capec:Related_Attack_Pattern>
+         </capec:Related_Attack_Patterns>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="227" Name="Sustained Client Engagement" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary attempts to deny legitimate users access to a resource by continually engaging a specific resource in an attempt to keep the resource tied up as long as possible. The adversary's primary goal is not to crash or flood the target, which would alert defenders; rather it is to repeatedly perform actions or abuse algorithmic flaws such that a given resource is tied up and not available to a legitimate user. By carefully crafting a requests that keep the resource engaged through what is seemingly benign requests, legitimate users are limited or completely denied access to the resource. The degree to which the attack is successful depends upon the adversary's ability to sustain resource requests over time with a volume that exceeds the normal usage by legitimate users, as well as other mitigating circumstances such as the target's ability to shift load or acquire additional resources to deal with the depletion. This attack differs from a flooding attack as it is not entirely dependent upon large volumes of requests, and it differs from resource leak exposures which tend to exploit the surrounding environment needed for the resource to function. The key factor in a sustainment attack are the repeated requests that take longer to process than usual.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>This pattern of attack requires a temporal aspect to the servicing of a given request. Success can be achieved if the adversary can make requests that collectively take more time to complete than legitimate user requests within the same time frame.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Resources_Required>
+            <capec:Text>To successfully execute this pattern of attack, a script or program is often required that is capable of continually engaging the target and maintaining sustained usage of a specific resource. Depending on the configuration of the target, it may or may not be necessary to involve a network or cluster of objects all capable of making parallel requests.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Solutions_and_Mitigations>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>Potential mitigations include requiring a unique login for each resource request, constraining local unprivileged access by disallowing simultaneous engagements of the resource, or limiting access to the resource to one access per IP address. In such scenarios, the adversary would have to increase engagements either by launching multiple sessions manually or programmatically to counter such defenses.</capec:Text>
+            </capec:Solution_or_Mitigation>
+         </capec:Solutions_and_Mitigations>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="242" Name="Code Injection" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary exploits a weakness in input validation on the target to inject new code into that which is currently executing. This differs from code inclusion in that code inclusion involves the addition or replacement of a reference to a code file, which is subsequently loaded by the target and used as part of the code of some application.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="248" Name="Command Injection" Pattern_Abstraction="Meta" Pattern_Completeness="Hook" Status="Draft">
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must accept input from the user. In virtually all cases, this must be string input.</capec:Text>
+            </capec:Attack_Prerequisite>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The target application must fail to adequately filter the user input against the insertion of instructions.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="272" Name="Protocol Manipulation" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary subverts a communications protocol to perform an attack. This type of attack can allow an adversary to impersonate others, discover sensitive information, control the outcome of a session, or perform other attacks. This type of attack targets invalid assumptions that may be inherent in implementers of the protocol, incorrect implementations of the protocol, or vulnerabilities in the protocol itself.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>The protocol or implementations thereof must contain bugs that an adversary can exploit.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Typical_Severity>Medium</capec:Typical_Severity>
+         <capec:Resources_Required>
+            <capec:Text>In some variants of this attack the adversary must be able to intercept communications using the protocol. This means they need to be able to receive the communications from one participant and prevent the other participant from receiving these communications.</capec:Text>
+         </capec:Resources_Required>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="390" Name="Bypassing Physical Security" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>Facilities often used layered models for physical security such as traditional locks, Electronic-based card entry systems, coupled with physical alarms. Hardware security mechanisms range from the use of computer case and cable locks as well as RFID tags for tracking computer assets. This layered approach makes it difficult for random physical security breaches to go unnoticed, but is less effective at stopping deliberate and carefully planned break-ins. Avoiding detection begins with evading building security and surveillance and methods for bypassing the electronic or physical locks which secure entry points.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-20" Local_Reference_ID="R.390.1">
+               <capec:Reference_Author>Stuart McClure</capec:Reference_Author>
+               <capec:Reference_Author>Joel Scambray</capec:Reference_Author>
+               <capec:Reference_Author>George Kurtz</capec:Reference_Author>
+               <capec:Reference_Title>Hacking Exposed: Network Security Secrets &amp; Solutions</capec:Reference_Title>
+               <capec:Reference_Section>Chapter 9: Hacking Hardware</capec:Reference_Section>
+               <capec:Reference_Edition>6th Edition</capec:Reference_Edition>
+               <capec:Reference_Publisher>McGraw Hill</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2009</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="401" Name="Hacking Hardware Devices or Components" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker exploits weaknesses in the physical hardware of a machine in order to gain unauthorized access to the device or system. Hacking hardware devices falls into several broad categories depending upon the relative sophistication of the attacker and the type of systems that are targeted. Attacks against hardware devices differ from software attacks in that hardware-based attacks target the chips, circuit boards, device ports, or other components that comprise a computer system or embedded system. The most common hardware devices which are attacked are computer systems such as laptops, desktops and server platforms. Sophisticated attacks may involve adding or removing jumpers to an exposed system, or applying sensors to portions of the motherboard to read data as it traverses the system bus.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>Some level of physical access to the device being attacked.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-20" Local_Reference_ID="R.401.1">
+               <capec:Reference_Author>Stuart McClure</capec:Reference_Author>
+               <capec:Reference_Author>Joel Scambray</capec:Reference_Author>
+               <capec:Reference_Author>George Kurtz</capec:Reference_Author>
+               <capec:Reference_Title>Hacking Exposed: Network Security Secrets &amp; Solutions</capec:Reference_Title>
+               <capec:Reference_Section>Chapter 9: Hacking Hardware</capec:Reference_Section>
+               <capec:Reference_Edition>6th Edition</capec:Reference_Edition>
+               <capec:Reference_Publisher>McGraw Hill</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2009</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="404" Name="Social Information Gathering Attacks" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker employs various means of gathering information about a target company, organization, or person. These techniques may range from using telephones, gathering trash or other discarded information, intrusion within company property, using the Internet for research, to querying individuals under false or misleading pretenses. A social engineer can use many small pieces of information to combine into a useful vulnerability of a system. Information can be important whether it comes from the janitor's office or from the CEO's office; each piece of paper, employee spoken to or area visited by the social engineer can add up enough information to attain access to sensitive data and resources of the company. The lesson here is all information, no matter how insignificant the employee believes it to be, may assist in creating a vulnerability for a company and an entrance for a social engineer. While the ultimate goal of the attacker may vary the purpose of these attacks is usually to gain access to computer systems or facilities.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Typical_Severity>Low</capec:Typical_Severity>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-30" Local_Reference_ID="R.404.1">
+               <capec:Reference_Title>The Official Social Engineering Portal</capec:Reference_Title>
+               <capec:Reference_Publication>Social-Engineer.org</capec:Reference_Publication>
+               <capec:Reference_Publisher>Tick Tock Computers, LLC</capec:Reference_Publisher>
+               <capec:Reference_Link>http://www.social-engineer.org</capec:Reference_Link>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="410" Name="Information Elicitation via Social Engineering" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker engages an individual using any combination of social engineering methods for the purpose of extracting information. Accurate contextual and environmental queues, such as knowing important information about the target company or individual can greatly increase the success of the attack and the quality of information gathered. Authentic mimicry combined with detailed knowledge increases the success of elicitation attacks.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Typical_Severity>Low</capec:Typical_Severity>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-30" Local_Reference_ID="R.410.1">
+               <capec:Reference_Title>The Official Social Engineering Portal</capec:Reference_Title>
+               <capec:Reference_Publication>Social-Engineer.org</capec:Reference_Publication>
+               <capec:Reference_Publisher>Tick Tock Computers, LLC</capec:Reference_Publisher>
+               <capec:Reference_Link>http://www.social-engineer.org</capec:Reference_Link>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="416" Name="Target Influence via Social Engineering" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker exploits inherent human psychological predispositions to influence a targeted individual or group to solicit information or manipulate the target into performing an action that serves the attackers' interests. Many interpersonal social engineering techniques do not involve outright deception, although they can; many are subtle ways of manipulating a target to remove barriers, make the target feel comfortable, and produce an exchange in which the target is either more likely to share information directly, or let key information slip out unintentionally. A skilled attacker uses these techniques when appropriate to produce the desired outcome. Manipulation techniques vary from the overt, such as pretending to be a supervisor to a help desk, to the subtle, such as making the target feel comfortable with the attackers' speech and thought patterns.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Typical_Severity>Low</capec:Typical_Severity>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-30" Local_Reference_ID="R.416.1">
+               <capec:Reference_Title>The Official Social Engineering Portal</capec:Reference_Title>
+               <capec:Reference_Publication>Social-Engineer.org</capec:Reference_Publication>
+               <capec:Reference_Publisher>Tick Tock Computers, LLC</capec:Reference_Publisher>
+               <capec:Reference_Link>http://www.social-engineer.org</capec:Reference_Link>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="438" Name="Integrity Modification During Manufacture" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker modifies a technology, product, or component during a stage in its manufacture for the purpose of carrying out an attack against some entity involved in the supply chain lifecycle. There are an almost limitless number of ways an attacker can modify a technology when they are involved in its manufacture, as the attacker has potential inroads to the software composition, hardware design and assembly, firmware, or basic design mechanics. Additionally, manufacturing of key components is often outsourced with the final product assembled by the primary manufacturer. The greatest risk, however, is deliberate manipulation of design specifications to produce malicious hardware or devices. There are billions of transistors in a single integrated circuit and studies have shown that fewer than 10 transistors are required to create malicious functionality.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-31" Local_Reference_ID="R.438.1">
+               <capec:Reference_Author>Information Technology Laboratory</capec:Reference_Author>
+               <capec:Reference_Title>Supply Chain Risk Management (SCRM)</capec:Reference_Title>
+               <capec:Reference_Publisher>National Institute of Standards and Technology (NIST)</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+            <capec:Reference Reference_ID="REF-33" Local_Reference_ID="R.438.2">
+               <capec:Reference_Author>Marcus Sachs</capec:Reference_Author>
+               <capec:Reference_Title>Supply Chain Attacks: Can We Secure Information Technology Supply Chain in the Age of Globalization</capec:Reference_Title>
+               <capec:Reference_Publisher>Verizon, Inc.</capec:Reference_Publisher>
+            </capec:Reference>
+            <capec:Reference Reference_ID="REF-34" Local_Reference_ID="R.438.3">
+               <capec:Reference_Author>Thea Reilkoff</capec:Reference_Author>
+               <capec:Reference_Title>Hardware Trojans: A Novel Attack Meets a New Defense</capec:Reference_Title>
+               <capec:Reference_Publisher>Yale School of Engineering and Applied Science</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+            <capec:Reference Reference_ID="REF-32" Local_Reference_ID="R.438.4">
+               <capec:Reference_Author>Marianne Swanson</capec:Reference_Author>
+               <capec:Reference_Author>Nadya Bartol</capec:Reference_Author>
+               <capec:Reference_Author>Rama Moorthy</capec:Reference_Author>
+               <capec:Reference_Title>Piloting Supply Chain Risk Management Practices for Federal Information Systems</capec:Reference_Title>
+               <capec:Reference_Section>Section 1. Introduction</capec:Reference_Section>
+               <capec:Reference_Edition>Draft NISTIR 7622</capec:Reference_Edition>
+               <capec:Reference_Publisher>National Institute of Standards and Technology</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="439" Name="Integrity Modification During Distribution" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker undermines the integrity of a product, software, or technology at some stage of the distribution channel. The core threat of modification or manipulation during distribution arise from the many stages of distribution, as a product may traverse multiple suppliers and integrators as the final asset is delivered. Components and services provided from a manufacturer to a supplier may be tampered with during integration or packaging.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Examples-Instances>
+            <capec:Example-Instance>
+               <capec:Example-Instance_Description>
+                  <capec:Text>A malicious OEM provider, or OEM provider employee or contractor, may install software, or modify existing code, during distribution.</capec:Text>
+               </capec:Example-Instance_Description>
+            </capec:Example-Instance>
+            <capec:Example-Instance>
+               <capec:Example-Instance_Description>
+                  <capec:Text>External contractors involved in the packaging or testing of products or components may install software, or modify existing code, during distribution.</capec:Text>
+               </capec:Example-Instance_Description>
+            </capec:Example-Instance>
+         </capec:Examples-Instances>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-31" Local_Reference_ID="R.439.1">
+               <capec:Reference_Author>Information Technology Laboratory</capec:Reference_Author>
+               <capec:Reference_Title>Supply Chain Risk Management (SCRM)</capec:Reference_Title>
+               <capec:Reference_Publisher>National Institute of Standards and Technology (NIST)</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+            <capec:Reference Local_Reference_ID="R.439.2">
+               <capec:Reference_Author>SAFECode</capec:Reference_Author>
+               <capec:Reference_Title>The Software Supply Chain Integrity Framework Defining Risks and Responsibilities for Securing Software in the Global Supply Chain</capec:Reference_Title>
+               <capec:Reference_Publisher>Safecode.org</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2009</capec:Reference_PubDate>
+            </capec:Reference>
+            <capec:Reference Reference_ID="REF-32" Local_Reference_ID="R.439.3">
+               <capec:Reference_Author>Marianne Swanson</capec:Reference_Author>
+               <capec:Reference_Author>Nadya Bartol</capec:Reference_Author>
+               <capec:Reference_Author>Rama Moorthy</capec:Reference_Author>
+               <capec:Reference_Title>Piloting Supply Chain Risk Management Practices for Federal Information Systems</capec:Reference_Title>
+               <capec:Reference_Section>Section 1. Introduction</capec:Reference_Section>
+               <capec:Reference_Edition>Draft NISTIR 7622</capec:Reference_Edition>
+               <capec:Reference_Publisher>National Institute of Standards and Technology</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="440" Name="Integrity Modification During Deployed Use" Pattern_Abstraction="Meta" Pattern_Completeness="Hook" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker modifies a technology, product, component, or sub-component during its deployed use at the victim location for the purpose of carrying out an attack. After deployment, it is not uncommon for upgrades and replacements to occur involving firmware, software, hardware, replaceable parts etc. These upgrades and replacements are intended to correct defects, provide additional features, replace broken or worn-out parts, and are considered an important part of the lifecycle of a deployed piece of technology. As the upgrade and replacement part of the lifecycle can involve multiple manufacturers and suppliers, subcontractors, and cross international boundaries, there are multiple points of disruption for the attacker.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Examples-Instances>
+            <capec:Example-Instance>
+               <capec:Example-Instance_Description>
+                  <capec:Text_Title>A malicious subcontractor or subcontractor's employee that is responsible for providing replacement parts supplies a replacement hard drive with malicious code that will allow for backdoor access once deployed.</capec:Text_Title>
+               </capec:Example-Instance_Description>
+            </capec:Example-Instance>
+         </capec:Examples-Instances>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-31" Local_Reference_ID="R.440.1">
+               <capec:Reference_Author>Information Technology Laboratory</capec:Reference_Author>
+               <capec:Reference_Title>Supply Chain Risk Management (SCRM)</capec:Reference_Title>
+               <capec:Reference_Publisher>National Institute of Standards and Technology (NIST)</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="441" Name="Malicious Logic Inserted Into Product" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An attacker inserts malicious logic into a product at some point during the supply chain lifecycle, typically in the form of a traditional virus or trojan backdoor.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Examples-Instances>
+            <capec:Example-Instance>
+               <capec:Example-Instance_Description>
+                  <capec:Text_Title>A USB Memory stick has malicious logic inserted before shipping of the product allowing for infection of the host machine once inserted into the USB port.</capec:Text_Title>
+               </capec:Example-Instance_Description>
+            </capec:Example-Instance>
+            <capec:Example-Instance>
+               <capec:Example-Instance_Description>
+                  <capec:Text_Title>In 2007, approximately 1800 of Seagate's Maxtor Personal Storage 3200 drives were built under contract with an outside manufacturer and contained a virus that stole user passwords.</capec:Text_Title>
+               </capec:Example-Instance_Description>
+            </capec:Example-Instance>
+         </capec:Examples-Instances>
+         <capec:References>
+            <capec:Reference Reference_ID="REF-31" Local_Reference_ID="R.441.1">
+               <capec:Reference_Author>Information Technology Laboratory</capec:Reference_Author>
+               <capec:Reference_Title>Supply Chain Risk Management (SCRM)</capec:Reference_Title>
+               <capec:Reference_Publisher>National Institute of Standards and Technology (NIST)</capec:Reference_Publisher>
+               <capec:Reference_PubDate>2010</capec:Reference_PubDate>
+            </capec:Reference>
+         </capec:References>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="507" Name="Physical Theft" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary gains physical access to a system or device through theft of the item. Possession of a system or device enables a number of unique attacks to be executed and often provides the adversary with an extended timeframe for which to perform an attack. Most protections put in place to secure sensitive information can be defeated when an adversary has physical access and enough time.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Attack_Prerequisites>
+            <capec:Attack_Prerequisite>
+               <capec:Text>This type of attack requires the existence of a physical target that an adversary believes hosts something of value.</capec:Text>
+            </capec:Attack_Prerequisite>
+         </capec:Attack_Prerequisites>
+         <capec:Solutions_and_Mitigations>
+            <capec:Solution_or_Mitigation>
+               <capec:Text>To mitigate this type of attack, physical security techniques such as locks doors, alarms, and monitoring of targets should be implemented.</capec:Text>
+            </capec:Solution_or_Mitigation>
+         </capec:Solutions_and_Mitigations>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern>
+                    <capec:Attack_Pattern ID="547" Name="Physical Destruction of Device or Component" Pattern_Abstraction="Meta" Pattern_Completeness="Stub" Status="Draft">
+         <capec:Description>
+            <capec:Summary>
+               <capec:Text>An adversary conducts a physical attack a device or component, destroying it such that it no longer functions as intended.</capec:Text>
+            </capec:Summary>
+         </capec:Description>
+         <capec:Content_History>
+            <capec:Submissions>
+               <capec:Submission Submission_Source="Internal_CAPEC_Team">
+                  <capec:Submitter>CAPEC Content Team</capec:Submitter>
+                  <capec:Submitter_Organization>The MITRE Corporation</capec:Submitter_Organization>
+                  <capec:Submission_Date>2014-06-23</capec:Submission_Date>
+               </capec:Submission>
+            </capec:Submissions>
+         </capec:Content_History>
+      </capec:Attack_Pattern></capec:Attack_Patterns><capec:Environments>
+      <capec:Environment ID="env-All">
+         <capec:Environment_Title>All</capec:Environment_Title>
+         <capec:Environment_Description>All environments are applicable</capec:Environment_Description>
+      </capec:Environment>
+      <capec:Environment ID="env-ClientServer">
+         <capec:Environment_Title>Client-Server</capec:Environment_Title>
+         <capec:Environment_Description>An environment using distinct client and server software. The client is typically, but not always, native binaries on a standard platform. The server can be any technology at all, independent of the client.</capec:Environment_Description>
+      </capec:Environment>
+      <capec:Environment ID="env-CommProtocol">
+         <capec:Environment_Title>Communication Protocol</capec:Environment_Title>
+         <capec:Environment_Description>A communication protocol. The protocol could be a unicast protocol such as Kerberos, a multicast protocol such as IPTV, or a broadcast protocol such as parts of DHCP. Also, the protocol may exist at any of the seven OSI layers.</capec:Environment_Description>
+      </capec:Environment>
+      <capec:Environment ID="env-Embedded">
+         <capec:Environment_Title>Embedded Devices</capec:Environment_Title>
+         <capec:Environment_Description>The environment on embedded devices is characterized by limited memory and processing power. They generally have minimal security controls because of their environmental constraints, and often rely on bigger systems to provide security controls.</capec:Environment_Description>
+      </capec:Environment>
+      <capec:Environment ID="env-Local">
+         <capec:Environment_Title>Local Environment</capec:Environment_Title>
+         <capec:Environment_Description>The local environment of the host that the attacker has access to. The attacker may or may not have physical access to the host, but does have the privileges to execute commands on the host.</capec:Environment_Description>
+      </capec:Environment>
+      <capec:Environment ID="env-Peer2Peer">
+         <capec:Environment_Title>Peer-To-Peer Environment</capec:Environment_Title>
+         <capec:Environment_Description>A peer-to-peer environment is one that does not have the concept of separate clients and servers; all nodes are equal peers that simultaneously function as both clients and servers.</capec:Environment_Description>
+      </capec:Environment>
+      <capec:Environment ID="env-Web">
+         <capec:Environment_Title>Web Environment</capec:Environment_Title>
+         <capec:Environment_Description>A traditional web environment involving HTTP clients and servers and HTTP 1.0 or 1.1 protocol.</capec:Environment_Description>
+      </capec:Environment>
+   </capec:Environments>
+            </capec:Attack_Pattern_Catalog>
