@@ -12,6 +12,9 @@ public class AttackPattern {
 	public String id;
 	public String name;
 	
+	// description
+	public String description;
+	
 	// evaluate likelihood
 	public String severity;
 	public String likelihood;
@@ -24,6 +27,10 @@ public class AttackPattern {
 	// provide solutions
 	public LinkedList<String> solutions = new LinkedList<String>();
 	public LinkedList<String> requirements  = new LinkedList<String>();
+	
+	// description of attacks
+	public LinkedList<String> methods = new LinkedList<String>();
+	public LinkedList<String> consequences = new LinkedList<String>();
 	
 	public AttackPattern() {
 		super();
@@ -54,6 +61,14 @@ public class AttackPattern {
 		}
 		s+="Requirements: \n";
 		for(String temp: requirements){
+			s+= temp+"\n";
+		}
+		s+="Methods: \n";
+		for(String temp: methods){
+			s+= temp+"\n";
+		}
+		s+="Consequences: \n";
+		for(String temp: consequences){
 			s+= temp+"\n";
 		}
 		

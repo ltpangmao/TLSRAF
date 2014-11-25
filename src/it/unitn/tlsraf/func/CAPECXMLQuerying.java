@@ -46,7 +46,9 @@ public class CAPECXMLQuerying {
 	public static void main(String[] args) {
 		try {
 			CAPECXMLQuerying xmlQuery = new CAPECXMLQuerying();
-			AttackPattern attack= xmlQuery.getAttackInfo("1");
+			AttackPattern attack= xmlQuery.getAttackInfo("332");
+			
+			
 //			xmlQuery.countPossibleAttackPatterns();
 			
 //			xmlQuery.getCIAImactFromConsequence(InfoEnum.SecurityProperty.Integrity.toString());
@@ -78,7 +80,8 @@ public class CAPECXMLQuerying {
 		 * Here we fix the order of specifying attributes
 		 * use "$" as separator, and "€" as sub-separator...
 		 * 0) name, 1) severity, 2) likelihood, 3) weaknesses, 4) prerequisites 
-		 * 5) context, 6) solutions, 7) requirements
+		 * 5) context, 6) solutions, 7) requirements, 8) methods
+		 * 9) consequences, 10) description
 		 */
 		String query = query_pre
 				+ "for $ap in $attacks//capec:Attack_Pattern "
@@ -86,6 +89,7 @@ public class CAPECXMLQuerying {
 				+ "let $em := \"empty\" "
 				+ "let $sep := '$' "
 				+ "let $subsep := '€' "
+				+ "let $subsubsep := '∑' "
 				+ "return (" //name
 				+ "if(exists($ap/@Name)) then data($ap/@Name) else $em, " 
 				+ "$sep," //severity
@@ -106,7 +110,19 @@ public class CAPECXMLQuerying {
 				+ "$sep," // solutions
 				+ "if(exists($ap/capec:Solutions_and_Mitigations)) then data(string-join($ap/capec:Solutions_and_Mitigations//capec:Text, $subsep) ) else $em, "
 				+ "$sep," // requirements
-				+ "if(exists($ap/capec:Relevant_Security_Requirements)) then data(string-join($ap/capec:Relevant_Security_Requirements//capec:Text, $subsep) ) else $em "
+				+ "if(exists($ap/capec:Relevant_Security_Requirements)) then data(string-join($ap/capec:Relevant_Security_Requirements//capec:Text, $subsep) ) else $em, "
+				+ "$sep," // methods
+				+ "if(exists($ap/capec:Methods_of_Attack)) then data(string-join($ap//capec:Method_of_Attack, $subsep) ) else $em, "
+//				+ "$sep," // motivations and consequences
+//				+ "if(exists($ap/capec:Attack_Motivation-Consequences)) then data(string-join($ap//capec:Attack_Motivation-Consequence, $subsep) ) else $em "
+				+ "$sep," // motivations and consequences
+				+ "if(exists($ap/capec:Attack_Motivation-Consequences)) then "
+				+ "for $ap_consequence in $ap//capec:Attack_Motivation-Consequence "
+				+ " return ( data(string-join($ap_consequence/capec:Consequence_Scope, ' ')), $subsubsep, "
+				+ "  		data(string-join($ap_consequence/capec:Consequence_Technical_Impact, ' ')), $subsep)"
+				+ "else $em, "
+				+ "$sep," //description
+				+ "if(exists($ap/capec:Description/capec:Summary)) then data($ap/capec:Description/capec:Summary//capec:Text) else $em "
 				+ ")";
 //				+ "return (data($ap/@Name),data($ap/Description))"; 
 		
@@ -119,37 +135,73 @@ public class CAPECXMLQuerying {
 		}
 //		System.out.println(result);
 
-		// Process data  0) name, 1) severity, 2) likelihood, 3) weaknesses, 
-		// 4) prerequisites, 5) context, 6) solutions, 7) requirements
+		/* Process data  0) name, 1) severity, 2) likelihood, 3) weaknesses, 
+		 * 4) prerequisites, 5) context, 6) solutions, 7) requirements
+		 * 8) methods, 9) consequences
+		 */
 		AttackPattern ap = new AttackPattern();
 		String[] attributes = result.split("\\$");
 		ap.id = id;
+//		System.out.println(ap.id);
+
 		ap.name = attributes[0].trim();
 		ap.severity = attributes[1].trim();
 		ap.likelihood = attributes[2].trim();
 		String[] temp = attributes[3].split("€");
+		
 		for(String weakness: temp){
 			ap.weaknesses.add(weakness.trim());
 		}
+		
 		temp = attributes[4].split("€");
+		
 		for(String prerequisite: temp){
 			ap.prerequisites.add(prerequisite.trim());
 		}
+		
+		// for special processing, we need to check first whether this element is empty
 		temp = attributes[5].split("€");
-		ap.contexts.addLast("Architectural Paradigm: "+temp[0].trim());
-		ap.contexts.addLast("Framework: "+temp[1].trim());
-		ap.contexts.addLast("Platform: "+temp[2].trim());
-		ap.contexts.addLast("Language: "+temp[3].trim());
+		if(!temp[0].contains("empty")){
+			ap.contexts.addLast("Architectural Paradigm: "+temp[0].trim());
+			ap.contexts.addLast("Framework: "+temp[1].trim());
+			ap.contexts.addLast("Platform: "+temp[2].trim());
+			ap.contexts.addLast("Language: "+temp[3].trim());
+		}else{
+			ap.contexts.addLast(temp[0]);
+		}
+		
 		temp = attributes[6].split("€");
 		for(String solution: temp){
 			ap.solutions.add(solution.trim());
 		}
+		
 		temp = attributes[7].split("€");
 		for(String requirement: temp){
 			ap.requirements.add(requirement.trim());
 		}
 		
-		System.out.println(ap.getPrintString());
+		temp = attributes[8].split("€");
+		for(String method: temp){
+			ap.methods.add(method.trim());
+		}
+		
+		// for special processing, we need to check first whether this element is empty
+		temp = attributes[9].split("€");
+		for(String consequence: temp){
+			if(!consequence.contains("empty")){
+				String [] new_temp = consequence.split("∑");
+				if(new_temp.length>=2){ // prevent empty entries introduced by extra seperators
+					ap.consequences.add("Scope: "+new_temp[0]+"\n"+"Impact(Motivation): "+ new_temp[1]);
+				}
+			}
+			else{
+				ap.consequences.add(consequence);
+			}
+		}
+		
+		ap.description = attributes[10].trim();
+		//
+//		System.out.println(ap.getPrintString());
 		return ap;
 	}
 

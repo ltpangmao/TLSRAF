@@ -1,5 +1,6 @@
 package it.unitn.tlsraf.func;
 
+import it.unitn.tlsraf.ds.AttackPattern;
 import it.unitn.tlsraf.ds.InfoEnum;
 
 import java.io.File;
@@ -81,11 +82,12 @@ public class CAPECXMLProcessing {
 			CAPECXMLProcessing xmlQuery = new CAPECXMLProcessing();
 			
 
+			// produce domain lists for attacks
+//			xmlQuery.calculateDomainForAllAttacks();
+//			xmlQuery.outputAttackDomainInfo();
 			
-			xmlQuery.calculateDomainForAllAttacks();
-			
-			xmlQuery.outputAttackDomainInfo();
-			
+			// produce methods & consequences lists for attacks
+			xmlQuery.outputConsequenceInfo();
 			
 
 //			all_cia_result = xmlQuery.getAllCIAElement();
@@ -193,7 +195,7 @@ public class CAPECXMLProcessing {
 		}
 }
 
-	
+		
 	
 	/**
 	 * Given a particular attack id, try to classify it into certain domains, if possible.
@@ -286,8 +288,9 @@ public class CAPECXMLProcessing {
 				+ "/capec:Relationships/capec:Relationship/capec:Relationship_Target_ID "
 				+ "return data($ap1)";
 		String first_level_attack = session.execute(query);
-		
 		Set<String> matchedID = unify(first_level_attack.split(" "));
+		
+		System.out.println(matchedID);
 	}
 
 	
@@ -305,6 +308,116 @@ public class CAPECXMLProcessing {
 	}
 	
 	
+	/**
+	 * Output all motivation & consequence information if an attack pattern has
+	 */
+	private void outputConsequenceInfo(){
+		try{
+			//obtain all attacks id
+			String all_attacks = getAllAttacks();
+			Set<String> attack_ids = unify(all_attacks.split(" "));
+
+			//find all information for that attack
+			CAPECXMLQuerying xmlQuery = new CAPECXMLQuerying();
+			// This is the simplest and lowest way for data processing...
+			// It is ok for some debug use, but definitely not for practical use.
+			LinkedList<AttackPattern> all_detailed_attacks = new LinkedList<AttackPattern>();
+			// load all attack information into memory...
+			for(String attack_id: attack_ids){
+				AttackPattern attack= xmlQuery.getAttackInfo(attack_id);
+				all_detailed_attacks.add(attack);
+			}
+			
+			
+			
+			//output document
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			// root elements
+			Document doc = docBuilder.newDocument();
+			Element rootElement = doc.createElement("capec:Domain_Mappings");
+			doc.appendChild(rootElement);
+			rootElement.setAttribute("xmlns:capec", "http://capec.mitre.org/capec-2");
+			rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			rootElement.setAttribute("Catalog_Name", "CAPEC");
+			rootElement.setAttribute("Catalog_Version", "2.6");
+			rootElement.setAttribute("Catalog_Data", "2014-06-23");
+			rootElement.setAttribute("xsi:schemaLocation","http://capec.mitre.org/capec-2 "
+					+ "http://capec.mitre.org/data/xsd/ap_schema_v2.7.xsd  http://cybox.mitre.org/cybox-2 "
+					+ "http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd");
+			
+			int count = 0;
+			// append elements
+			for (AttackPattern single_attack : all_detailed_attacks) {
+				if (!single_attack.methods.getFirst().contains("empty") || !single_attack.consequences.getFirst().contains("empty")) {
+					count++;
+					// Root elements
+					Element attack = doc.createElement("capec:Attack_Pattern");
+					rootElement.appendChild(attack);
+
+					// set id and domain attributes to the attack element
+					attack.setAttribute("name", single_attack.name);
+					attack.setAttribute("id", single_attack.id);
+
+					Element attack_description = doc.createElement("capec:Attack_Pattern_Description");
+					attack_description.setTextContent(single_attack.description);
+					attack.appendChild(attack_description);
+					
+					Element attack_prerequisite = doc.createElement("capec:Attack_Pattern_Prerequisite");
+					attack_prerequisite.setTextContent(listToString(single_attack.prerequisites.toArray()));
+					attack.appendChild(attack_prerequisite);
+
+					
+					Element attack_method = doc.createElement("capec:Attack_Pattern_Method");
+					attack_method.setTextContent(listToString(single_attack.methods.toArray()));
+					attack.appendChild(attack_method);
+
+					Element attack_consequence = doc.createElement("capec:Attack_Pattern_Consequence");
+					attack_consequence.setTextContent(listToString(single_attack.consequences.toArray()));
+					attack.appendChild(attack_consequence);
+
+//					System.out.println(attack.getNodeValue());
+
+				}
+			}
+		
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File("attack_methods_consequences.xml"));
+
+			// Output to console for testing
+			// StreamResult result = new StreamResult(System.out);
+
+			transformer.transform(source, result);
+
+			System.out.println(count + " patterns are printed!");
+
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	
+	
+	
+	private String listToString(Object[] array) {
+		String list="";
+		for(Object s: array){
+			list+=s.toString()+"\n";
+		}
+		return list;
+	}
+
+
+
+
 	/**
 	 * Get all attacks that match the layer criteria
 	 * will not be used anymore I guess
@@ -373,7 +486,7 @@ public class CAPECXMLProcessing {
 	 * @return
 	 */
 	private Set<String> unify(String[] result_list) {
-		final Set<String> set = new HashSet(); 
+		final Set<String> set = new HashSet<String>(); 
 		for(String result: result_list){
 			set.add(result);
 		}

@@ -1,12 +1,15 @@
 # Paths
-INPUTPATH = /Users/litong30/basex/factbook.xml
+INPUTPATH = /Users/litong30/research/Trento/Workspace/TLSRAF/basex/bin/capec/All_attack_patterns.xml
 DATAPATH = /Users/litong30/Desktop/ca/basex/
-WORKPATH = /Users/litong30/Desktop/ca/basex/
+WORKPATH = /Users/litong30/basex/queries/
 PROJECTPATH = 
-EDITOR = 0
-INPUTS = 1
-INPUTS1 = /Users/litong30/basex/factbook.xml
-OPEN = 0
+EDITOR = 1
+EDITOR1 = /Users/litong30/basex/queries/context query.xq
+INPUTS = 2
+INPUTS1 = /Users/litong30/research/Trento/Workspace/TLSRAF/basex/bin/capec/All_attack_patterns.xml
+INPUTS2 = /Users/litong30/basex/factbook.xml
+OPEN = 1
+OPEN1 = /Users/litong30/basex/queries/context query.xq
 
 # Layout
 FONT = SansSerif
@@ -22,9 +25,9 @@ GRADIENT = true
 UPDATEVERSION = 7.9
 VIEWS = V H editor folder map plot - H text info table tree explore - - 
 GUISIZE0 = 1004
-GUISIZE1 = 748
-GUILOC0 = 88
-GUILOC1 = 23
+GUISIZE1 = 745
+GUILOC0 = 79
+GUILOC1 = -833
 MAXSTATE = false
 SHOWBUTTONS = true
 SHOWINPUT = true
@@ -62,10 +65,10 @@ MARKLINE = true
 SAVERUN = false
 AUTO = true
 FILES = *.xml, *.xq*
-SEARCHMODE = 0
+SEARCHMODE = 1
 FILTERRT = false
 EXECRT = false
-DBNAME = factbook
+DBNAME = All_attack_patterns
 LASTINSERT = 1
 
 # Server Dialog
