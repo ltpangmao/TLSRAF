@@ -58,6 +58,7 @@ public class InfoEnum {
 	public static final Map<String, String> reverse_req_elem_type_map = new HashMap<String, String>();
 	static {
 		reverse_req_elem_type_map.put(InfoEnum.RequirementElementType.GOAL.name(), "Circle");
+		reverse_req_elem_type_map.put(InfoEnum.RequirementElementType.ANTI_GOAL.name(), "Circle");
 		reverse_req_elem_type_map.put(InfoEnum.RequirementElementType.ACTOR.name(), "Circle");
 		reverse_req_elem_type_map.put(InfoEnum.RequirementElementType.MIDDLE_POINT.name(), "Circle");
 		reverse_req_elem_type_map.put(InfoEnum.RequirementElementType.SOFTGOAL.name(), "Cloud");
@@ -124,6 +125,11 @@ public class InfoEnum {
 	public enum ModelCategory {
 		REQUIREMENT, BUSINESS_PROCESS, SOFTWARE_ARCHITECTURE, DEPLOYMENT, ASSET, ACTOR
 	}
+	
+	// Dimensions of refinements
+	public enum RefinementDimension {
+		SECURITY_PROPERTY,ASSET,INTERVAL,THREAT,TARGET,PROTECTION
+	}
 
 	/*
 	 * Types of elements and links, they should cover all types of links.
@@ -131,7 +137,9 @@ public class InfoEnum {
 	 * part.
 	 */
 	public enum RequirementElementType {
-		ACTOR, GOAL, TASK, SOFTGOAL, DOMAIN_ASSUMPTION, QUALITY_CONSTRAINT, SECURITY_GOAL, SECURITY_MECHANISM, ACTOR_BOUNDARY, MIDDLE_POINT, LABEL // syntax
+		ACTOR, GOAL, TASK, SOFTGOAL, DOMAIN_ASSUMPTION, QUALITY_CONSTRAINT, 
+		SECURITY_GOAL, SECURITY_MECHANISM, ACTOR_BOUNDARY, MIDDLE_POINT, LABEL // syntax
+		, ANTI_GOAL
 	}
 
 	public enum RequirementLinkType {

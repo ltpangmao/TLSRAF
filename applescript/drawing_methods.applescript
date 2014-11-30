@@ -15,6 +15,8 @@ set head_type to "SharpArrow"
 set stroke_pattern to 1
 set label_text to "DD"
 set link_layer to "testtest"
+set stroke_pattern to 0
+set target_thickness to 1
 
 set owner to "ahahahahahah"
 
@@ -41,13 +43,13 @@ add_user_data(target_canvas_name, target_layer_name, "54201", "energy_supplier")
 --global global_text_size, global_sub_text_size
 --set global_text_size to 24
 --set global_sub_text_size to 20
-on draw_isolated_element(target_canvas_name, target_layer_name, target_size, target_name, target_text, target_origin, corner_ridius)
+on draw_isolated_element(target_canvas_name, target_layer_name, target_size, target_name, target_text, target_origin, corner_ridius, stroke_pattern, target_thickness)
 	tell application id "OGfl"
 		--set target_container to 
 		set target_container to my find_container(target_canvas_name, target_layer_name)
 		
 		tell target_container
-			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:14, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_ridius}
+			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:14, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_ridius, stroke pattern:stroke_pattern, thickness:target_thickness}
 			id of test_node
 		end tell
 		
@@ -56,7 +58,7 @@ end draw_isolated_element
 
 
 
-on draw_referred_element(reference_element_id, target_canvas_name, target_layer_name, target_size, target_name, target_text, corner_radius, target_offset)
+on draw_referred_element(reference_element_id, target_canvas_name, target_layer_name, target_size, target_name, target_text, corner_radius, target_offset, stroke_pattern, target_thickness)
 	tell application id "OGfl"
 		set reference_element to missing value
 		--search target_container 
@@ -74,7 +76,7 @@ on draw_referred_element(reference_element_id, target_canvas_name, target_layer_
 		set target_origin to {(item 1 of target_offset) + (item 1 of reference_origin), (item 2 of target_offset) + (item 2 of reference_origin)}
 		
 		tell target_container
-			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:14, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_radius}
+			set test_node to make new shape at end of graphics with properties {name:target_name, origin:target_origin, size:target_size, text:{size:14, alignment:center, text:target_text}, draws shadow:false, draws stroke:true, corner radius:corner_radius, stroke pattern:stroke_pattern, thickness:target_thickness}
 			id of test_node
 		end tell
 	end tell

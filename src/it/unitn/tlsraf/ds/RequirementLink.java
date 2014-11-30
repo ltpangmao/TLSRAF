@@ -17,7 +17,7 @@ public class RequirementLink implements Link {
 	public String refine_type = "";
 	public String trust_level = "";
 	
-	public String source_id = "";
+	public String source_id = ""; // facilitate support link processing
 	public String des_id = "";
 	
 	public RequirementLink() {

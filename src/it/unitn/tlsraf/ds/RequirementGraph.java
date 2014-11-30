@@ -226,6 +226,16 @@ public class RequirementGraph {
 			new_elem.owner_text=factors.get(12);
 			((SecurityGoal) new_elem).extractInfoFromName();
 		}
+		//anti-goals
+		else if (factors.get(2).equals("Circle") & factors.get(10).equals("2")) {
+			new_elem = new AntiGoal();
+			new_elem.setId(factors.get(1));
+			new_elem.setName(factors.get(3));
+			new_elem.setLayer(factors.get(4));
+			new_elem.setType(InfoEnum.RequirementElementType.ANTI_GOAL.name());
+			
+			((AntiGoal) new_elem).extractInfoFromName();
+		}
 		//actors
 		else if (checkCircle(factors.get(7))) {
 			new_elem = new Actor();

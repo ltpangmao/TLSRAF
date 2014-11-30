@@ -1,11 +1,12 @@
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
-support(null,null).
+support(,cryptographic_control).
+support(,execute_adjustment_policy).
+support(,customer_communicates_with_energy_supplier).
+support(,control_smart_appliances).
+support(,customer_communicates_with_smart_meter).
+support(,measure_energy_consumption).
+support(,send_energy_consumption_data_to_customers).
+support(,smart_meter_communicates_with_energy_supplier).
+support(,send_price_to_costumer).
+support(,energy_supplier_communicates_with_smart_meter).
+support(,calculate_price).
 

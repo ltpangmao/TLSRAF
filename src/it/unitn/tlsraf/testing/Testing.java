@@ -1,7 +1,12 @@
 package it.unitn.tlsraf.testing;
 
+import it.unitn.tlsraf.ds.InfoEnum;
+import it.unitn.tlsraf.func.CommandPanel;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -50,10 +55,26 @@ public class Testing {
 ////		    	rs.getItemAsString(null));
 //
 //		    conn.close();
-		String s="";
-		String []ss = null;
 //		System.out.println("1"+ ss.length);
-		ss = s.split(" ");
-		System.out.println("2"+ ss.length);
+		String refine_rule = "";
+		
+		refine_rule = InfoEnum.current_directory+"/dlv/dlv -silent "
+					+ InfoEnum.current_directory+"/dlv/anti_goal_rules/refine_target.rule "
+					+ InfoEnum.current_directory+"/dlv/models/req_business_model.dl "
+					+ InfoEnum.current_directory+"/dlv/models/security_model_business.dl ";
+		
+
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(refine_rule);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+		
+		while ((line = input.readLine()) != null) {
+//			System.out.println(line);
+			String[] result = line.split(", ");
+			for(String s:result)
+				System.out.println(s);
 		}
+	}
 }

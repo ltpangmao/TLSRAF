@@ -1,0 +1,15 @@
+%auxiliary rule
+
+non_leaf(R1) :- and_refine(R2, R1).
+non_leaf(R1) :- refine(R2, R1).
+non_leaf(R1) :- operationalize(R2, R1).
+non_leaf(R1) :- make(R2, R1).
+non_leaf(R1) :- help(R2, R1).
+non_leaf(R1) :- break(R2, R1).
+non_leaf(R1) :- hurt(R2, R1).
+non_leaf(R1) :- support(R2, R1).
+
+% if the part_of relation is also applicable to other types of elements, then the rule need to restrict the type to asset
+and_refined_anti_goal(TH, AS2, TA, P, AG) :- has_properties(AG, TH, AS1, TA, P), part_of(AS2, AS1), not non_leaf(AG), anti_goal(AG), AS1<>AS2.
+
+

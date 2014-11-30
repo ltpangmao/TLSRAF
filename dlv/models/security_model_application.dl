@@ -1,3 +1,10 @@
+% reasoning a bit to reach the higher abstraction level, targeting CIA (specifically for the anti-goal analysis)
+s_make(SM, SP1) :- s_make(SM, SP2), isa(SP2, SP1).
+s_help(SM, SP1) :- s_help(SM, SP2), isa(SP2, SP1).
+s_contribute(SM, SP) :- s_make(SM, SP).
+s_contribute(SM, SP) :- s_help(SM, SP).
+
+
 % security attribute model
 isa(confidentiality, security).
 isa(integrity, security).
@@ -13,9 +20,7 @@ isa(hardware_availability, availability).
 
 
 
-
 % contribution link: make/help(SM, SA)
-
 
 % application layer security model
 s_make(full_view_with_errors, data_confidentiality).

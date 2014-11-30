@@ -129,7 +129,7 @@ public class DraftGenerator extends JFrame {
 						else{
 							//draw elements
 							shape = InfoEnum.reverse_req_elem_type_map.get(tag);
-							AppleScript.drawArbitraryRequirementElement(canvas, layer, shape, InfoEnum.NORMAL_SIZE, position, "0", line);
+							AppleScript.drawArbitraryRequirementElement(canvas, layer, shape, InfoEnum.NORMAL_SIZE, position, "0", line, "0", "1");
 							//adjust distance
 							if(x<length){
 								x+=x_distance;

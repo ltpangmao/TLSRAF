@@ -172,6 +172,10 @@ public class RequirementElement implements Element{
 				// remove "(S)"
 				expression = "sec_mechanism("+this.getFormalName()+").";
 				break;
+			case ANTI_GOAL:
+				// remove "(S)"
+				expression = "anti_goal("+this.getFormalName()+").";
+				break;
 			default:
 				expression = "";
 				break;

@@ -1,0 +1,48 @@
+
+%%%%%%%%%%%%%
+% auxiliary %
+%%%%%%%%%%%%%
+
+non_leaf(R1) :- and_refine(R2, R1).
+non_leaf(R1) :- refine(R2, R1).
+non_leaf(R1) :- operationalize(R2, R1).
+non_leaf(R1) :- make(R2, R1).
+non_leaf(R1) :- help(R2, R1).
+non_leaf(R1) :- break(R2, R1).
+non_leaf(R1) :- hurt(R2, R1).
+non_leaf(R1) :- support(R2, R1).
+
+% facilitate analysis
+req(R) :- goal(R).
+req(R) :- task(R).
+task(R) :- sec_mechanism(R).
+
+% facilitate the representation of operationalizaiton
+operationalize(SM,SG):- make(SM, SG), sec_goal(SG).
+operationalize(SM,SG):- help(SM, SG), sec_goal(SG).
+
+% determine whether a requirement is protected by a specific security mechanism
+% a security mechanism itself is deemed as a task
+protect(SM, TA) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, TA), operationalize(SM, SG).
+protected(TA) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, TA), operationalize(SM, SG).
+not_protected(R) :- not protected(R), req(R).
+
+
+% identify whether an anti-goal is hindered by specific security mechnisms
+against(SM, AG) :- anti_goal(AG), has_properties(AG, tampering, _, TA, true), protect(SM, TA), s_contribute(SM, integrity).
+
+
+
+%%%%%%%%
+% core %
+%%%%%%%%
+
+% refine the anti-goal that targets protected requirements
+and_refined_anti_goal(TH, AS, TA, false, AG) :- anti_goal(AG), has_properties(AG, TH, AS, TA, true), protect(SM, TA), not_protected(SM), not non_leaf(AG).
+and_refined_anti_goal(defeat, SM, SM, false, AG) :- anti_goal(AG), has_properties(AG, TH, AS, TA, true), protect(SM, TA), not_protected(SM), not non_leaf(AG).
+
+and_refined_anti_goal(TH, AS, TA, false, AG) :- anti_goal(AG), has_properties(AG, TH, AS, TA, true), protect(SM, TA), protected(SM), not non_leaf(AG).
+% here we assume all the protection to that security mechanism will contribute to hinder the "defeat" anti-goal.
+and_refined_anti_goal(defeat, SM, SM, true, AG) :- anti_goal(AG), has_properties(AG, TH, AS, TA, true), protect(SM, TA), protected(SM), not non_leaf(AG).
+
+

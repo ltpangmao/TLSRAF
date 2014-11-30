@@ -211,15 +211,22 @@ public class AppleScript {
 		target.origin_y=y;
 		
 		String shape = InfoEnum.reverse_req_elem_type_map.get(target.getType());
-		String corner_radius = "0";
 		String name = target.getName();
+		//parameters with default values
+		String corner_radius = "0";
+		String stroke_pattern = "0";
+		String thickness = "1";
 		
+		// draw additional features for particular elements
 		if (target.getType().equals(InfoEnum.RequirementElementType.DOMAIN_ASSUMPTION.name())) {
 			corner_radius = "5";
 		} else if (target.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
 			name = "(S)\n" + name;
 		} else if (target.getType().equals(InfoEnum.RequirementElementType.SECURITY_MECHANISM.name())) {
 			name = "(S)\n" + name;
+		} else if (target.getType().equals(InfoEnum.RequirementElementType.ANTI_GOAL.name())){
+			stroke_pattern = "2";
+			thickness = "2";
 		}
 		
 		int size_type = 0;
@@ -230,7 +237,8 @@ public class AppleScript {
 		}
 
 //		return drawReferredRequirementElement(reference_id, InfoEnum.REQ_TARGET_CANVAS, layer, offset, shape, size, corner_radius, name);
-		return drawArbitraryRequirementElement(InfoEnum.REQ_TARGET_CANVAS, layer, shape, size_type, position, corner_radius, name);
+		return drawArbitraryRequirementElement(InfoEnum.REQ_TARGET_CANVAS, layer, shape, size_type, 
+				position, corner_radius, name, stroke_pattern, thickness);
 				
 	}
 
@@ -254,7 +262,7 @@ public class AppleScript {
 	@SuppressWarnings("unused")
 	@Deprecated
 	private static String drawReferredRequirementElement(String reference_id, String canvas, String layer, String offset, String shape,
-			String size, String corner_radius, String name) throws ScriptException {
+			String size, String corner_radius, String name, String stroke_pattern, String thickness) throws ScriptException {
 		//set parameters & call the exact method
 		String script = "";
 		script += "set reference_element_id to "+reference_id+"\n"
@@ -265,7 +273,10 @@ public class AppleScript {
 				+ "set target_text to \""+name+"\"\n"
 				+ "set corner_ridius to " + corner_radius + "\n"
 				+ "set target_offset to " + offset +"\n"
-				+ "draw_referred_element(reference_element_id, target_canvas_name, target_layer_name, target_size, target_name, target_text, corner_ridius, target_offset)\n";
+				+ "set stroke_pattern to " + stroke_pattern +"\n"
+				+ "set target_thickness to " + thickness +"\n"
+				+ "draw_referred_element(reference_element_id, target_canvas_name, target_layer_name, "
+				+ "target_size, target_name, target_text, corner_ridius, target_offset, stroke_pattern, target_thickness))\n";
 				
 		//import the method codes
 		String method_file=InfoEnum.drawing_method_file;
@@ -297,7 +308,7 @@ public class AppleScript {
 	 * @throws ScriptException
 	 */
 	public static String drawArbitraryRequirementElement(String canvas, String layer, String shape, int size_type, String position,
-			String corner_radius, String name) throws ScriptException {
+			String corner_radius, String name, String stroke_pattern, String thickness) throws ScriptException {
 		//pre-calculate size according to the length of name;
 		String size="";
 		if (size_type == InfoEnum.NORMAL_SIZE) {
@@ -320,7 +331,10 @@ public class AppleScript {
 				+ "set target_text to \"" + name + "\"\n"
 				+ "set target_origin to " + position +"\n"
 				+ "set corner_ridius to " + corner_radius +"\n"
-				+ "draw_isolated_element(target_canvas_name, target_layer_name, target_size, target_name, target_text, target_origin, corner_ridius)\n";
+				+ "set stroke_pattern to " + stroke_pattern +"\n"
+				+ "set target_thickness to " + thickness +"\n"
+				+ "draw_isolated_element(target_canvas_name, target_layer_name, target_size, "
+				+ "target_name, target_text, target_origin, corner_ridius, stroke_pattern, target_thickness)\n";
 				
 		//import the method codes
 		String method_file=InfoEnum.drawing_method_file;

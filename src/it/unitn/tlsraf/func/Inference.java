@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
+
 import javax.script.ScriptException;
 
 /**
@@ -69,10 +70,13 @@ public class Inference {
 				phy_result+=s+"\n";
 			}
 		}
-		
+		// import requirements into three separate models
 		ms.req_bus_model.importGraphInfo(bus_result);
 		ms.req_app_model.importGraphInfo(app_result);
 		ms.req_phy_model.importGraphInfo(phy_result);
+		// process the support links between layers.
+		ms.importSupportLinks();
+		
 	}
 
 	/**
@@ -482,7 +486,7 @@ public class Inference {
 			String element_id = AppleScript.drawArbitraryRequirementElement(
 					InfoEnum.esg_canvas.get(req_model.getLayer()), "All",
 					InfoEnum.reverse_req_elem_type_map.get(InfoEnum.RequirementElementType.SOFTGOAL.name()),
-					InfoEnum.NORMAL_SIZE, "{500,500}", "0", sg.getName());
+					InfoEnum.NORMAL_SIZE, "{500,500}", "0", sg.getName(), "0", "1");
 			sg.setId(element_id);
 
 			if (sg.isCriticality()) {
@@ -670,16 +674,16 @@ public class Inference {
 		String security_model_file = InfoEnum.current_directory+"/dlv/models/security_model_"+req_model.getLayer().toLowerCase()+".dl ";
 		// absolute path: /Users/litong30/research/Trento/Workspace/research/TLSAF/
 		String refine_rule = "";
-		if (type.equals("asset")) {
+		if (type.equals(InfoEnum.RefinementDimension.ASSET.name())) {
 			refine_rule = InfoEnum.current_directory+"/dlv/dlv -silent -nofacts "
 					+ InfoEnum.current_directory+"/dlv/rules/refine_asset.rule "
 					+ InfoEnum.current_directory+"/dlv/models/asset_model.dl "
 					+ expression_file;
-		} else if (type.equals("attribute")) {
+		} else if (type.equals(InfoEnum.RefinementDimension.SECURITY_PROPERTY.name())) {
 			refine_rule = InfoEnum.current_directory+"/dlv/dlv -silent -nofacts "
 					+ InfoEnum.current_directory+"/dlv/rules/refine_security_attribute.rule "
 					+ expression_file+" "+security_model_file;
-		} else if (type.equals("interval")) {
+		} else if (type.equals(InfoEnum.RefinementDimension.INTERVAL.name())) {
 			refine_rule = InfoEnum.current_directory+"/dlv/dlv -silent -nofacts "
 					+ InfoEnum.current_directory+"/dlv/rules/refine_interval.rule " 
 					+ expression_file;
@@ -1169,6 +1173,8 @@ public class Inference {
 	public static void securityAppToPhyTransformation (RequirementGraph req_app_model, RequirementGraph req_phy_model,
 			Integer scope) throws ScriptException, IOException {
 		// complete information for cross-layer links, e.g. support
+		// As the support info has been added at the beginning (I forgot here...)
+		// this step is sort of redundant, but I still keep it here to be safe...
 		crossLayerFacts(req_app_model, req_phy_model);
 			
 		// process security mechanisms
