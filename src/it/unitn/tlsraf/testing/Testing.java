@@ -60,9 +60,16 @@ public class Testing {
 		
 		refine_rule = InfoEnum.current_directory+"/dlv/dlv -silent "
 					+ InfoEnum.current_directory+"/dlv/anti_goal_rules/refine_target.rule "
+					+ InfoEnum.current_directory+"/dlv/anti_goal_rules/threat_knowledge.rule "
 					+ InfoEnum.current_directory+"/dlv/models/req_business_model.dl "
 					+ InfoEnum.current_directory+"/dlv/models/security_model_business.dl ";
 		
+		refine_rule ="/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/dlv -silent  "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/anti_goal_rules/refine_all.rule "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/req_business_model.dl "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/security_model_business.dl  "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/anti_goal_rules/threat_knowledge.rule "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/asset_model.dl ";
 
 		Runtime rt = Runtime.getRuntime();
 		Process pr = rt.exec(refine_rule);

@@ -19,6 +19,7 @@ public class RequirementElement implements Element{
 	public String owner_text = null;
 	//redundant variable
 	public LinkedList <RequirementLink> and_refine_links = new LinkedList<RequirementLink>();  //facilitate and-refinement
+	public LinkedList <RequirementLink> refine_links = new LinkedList<RequirementLink>();  //facilitate xxx refinement
 	public LinkedList <RequirementLink> make_help_links = new LinkedList<RequirementLink>();  //facilitate operationalization
 	//layout information
 	public double origin_x=-1;

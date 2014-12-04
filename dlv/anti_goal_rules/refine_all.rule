@@ -1,29 +1,48 @@
-%auxiliary rule
+% global protection check rules
+ex_refined_anti_goal(TH1, AS1, TA1, true, TH0, AS0, TA0, P0, TYPE) :- ex_refined_anti_goal(TH1, AS1, TA1, unknown, TH0, AS0, TA0, P0, TYPE), protect(SM, TA1), s_contribute(SM, SP), against(TH1, SP).
+ex_refined_anti_goal(TH1, AS1, TA1, false, TH0, AS0, TA0, P0, TYPE) :- ex_refined_anti_goal(TH1, AS1, TA1, unknown, TH0, AS0, TA0, P0, TYPE), not ex_refined_anti_goal(TH1, AS1, TA1, true, TH0, AS0, TA0, P0, TYPE).
 
-non_leaf(R1) :- and_refine(R2, R1).
-non_leaf(R1) :- refine(R2, R1).
-non_leaf(R1) :- operationalize(R2, R1).
-non_leaf(R1) :- make(R2, R1).
-non_leaf(R1) :- help(R2, R1).
-non_leaf(R1) :- break(R2, R1).
-non_leaf(R1) :- hurt(R2, R1).
-non_leaf(R1) :- support(R2, R1).
 
-% top asset rule
-ex_and_refined_sec_goal(IMP, SA, AS2, INT, IMP, SA, AS1, INT) :- sec_goal(SG), has_properties(SG, IMP, SA, AS1, INT), part_of(AS2, AS1), not non_leaf(SG).
-% top security attribute rule
-ex_and_refined_sec_goal(IMP, SA2, AS, INT, IMP, SA1, AS, INT) :- sec_goal(SG), has_properties(SG, IMP, SA1, AS, INT), isa(SA2, SA1), not non_leaf(SG).
-% top interval rule. Here is an assumption that, there is no alternative in the functional goal model, i.e. each node would have at most 1 refine relation. If the assumpition does not hold any more, we should change the rules here.
-ex_and_refined_sec_goal(IMP, SA, AS, INT2, IMP, SA, AS, INT1) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, INT1), and_refine(INT2, INT1), not non_leaf(SG).
-ex_and_refined_sec_goal(IMP, SA, AS, INT2, IMP, SA, AS, INT1) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, INT1), refine(INT2, INT1), not non_leaf(SG).
-ex_and_refined_sec_goal(IMP, SA, AS, INT2, IMP, SA, AS, INT1) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, INT1), operationalize(INT2, INT1), not non_leaf(SG).
 
-%low-level asset rules
-ex_and_refined_sec_goal(IMP, SA, AS2, INT, IMP, SA, AS1, INT) :- ex_and_refined_sec_goal(IMP, SA, AS1, INT, IMP, SA0, AS0, INT0), part_of(AS2, AS1).
-% low-level security attribute rules
-ex_and_refined_sec_goal(IMP, SA2, AS, INT, IMP, SA1, AS, INT) :- ex_and_refined_sec_goal(IMP, SA1, AS, INT, IMP, SA0, AS0, INT0), isa(SA2, SA1).
-% low-level interval rule.
-ex_and_refined_sec_goal(IMP, SA, AS, INT2, IMP, SA, AS, INT1) :- ex_and_refined_sec_goal(IMP, SA, AS, INT1, IMP, SA0, AS0, INT0), and_refine(INT2, INT1).
-ex_and_refined_sec_goal(IMP, SA, AS, INT2, IMP, SA, AS, INT1) :- ex_and_refined_sec_goal(IMP, SA, AS, INT1, IMP, SA0, AS0, INT0), refine(INT2, INT1).
-ex_and_refined_sec_goal(IMP, SA, AS, INT2, IMP, SA, AS, INT1) :- ex_and_refined_sec_goal(IMP, SA, AS, INT1, IMP, SA0, AS0, INT0), operationalize(INT2, INT1).
-%auxiliary rule
+%%%%%%%%%%%%%%
+% high-level %
+%%%%%%%%%%%%%%
+
+% asset rules 
+ex_refined_anti_goal(TH, AS2, TA, P, TH, AS1, TA, P, o_as) :- anti_goal(AG), has_properties(AG, TH, AS1, TA, P), part_of(AS2, AS1), not non_leaf(AG).
+
+% threat rules
+ex_refined_anti_goal(TH2, AS, TA, unknown, TH1, AS, TA, false, o_th) :- anti_goal(AG), has_properties(AG, TH1, AS, TA, false), has_member(TH1, TH2), not non_leaf(AG).
+
+% target rules
+ex_refined_anti_goal(TH, AS, TA2, unknown, TH, AS, TA1, false, o_ta) :- anti_goal(AG), has_properties(AG, TH, AS, TA1, false), and_refine(TA2, TA1), not non_leaf(AG).
+ex_refined_anti_goal(TH, AS, TA2, unknown, TH, AS, TA1, false, a_ta) :- anti_goal(AG), has_properties(AG, TH, AS, TA1, false), refine(TA2, TA1), not non_leaf(AG).
+ex_refined_anti_goal(TH, AS, TA2, unknown, TH, AS, TA1, false, a_ta) :- anti_goal(AG), has_properties(AG, TH, AS, TA1, false), operationalize(TA2, TA1), not non_leaf(AG).
+
+% protection rules
+ex_refined_anti_goal(TH, AS, TA, false, TH, AS, TA, true, a_pr) :- anti_goal(AG), has_properties(AG, TH, AS, TA, true), protect(SM, TA), not non_leaf(AG).
+ex_refined_anti_goal(defeat, AS, SM, false, TH, AS, TA, true, a_pr) :- anti_goal(AG), has_properties(AG, TH, AS, TA, true), protect(SM, TA), not non_leaf(AG).
+
+
+
+
+
+%%%%%%%%%%%%%
+% low-level %
+%%%%%%%%%%%%%
+
+% asset rules
+ex_refined_anti_goal(TH1, AS2, TA1, P1, TH1, AS1, TA1, P1, o_as) :- ex_refined_anti_goal(TH1, AS1, TA1, P1, TH0, AS0, TA0, P0, TYPE), part_of(AS2, AS1). 
+
+% threat rules
+ex_refined_anti_goal(TH2, AS1, TA1, unknown, TH1, AS1, TA1, false, o_th) :- ex_refined_anti_goal(TH1, AS1, TA1, false, TH0, AS0, TA0, P0, TYPE), has_member(TH1, TH2).
+
+% target rules
+ex_refined_anti_goal(TH1, AS1, TA2, unknown, TH1, AS1, TA1, false, o_ta) :- ex_refined_anti_goal(TH1, AS1, TA1, false, TH0, AS0, TA0, P0, TYPE), and_refine(TA2, TA1).
+ex_refined_anti_goal(TH1, AS1, TA2, unknown, TH1, AS1, TA1, false, a_ta) :- ex_refined_anti_goal(TH1, AS1, TA1, false, TH0, AS0, TA0, P0, TYPE), refine(TA2, TA1).
+ex_refined_anti_goal(TH1, AS1, TA2, unknown, TH1, AS1, TA1, false, a_ta) :- ex_refined_anti_goal(TH1, AS1, TA1, false, TH0, AS0, TA0, P0, TYPE), operationalize(TA2, TA1).
+
+% protection rules
+ex_refined_anti_goal(TH1, AS1, TA1, false, TH1, AS1, TA1, true, a_pr) :- ex_refined_anti_goal(TH1, AS1, TA1, true, TH0, AS0, TA0, P0, TYPE), protect(SM, TA1).
+ex_refined_anti_goal(defeat, AS1, SM, false, TH1, AS1, TA1, true, a_pr) :- ex_refined_anti_goal(TH1, AS1, TA1, true, TH0, AS0, TA0, P0, TYPE), protect(SM, TA1).
+

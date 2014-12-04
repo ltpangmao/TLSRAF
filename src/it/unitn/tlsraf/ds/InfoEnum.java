@@ -37,12 +37,19 @@ public class InfoEnum {
 	public static final String REQ_TARGET_CANVAS="Model";
 //	public static final String ESG_BP_CANVAS="Business SG";
 	
-	public static final Map<String, String> esg_canvas = new HashMap<String, String>();
+	public static final Map<String, String> esg_canvas_mapping = new HashMap<String, String>();
 	static {
-		esg_canvas.put(InfoEnum.Layer.BUSINESS.name(), "Business SG");
-		esg_canvas.put(InfoEnum.Layer.APPLICATION.name(), "Application SG");
-		esg_canvas.put(InfoEnum.Layer.PHYSICAL.name(), "Physical SG");
+		esg_canvas_mapping.put(InfoEnum.Layer.BUSINESS.name(), "Business SG");
+		esg_canvas_mapping.put(InfoEnum.Layer.APPLICATION.name(), "Application SG");
+		esg_canvas_mapping.put(InfoEnum.Layer.PHYSICAL.name(), "Physical SG");
 	}
+	public static final Map<String, String> eag_canvas_mapping = new HashMap<String, String>();
+	static {
+		eag_canvas_mapping.put(InfoEnum.Layer.BUSINESS.name(), "Business AG");
+		eag_canvas_mapping.put(InfoEnum.Layer.APPLICATION.name(), "Application AG");
+		eag_canvas_mapping.put(InfoEnum.Layer.PHYSICAL.name(), "Physical AG");
+	}
+
 	
 	// determine type of scanned shape
 	public static final Map<String, String> req_elem_type_map = new HashMap<String, String>();

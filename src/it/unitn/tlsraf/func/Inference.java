@@ -484,19 +484,19 @@ public class Inference {
 		//processing elements
 		for (SecurityGoal sg: req_model.getSg_elem()){
 			String element_id = AppleScript.drawArbitraryRequirementElement(
-					InfoEnum.esg_canvas.get(req_model.getLayer()), "All",
+					InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "All",
 					InfoEnum.reverse_req_elem_type_map.get(InfoEnum.RequirementElementType.SOFTGOAL.name()),
 					InfoEnum.NORMAL_SIZE, "{500,500}", "0", sg.getName(), "0", "1");
 			sg.setId(element_id);
 
 			if (sg.isCriticality()) {
-				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas.get(req_model.getLayer()), "none", element_id,
+				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id,
 						"5", "Red", "Simple");
 			} else if (sg.isNon_deterministic()) {
 			} else if (visualization != InfoEnum.INITIAL_VIEW
 					&& sg.getRemark().equals(InfoEnum.ElementRemark.BESTPATH.name())) {
 				//only process under particular view.
-				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas.get(req_model.getLayer()), "none", element_id,
+				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id,
 						"5", "Blue", "Simple");
 			}
 			//if(sg.getRemark().equals(InfoEnum.ElementRemark.TOPSG.name()))
@@ -504,15 +504,15 @@ public class Inference {
 		
 		//processing links
 		for (RequirementLink rl : req_model.getSg_links()) {
-			String link_id = AppleScript.drawESGRefinementLink(rl);
+			String link_id = AppleScript.drawExhaustiveRefinementLink(rl);
 			rl.setId(link_id);
 			//set the layer of the link to "All", which cannot be done in last step...
 			//TODO: further work might be done to fix this problem.
-			AppleScript.changeAttributeOfLink(InfoEnum.esg_canvas.get(rl.getSource().getLayer()), "none",
+			AppleScript.changeAttributeOfLink(InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer()), "none",
 					rl.getId(), "1", "none", "All");
 			
 			if (visualization != InfoEnum.INITIAL_VIEW && rl.getRemark().equals(InfoEnum.LinkRemark.BESTPATH.name())) {
-				AppleScript.changeAttributeOfLink(InfoEnum.esg_canvas.get(rl.getSource().getLayer()), "none",
+				AppleScript.changeAttributeOfLink(InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer()), "none",
 						rl.getId(), "3", "Blue", "Simple");
 			}
 			//if(((SecurityGoal)rl.getSource()).isCriticality() && ((SecurityGoal)rl.getTarget()).isCriticality())
@@ -746,10 +746,10 @@ public class Inference {
 	}
 
 	/**
-	 * As the and-refine is not directly drawn in the picture, a bit more
-	 * processing is required.
+	 * As the and-refine is not directly drawn in the picture, a bit more processing is required.
 	 * 
-	 * Currently, this method is particularly designed for refining security goals
+	 * Currently, this method is particularly designed for refining "security goals" (specific notes)
+	 * The more general one can be found in the AntiGoalInference class
 	 * @param refined_elems
 	 *            : a list of elements (security goals) that are fined.
 	 * @throws ScriptException

@@ -5,20 +5,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AntiGoal extends RequirementElement{
-	private boolean criticality;
+	private boolean criticality=false;
 
 	private String threat; // threat type
 	private String asset; // threatened assets
 	private String target;	// target system requirements
-	private Boolean protection;	// protection of the target
+	private String protection;	// protection of the target
 	
 	// for next layer duplication
 	// TODO: this should be remove later, er, or may be not....
 	//	public SecurityGoal next_layer_copy = null;
 	
 	// for best path generation
-//	public SecurityGoal parent = null;
-//	public RequirementLink parent_link = null;
+	public AntiGoal parent = null;
+	public RequirementLink parent_link = null;
 	
 
 	public AntiGoal() {
@@ -35,7 +35,7 @@ public class AntiGoal extends RequirementElement{
 		super(name, type, layer);
 	}
 
-	public AntiGoal(String threat, String asset, String target, Boolean protection, String type,
+	public AntiGoal(String threat, String asset, String target, String protection, String type,
 			String layer) {
 		super(("[" +threat + ", " +  asset + ", " + target + ", "+ protection + "]").replaceAll("\\_", " "),
 				type, layer);
@@ -80,11 +80,11 @@ public class AntiGoal extends RequirementElement{
 		// resetName();
 	}
 
-	public Boolean getProtection() {
+	public String getProtection() {
 		return protection;
 	}
 
-	public void setProtection(Boolean protection) {
+	public void setProtection(String protection) {
 		this.protection = protection;
 		// resetName();
 	}
@@ -109,7 +109,7 @@ public class AntiGoal extends RequirementElement{
 		this.setThreat(list.get(0).trim());
 		this.setAsset(list.get(1).trim());
 		this.setTarget(list.get(2).trim());
-		this.setProtection(Boolean.valueOf(list.get(3).trim()));
+		this.setProtection(list.get(3).trim());
 	}
 
 	

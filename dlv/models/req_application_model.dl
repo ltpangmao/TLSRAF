@@ -1,4 +1,3 @@
-support(,cryptographic_control).
 support(,execute_adjustment_policy).
 support(,customer_communicates_with_energy_supplier).
 support(,control_smart_appliances).

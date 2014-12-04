@@ -1,43 +1,3 @@
-
-% security knowledge 
-against(tampering,integrity).
-against(info_disclosure,confidentiality). 
-against(denial_of_service,availability).
-against(repudiation,non_repudiation).
-against(spoofing,authentication).
-against(elevation_of_privilege,authorization).
-
-%%%%%%%%%%%%%
-% auxiliary %
-%%%%%%%%%%%%%
-
-non_leaf(R1) :- and_refine(R2, R1).
-non_leaf(R1) :- refine(R2, R1).
-non_leaf(R1) :- operationalize(R2, R1).
-non_leaf(R1) :- make(R2, R1).
-non_leaf(R1) :- help(R2, R1).
-non_leaf(R1) :- break(R2, R1).
-non_leaf(R1) :- hurt(R2, R1).
-non_leaf(R1) :- support(R2, R1).
-
-% facilitate analysis
-req(R) :- goal(R).
-req(R) :- task(R).
-task(R) :- sec_mechanism(R).
-
-% facilitate the representation of operationalizaiton
-operationalize(SM,SG):- make(SM, SG), sec_goal(SG).
-operationalize(SM,SG):- help(SM, SG), sec_goal(SG).
-
-% determine whether a requirement is protected by a specific security mechanism
-% a security mechanism itself is deemed as a task 
-protect(SM, TA) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, TA), operationalize(SM, SG).
-protected(TA) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, TA), operationalize(SM, SG).
-not_protected(R) :- not protected(R), req(R).
-
-
-
-
 %%%%%%%%
 % core %
 %%%%%%%%
@@ -50,12 +10,12 @@ refined_anti_goal(TH, AS, TA, false, AG) :- refined_anti_goal(TH, AS, TA, unknow
 
 
 and_refined_anti_goal(TH, AS, TA2, unknown, AG) :- anti_goal(AG), has_properties(AG, TH, AS, TA1, false), refine(TA2, TA1), not non_leaf(AG).
-and_refined_anti_goal(TH, AS, TA, true, AG) :- and_refined_anti_goal(TH, AS, TA, unknown, AG), protect(SM, TA), s_contribute(SM, SP), against(SP, TH).
+and_refined_anti_goal(TH, AS, TA, true, AG) :- and_refined_anti_goal(TH, AS, TA, unknown, AG), protect(SM, TA), s_contribute(SM, SP), against(TH, SP).
 and_refined_anti_goal(TH, AS, TA, false, AG) :- and_refined_anti_goal(TH, AS, TA, unknown, AG), not and_refined_anti_goal(TH, AS, TA, true, AG).
 
 % in this work, we do distinguish "refine" and "operationalize", and we don't allow "and-operationalize", so the current rules only apply to these conditions
 and_refined_anti_goal(TH, AS, TA2, unknown, AG) :- anti_goal(AG), has_properties(AG, TH, AS, TA1, false), operationalize(TA2, TA1), not non_leaf(AG).
-and_refined_anti_goal(TH, AS, TA, true, AG) :- and_refined_anti_goal(TH, AS, TA, unknown, AG), protect(SM, TA), s_contribute(SM, SP), against(SP, TH).
+and_refined_anti_goal(TH, AS, TA, true, AG) :- and_refined_anti_goal(TH, AS, TA, unknown, AG), protect(SM, TA), s_contribute(SM, SP), against(TH, SP).
 and_refined_anti_goal(TH, AS, TA, false, AG) :- and_refined_anti_goal(TH, AS, TA, unknown, AG), not and_refined_anti_goal(TH, AS, TA, true, AG).
 
 

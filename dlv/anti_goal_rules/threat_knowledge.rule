@@ -1,0 +1,52 @@
+% we define two abstract terms: threat & defeat for the moment, which can be further refined in the future along with the development of our analysis methods
+has_member(threat,tampering).
+has_member(threat,info_disclosure).
+has_member(threat,denial_of_service).
+has_member(threat,repudiation).
+has_member(threat,spoofing).
+has_member(threat,elevation_of_privilege).
+
+% suppose we filtering the threat types here
+has_member(defeat,tampering).
+has_member(defeat,denial_of_service).
+has_member(defeat,elevation_of_privilege).
+
+% security knowledge 
+against(tampering,integrity).
+against(info_disclosure,confidentiality). 
+against(denial_of_service,availability).
+against(repudiation,non_repudiation).
+against(spoofing,authentication).
+against(elevation_of_privilege,authorization).
+
+%%%%%%%%%%%%%
+% auxiliary %
+%%%%%%%%%%%%%
+
+non_leaf(R1) :- and_refine(R2, R1).
+non_leaf(R1) :- refine(R2, R1).
+non_leaf(R1) :- operationalize(R2, R1).
+non_leaf(R1) :- make(R2, R1).
+non_leaf(R1) :- help(R2, R1).
+non_leaf(R1) :- break(R2, R1).
+non_leaf(R1) :- hurt(R2, R1).
+non_leaf(R1) :- support(R2, R1).
+
+% facilitate analysis
+req(R) :- goal(R).
+req(R) :- task(R).
+% a security mechanism itself is deemed as a task 
+task(R) :- sec_mechanism(R).
+
+% facilitate the representation of operationalizaiton
+operationalize(SM,SG):- make(SM, SG), sec_goal(SG).
+operationalize(SM,SG):- help(SM, SG), sec_goal(SG).
+
+% determine whether a requirement is protected by a specific security mechanism
+% This protection may cross layers, which will be discussed later
+protect(SM, TA) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, TA), operationalize(SM, SG).
+protected(TA) :- sec_goal(SG), has_properties(SG, IMP, SA, AS, TA), operationalize(SM, SG).
+not_protected(R) :- not protected(R), req(R).
+
+
+

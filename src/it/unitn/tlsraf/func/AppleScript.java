@@ -111,7 +111,7 @@ public class AppleScript {
 	 * @return
 	 * @throws ScriptException
 	 */
-	public static String drawESGRefinementLink(RequirementLink rl) throws ScriptException {
+	public static String drawExhaustiveRefinementLink(RequirementLink rl) throws ScriptException {
 		
 		String initial_layer = "none";
 		String layer_value = "All";
@@ -121,18 +121,26 @@ public class AppleScript {
 		String head_type = "StickArrow";
 		String stroke_pattern = "0";
 		String label = null;
+		String canvas = "";
 		
+		// take the first letter of refinement type of the security goal refinement
 		if(rl.refine_type.equals(InfoEnum.RefineType.ATTRIBUTE.name())){
 			label ="S";
+			canvas = InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer());
 		}else if (rl.refine_type.equals(InfoEnum.RefineType.ASSET.name())){
 			label ="A";
+			canvas = InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer());
 		}else if (rl.refine_type.equals(InfoEnum.RefineType.INTERVAL.name())){
 			label = "I";
-		}else {
-			CommandPanel.logger.warning("Refinement type error!");
+			canvas = InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer());
+		}
+		else { // for anti-goal refinement, directly use the name of refinement type
+			label = rl.refine_type;
+			canvas = InfoEnum.eag_canvas_mapping.get(rl.getSource().getLayer());
+//			CommandPanel.logger.warning("Refinement type error!");
 		}
 		
-		return drawArbitraryRequirementLink(InfoEnum.esg_canvas.get(rl.getSource().getLayer()), initial_layer, target_id, source_id, head_type, stroke_pattern, label, layer_value);
+		return drawArbitraryRequirementLink(canvas, initial_layer, target_id, source_id, head_type, stroke_pattern, label, layer_value);
 	}
 
 

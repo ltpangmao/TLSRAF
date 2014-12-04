@@ -1,0 +1,11 @@
+%%%%%%%%
+% core %
+%%%%%%%%
+% imply that we have to do the protection refinement first
+refined_anti_goal(TH2, AS, TA, unknown, AG) :- anti_goal(AG), has_properties(AG, TH1, AS, TA, false), has_member(TH1, TH2), not non_leaf(AG).
+refined_anti_goal(TH, AS, TA, true, AG) :- refined_anti_goal(TH, AS, TA, unknown, AG), protect(SM, TA), s_contribute(SM, SP), against(TH, SP).
+refined_anti_goal(TH, AS, TA, false, AG) :- refined_anti_goal(TH, AS, TA, unknown, AG), not refined_anti_goal(TH, AS, TA, true, AG).
+
+
+
+

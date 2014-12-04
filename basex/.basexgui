@@ -3,13 +3,14 @@ INPUTPATH = /Users/litong30/research/Trento/Workspace/TLSRAF/basex/bin/capec/All
 DATAPATH = /Users/litong30/Desktop/ca/basex/
 WORKPATH = /Users/litong30/basex/queries/
 PROJECTPATH = 
-EDITOR = 1
-EDITOR1 = /Users/litong30/basex/queries/context query.xq
+EDITOR = 2
+EDITOR1 = /Users/litong30/basex/queries/attributes query.xq
+EDITOR2 = /Users/litong30/basex/queries/context query.xq
 INPUTS = 2
 INPUTS1 = /Users/litong30/research/Trento/Workspace/TLSRAF/basex/bin/capec/All_attack_patterns.xml
 INPUTS2 = /Users/litong30/basex/factbook.xml
 OPEN = 1
-OPEN1 = /Users/litong30/basex/queries/context query.xq
+OPEN1 = /Users/litong30/basex/queries/attributes query.xq
 
 # Layout
 FONT = SansSerif
@@ -27,7 +28,7 @@ VIEWS = V H editor folder map plot - H text info table tree explore - -
 GUISIZE0 = 1004
 GUISIZE1 = 745
 GUILOC0 = 79
-GUILOC1 = -833
+GUILOC1 = 23
 MAXSTATE = false
 SHOWBUTTONS = true
 SHOWINPUT = true

@@ -47,6 +47,15 @@ public class RequirementGraph {
 	private LinkedList<SecurityGoal> sg_elems = new LinkedList<SecurityGoal>();
 	private LinkedList<RequirementLink> sg_links = new LinkedList<RequirementLink>();
 
+	/*
+	 * These are the similar with the above elements, and they are designed for facilitating
+	 * exhaustive anti-goal analysis
+	 * Plus, here we use public variables for simplicity, regardless of other pros and cons
+	 */
+	public LinkedList<AntiGoal> ag_elems = new LinkedList<AntiGoal>();
+	public LinkedList<RequirementLink> ag_links = new LinkedList<RequirementLink>();
+
+	
 	public RequirementGraph() {
 		super();
 	}
@@ -631,7 +640,7 @@ public class RequirementGraph {
 		writer.println(result);
 		writer.close();
 
-		return output;
+		return output+" ";
 	}
 	
 	public String generateExhaustiveFormalExpression() throws FileNotFoundException, UnsupportedEncodingException {
@@ -729,6 +738,29 @@ public class RequirementGraph {
 		}
 		return null;
 	}
+	
+	
+	/**
+	 * Find a security goal in the separated space according to its related
+	 * properties.
+	 * 
+	 * @param importance
+	 * @param attribute
+	 * @param asset
+	 * @param interval
+	 * @return corresponding security goal or null
+	 */
+	public AntiGoal findExhausiveAntiGoalByAttributes(String threat, String asset, String target, String protection) {
+		for (AntiGoal ag : ag_elems) {
+			if (ag.getThreat().equals(threat) && ag.getAsset().equals(asset)
+					&& ag.getTarget().equals(target) && ag.getProtection().equals(protection)) {
+				return ag;
+			}
+		}
+		return null;
+	}
+	
+	
 	
 	public void printModel(){
 		if (this!=null) {
