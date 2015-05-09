@@ -23,5 +23,5 @@ is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_availability, A
 
 
 
-%Business layer potential threat analysis rules. We suppose only the dependency causes potential damage.
+%Business layer potential threat analysis rules. We suppose each executor may impair the goal/task he is executing, except for those have alreay been delegated.
 poss_impair(A1, SG) :- sec_goal(SG), has_properties(SG, _, SA, AS, T), has(A1, T), not depend(A1, A2, T), actor(A2).

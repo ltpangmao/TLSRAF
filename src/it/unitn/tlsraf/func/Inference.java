@@ -428,7 +428,7 @@ public class Inference {
 					+ InfoEnum.current_directory+"/dlv/rules/simplification_app.rule "
 					+ InfoEnum.current_directory+"/dlv/rules/simplification_general.rule "
 					+ InfoEnum.current_directory+"/dlv/rules/sec_goal_ownership.rule " // infer security goal ownership from upper layers (deprecated).
-					+ InfoEnum.current_directory+"/dlv/models/temp_app_fact.dl "
+//					+ InfoEnum.current_directory+"/dlv/models/temp_app_fact.dl "
 					+ InfoEnum.current_directory+"/dlv/models/software_architecture_model.dl "
 					+ InfoEnum.current_directory+"/dlv/models/asset_model.dl "
 					+ ex_req_model_file + " " + actor_model_file;

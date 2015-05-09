@@ -1,5 +1,6 @@
 package it.unitn.tlsraf.testing;
 
+import it.unitn.tlsraf.ds.AttackPattern;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.func.CommandPanel;
 
@@ -11,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 
 import javax.script.ScriptException;
 import javax.xml.namespace.QName;
@@ -27,7 +29,7 @@ import net.xqj.basex.BaseXXQDataSource;
 public class Testing {
 
 	public static void main(String args[]) throws IOException, ScriptException, XQException{
-
+		ruleTesting();
 //		 XQDataSource xqs = new BaseXXQDataSource();
 //		    
 ////		 xqs.setProperty("serverName", "localhost");
@@ -56,6 +58,12 @@ public class Testing {
 //
 //		    conn.close();
 //		System.out.println("1"+ ss.length);
+
+//		ruleTesting();
+		
+	}
+
+	private static void ruleTesting() throws IOException {
 		String refine_rule = "";
 		
 		refine_rule = InfoEnum.current_directory+"/dlv/dlv -silent "
@@ -70,6 +78,15 @@ public class Testing {
 				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/security_model_business.dl  "
 				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/anti_goal_rules/threat_knowledge.rule "
 				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/asset_model.dl ";
+		
+		refine_rule ="/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/dlv -silent  "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/req_business_model.dl "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/security_model_business.dl  "
+				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/rules/refine_security_attribute.rule ";
+		
+		refine_rule ="/Users/litong30/research/Trento/Workspace/TLSARF/dlv/dlv  "
+				+ "/Users/litong30/research/Trento/Workspace/TLSARF/dlv/models/req_application_model.dl "
+				+ "/Users/litong30/research/Trento/Workspace/TLSARF/dlv/rules/refine_interval.rule ";
 
 		Runtime rt = Runtime.getRuntime();
 		Process pr = rt.exec(refine_rule);
@@ -85,3 +102,5 @@ public class Testing {
 		}
 	}
 }
+
+///Users/litong30/research/Trento/Workspace/TLSARF/dlv/dlv -silent /Users/litong30/research/Trento/Workspace/TLSARF/dlv/models/req_application_model.dl /Users/litong30/research/Trento/Workspace/TLSARF/dlv/rules/refine_interval.rule 

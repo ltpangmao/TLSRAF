@@ -156,7 +156,7 @@ public class AppleScript {
 	 */
 	
 	public static String drawArbitraryRequirementLink(String canvas, String layer, String target_id, String source_id,
-			String head_type, String stroke_pattern, String label, String link_layer) throws ScriptException {
+			String head_type, String stroke_pattern, String label, String link_layer) {
 		// TODO: for simplicity 
 		layer = "none";
 		
@@ -183,10 +183,13 @@ public class AppleScript {
 //		System.out.println(script);
 
 		//execute methods
-		//TODO: need to decide throw exception or handle it here?
-		String id = executeAppleScript(script);
-		
-		//System.out.println(id);
+		String id="";
+		try {
+			id = executeAppleScript(script);
+			//System.out.println(id);
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
 		return id;
 	}
 
@@ -316,7 +319,7 @@ public class AppleScript {
 	 * @throws ScriptException
 	 */
 	public static String drawArbitraryRequirementElement(String canvas, String layer, String shape, int size_type, String position,
-			String corner_radius, String name, String stroke_pattern, String thickness) throws ScriptException {
+			String corner_radius, String name, String stroke_pattern, String thickness) {
 		//pre-calculate size according to the length of name;
 		String size="";
 		if (size_type == InfoEnum.NORMAL_SIZE) {
@@ -354,8 +357,13 @@ public class AppleScript {
 		}
 		//System.out.println(script);
 
-		String id = executeAppleScript(script);
-		//System.out.println(id);
+		String id = null;
+		try {
+			id = executeAppleScript(script);
+			//System.out.println(id);
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
 		return id;
 	}
 	

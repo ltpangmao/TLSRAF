@@ -107,7 +107,7 @@ on draw_link(target_canvas_name, target_layer_name, target_id, source_id, head_t
 			--set new_label to make new shape at end of graphics with properties {name:"Ractangle", text:{size:global_sub_text_size, alignment:center, text:"dfasdf"}, draws shadow:false, draws stroke:false}
 			set result_line to (connect source_elem to target_elem with properties {head type:head_type, stroke pattern:stroke_pattern})
 			if (label_text is not equal to "none") then
-				set result_label to make new label at end of labels of result_line with properties {text:{size:20, alignment:center, text:label_text}, draws shadow:false, draws stroke:false}
+				set result_label to make new label at end of labels of result_line with properties {text:{size:14, alignment:center, text:label_text}, draws shadow:false, draws stroke:false}
 			end if
 			
 			-- if the layer exist, we put the link into that layer. otherwise we leave it as it is.

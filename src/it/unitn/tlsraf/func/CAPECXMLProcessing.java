@@ -3,8 +3,10 @@ package it.unitn.tlsraf.func;
 import it.unitn.tlsraf.ds.AttackPattern;
 import it.unitn.tlsraf.ds.InfoEnum;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,7 +27,12 @@ import org.w3c.dom.Element;
 
 import net.xqj.basex.bin.m;
 
-
+/**
+ * This class deals with xml file generation, further classification etc. 
+ * It works based on the query interfaces provided by CAPECXMLQuerying
+ * @author litong30
+ *
+ */
 public class CAPECXMLProcessing {
 
 	private String d_social ="Social Engineering";
@@ -43,7 +50,6 @@ public class CAPECXMLProcessing {
 			,"173","175","188","212","224","227","242","248"));
 	LinkedList<String> physical_attacks = new LinkedList<String>(Arrays.asList(InfoEnum.AttackDomain.PHYSICAL.toString(), "390","507","547"));
 	LinkedList<String> hardware_attacks = new LinkedList<String>(Arrays.asList(InfoEnum.AttackDomain.HARDWARE.toString(), "169","401"));
-	
 	
 	
 	// connection client
@@ -78,16 +84,19 @@ public class CAPECXMLProcessing {
 	
 	
 	public static void main(String[] args) {
+		CAPECXMLProcessing.executeCMD("/Users/litong30/basex/bin/basexserver");//open server
+//		CAPECXMLProcessing.executeCMD("/Users/litong30/basex/bin/basexserverstop");// stop server
+		
 		try {
-			CAPECXMLProcessing xmlQuery = new CAPECXMLProcessing();
-			
+//			CAPECXMLProcessing xmlQuery = new CAPECXMLProcessing();
 
 			// produce domain lists for attacks
 //			xmlQuery.calculateDomainForAllAttacks();
 //			xmlQuery.outputAttackDomainInfo();
 			
 			// produce methods & consequences lists for attacks
-			xmlQuery.outputConsequenceInfo();
+//			xmlQuery.outputConsequenceInfo();
+			
 			
 
 //			all_cia_result = xmlQuery.getAllCIAElement();
@@ -119,6 +128,22 @@ public class CAPECXMLProcessing {
 			
 //			System.out.println(session.execute(query));
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void executeCMD(String command){
+		Runtime rt = Runtime.getRuntime();
+		Process pr;
+		try {
+			pr = rt.exec(command);
+			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			String line = null;
+			while ((line = input.readLine()) != null) {
+				System.out.println(line);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -299,7 +324,9 @@ public class CAPECXMLProcessing {
 	 * @return
 	 * @throws IOException
 	 */
+//	@Deprecated
 	private String getAllAttacks() throws IOException {
+		//TODO this method should be replaced by the similar class in CAPECXMLQuery  
 		String query = query_pre
 				+ "for $ap in $attacks//capec:Attack_Pattern "
 				+ "return data($ap/@ID)";
@@ -375,9 +402,7 @@ public class CAPECXMLProcessing {
 					Element attack_consequence = doc.createElement("capec:Attack_Pattern_Consequence");
 					attack_consequence.setTextContent(listToString(single_attack.consequences.toArray()));
 					attack.appendChild(attack_consequence);
-
 //					System.out.println(attack.getNodeValue());
-
 				}
 			}
 		

@@ -2,6 +2,7 @@ package it.unitn.tlsraf.otherfunc;
 
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.func.AppleScript;
+import it.unitn.tlsraf.func.CAPECModelGeneration;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -31,6 +32,7 @@ public class DraftGenerator extends JFrame {
 	private JTextField addressText;
 	private JTextField canvasText;
 	private JTextField layerText;
+	private JTextField txtPatternid;
 
 	/**
 	 * Launch the application.
@@ -53,7 +55,7 @@ public class DraftGenerator extends JFrame {
 	 */
 	public DraftGenerator() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 399);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -141,9 +143,9 @@ public class DraftGenerator extends JFrame {
 							position = "{"+x+","+y+"}";
 						}
 					}
-				} catch (IOException | ScriptException e1) {
-					JOptionPane.showMessageDialog( getParent(), "Graph generation fails!");
-					return;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 				JOptionPane.showMessageDialog( getParent(), "Successfully generate graphs!");
 			}
@@ -170,5 +172,25 @@ public class DraftGenerator extends JFrame {
 		layerText.setBounds(79, 183, 134, 28);
 		contentPane.add(layerText);
 		layerText.setColumns(10);
+		
+		JLabel lblTargetAttackPattern = new JLabel("Target Attack Pattern");
+		lblTargetAttackPattern.setBounds(38, 294, 156, 16);
+		contentPane.add(lblTargetAttackPattern);
+		
+		txtPatternid = new JTextField();
+		txtPatternid.setBounds(38, 322, 134, 28);
+		contentPane.add(txtPatternid);
+		txtPatternid.setColumns(10);
+		
+		JButton btnGenerateTree = new JButton("Generate tree");
+		btnGenerateTree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CAPECModelGeneration model = new CAPECModelGeneration();
+				model.generatePatternHierarchy(txtPatternid.getText());
+				JOptionPane.showMessageDialog( getParent(), "Successfully generate graphs!");
+			}
+		});
+		btnGenerateTree.setBounds(218, 323, 117, 29);
+		contentPane.add(btnGenerateTree);
 	}
 }

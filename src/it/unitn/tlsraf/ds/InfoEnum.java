@@ -214,6 +214,7 @@ public class InfoEnum {
 	
 	//Current directory
 	public static String current_directory = System.getProperty("user.dir");
+//	public static String current_directory = "/Users/litong30/research/Trento/Working stuff/Case study/revised smart grid";
 	public static String drawing_method_file = System.getProperty("user.dir")+"/applescript/drawing_methods.applescript";
 		
 }

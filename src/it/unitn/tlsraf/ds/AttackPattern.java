@@ -32,6 +32,20 @@ public class AttackPattern {
 	public LinkedList<String> methods = new LinkedList<String>();
 	public LinkedList<String> consequences = new LinkedList<String>();
 	
+	
+	// attributes below are specifically for attack graph generation
+	public String completeness;
+	public String abstraction;
+	public LinkedList<String> parents = new LinkedList<String>();
+	
+	
+	// additional attributes
+	public LinkedList<String> purposes = new LinkedList<String>();
+	
+	// programming sugar for genering graph in OmniGraffle
+	public String graphical_id;
+	
+	
 	public AttackPattern() {
 		super();
 	}
@@ -72,6 +86,17 @@ public class AttackPattern {
 			s+= temp+"\n";
 		}
 		
+		s+="Completeness: "+completeness+"\n";
+		s+="Abstraction: "+abstraction+"\n";
+		s+="Children: \n";
+		for(String temp: parents){
+			s+= temp+"\n";
+		}
+		
+		s+="Purposes: \n";
+		for(String temp: purposes){
+			s+= temp+"\n";
+		}
 		return s;
 	}
 }

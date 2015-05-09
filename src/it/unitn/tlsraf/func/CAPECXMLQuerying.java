@@ -46,8 +46,16 @@ public class CAPECXMLQuerying {
 	public static void main(String[] args) {
 		try {
 			CAPECXMLQuerying xmlQuery = new CAPECXMLQuerying();
-			AttackPattern attack= xmlQuery.getAttackInfo("332");
 			
+//			AttackPattern attack= xmlQuery.getAttackInfoAndRelations("288");
+//			System.out.println(attack.getPrintString()+" "+attack.parents.size());
+			
+			
+			LinkedList<String> result = xmlQuery.arbitraryPatternQuery("");
+			for (String temp : result) {
+				System.out.println(temp);
+			}
+			System.out.println("\n\n\n\n"+result.size());
 			
 //			xmlQuery.countPossibleAttackPatterns();
 			
@@ -57,10 +65,7 @@ public class CAPECXMLQuerying {
 //			LinkedList<String> possible_attacks = xmlQuery.findPosstibleAttackPatterns(InfoEnum.Layer.APPLICATION.toString(), InfoEnum.SecurityProperty.Confidentiality.toString());
 //			LinkedList<String> possible_attacks = xmlQuery.getCIAImact(InfoEnum.SecurityProperty.Confidentiality.toString(), "High");
 			
-//			for(String temp: possible_attacks){
-//				System.out.println(temp);
-//			}
-			
+
 			
 			
 		} catch (Exception e) {
@@ -255,10 +260,195 @@ public class CAPECXMLQuerying {
 		}else{
 			
 		}
-		
-		
 		return cia_domain_list;
 	}
+	
+	
+	/**
+	 * This one is an enhanced version of the previous one "getAttackInfo"
+	 * We use this for generating the attack relation graph
+	 * However, we only selectively load some attributes of attacks
+	 * which may help us to better understand the attack knowledge.
+	 * @param id
+	 * @return
+	 */
+public AttackPattern getAttackInfoAndRelations(String id) {
+		
+		/* each returned value should be checked for its existence
+		 * Here we fix the order of specifying attributes
+		 * use "$" as separator, and "€" as sub-separator...
+		 * 0) name, 1) severity, 2) likelihood, 3) weaknesses, 4) prerequisites 
+		 * 5) context, 6) solutions, 7) requirements, 8) methods
+		 * 9) consequences, 10) description
+		 * Attributes below are specifically for attack graph generation
+		 * 11) completeness, 12) abstraction, 13) parents 14) purposes
+		 */
+		String query = query_pre
+				+ "for $ap in $attacks//capec:Attack_Pattern "
+				+ "where $ap/@ID = '"+id+"' "
+				+ "let $em := \"empty\" "
+				+ "let $sep := '$' "
+				+ "let $subsep := '€' "
+				+ "let $subsubsep := '∑' "
+				+ "return (" //name
+				+ "if(exists($ap/@Name)) then data($ap/@Name) else $em, " 
+				+ "$sep," //severity
+				+ "if(exists($ap/capec:Typical_Severity)) then data($ap/capec:Typical_Severity) else $em, "
+				+ "$sep," //likelihood
+				+ "if(exists($ap/capec:Typical_Likelihood_of_Exploit)) then data($ap/capec:Typical_Likelihood_of_Exploit/capec:Likelihood) else $em, "
+				+ "$sep," // weaknesses
+				+ "if(exists($ap/capec:Related_Weaknesses)) then data(string-join($ap/capec:Related_Weaknesses//capec:CWE_ID, $subsep) ) else $em, "
+				+ "$sep," // prerequisites
+				+ "if(exists($ap/capec:Attack_Prerequisites)) then data(string-join($ap/capec:Attack_Prerequisites//capec:Text, $subsep) ) else $em, "
+				+ "$sep," // contexts
+				+ "if(exists($ap/capec:Technical_Context)) then "
+				+ "(data($ap/capec:Technical_Context//capec:Architectural_Paradigm),$subsep,"
+				+ "data($ap/capec:Technical_Context//capec:Framework),$subsep,"
+				+ "data($ap/capec:Technical_Context//capec:Platform),$subsep,"
+				+ "data($ap/capec:Technical_Context//capec:Languages)) "
+				+ "else $em, "
+				+ "$sep," // solutions
+				+ "if(exists($ap/capec:Solutions_and_Mitigations)) then data(string-join($ap/capec:Solutions_and_Mitigations//capec:Text, $subsep) ) else $em, "
+				+ "$sep," // requirements
+				+ "if(exists($ap/capec:Relevant_Security_Requirements)) then data(string-join($ap/capec:Relevant_Security_Requirements//capec:Text, $subsep) ) else $em, "
+				+ "$sep," // methods
+				+ "if(exists($ap/capec:Methods_of_Attack)) then data(string-join($ap//capec:Method_of_Attack, $subsep) ) else $em, "
+//				+ "$sep," // motivations and consequences
+//				+ "if(exists($ap/capec:Attack_Motivation-Consequences)) then data(string-join($ap//capec:Attack_Motivation-Consequence, $subsep) ) else $em "
+				+ "$sep," // motivations and consequences
+				+ "if(exists($ap/capec:Attack_Motivation-Consequences)) then "
+				+ "for $ap_consequence in $ap//capec:Attack_Motivation-Consequence "
+				+ " return ( data(string-join($ap_consequence/capec:Consequence_Scope, ' ')), $subsubsep, "
+				+ "  		data(string-join($ap_consequence/capec:Consequence_Technical_Impact, ' ')), $subsep)"
+				+ "else $em, "
+				+ "$sep," //description
+				+ "if(exists($ap/capec:Description/capec:Summary)) then data($ap/capec:Description/capec:Summary//capec:Text) else $em, "
+				+ "$sep," //completeness
+				+ "if(exists($ap/@Pattern_Completeness)) then data($ap/@Pattern_Completeness) else $em, " 
+				+ "$sep," //abstraction
+				+ "if(exists($ap/@Pattern_Abstraction)) then data($ap/@Pattern_Abstraction) else $em, " 
+				+ "$sep," // children
+				+ "if(exists($ap/capec:Related_Attack_Patterns)) then data(string-join($ap//capec:Related_Attack_Pattern[capec:Relationship_Nature='ChildOf']/capec:Relationship_Target_ID, $subsep) ) else $em, "
+				+ "$sep," // purposes
+				+ "if(exists($ap/capec:Purposes)) then data(string-join($ap//capec:Purpose, $subsep) ) else $em "
+				+ ")";
+		
+		String result="";
+		try {
+			result = session.execute(query);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		System.out.println(result);
+
+		/* Process data  0) name, 1) severity, 2) likelihood, 3) weaknesses, 
+		 * 4) prerequisites, 5) context, 6) solutions, 7) requirements
+		 * 8) methods, 9) consequences, 10) description
+		 * 11) completeness, 12) abstraction, 13) parents 14) purposes
+		 */
+		AttackPattern ap = new AttackPattern();
+		String[] attributes = result.split("\\$");
+		ap.id = id;
+//		System.out.println(ap.id);
+
+		ap.name = attributes[0].trim();
+		ap.severity = attributes[1].trim();
+		ap.likelihood = attributes[2].trim();
+		String[] temp = attributes[3].split("€");
+		
+		for(String weakness: temp){
+			ap.weaknesses.add(weakness.trim());
+		}
+		
+		temp = attributes[4].split("€");
+		
+		for(String prerequisite: temp){
+			ap.prerequisites.add(prerequisite.trim());
+		}
+		
+		// for special processing, we need to check first whether this element is empty
+		temp = attributes[5].split("€");
+		if(!temp[0].contains("empty")){
+			ap.contexts.addLast("Architectural Paradigm: "+temp[0].trim());
+			ap.contexts.addLast("Framework: "+temp[1].trim());
+			ap.contexts.addLast("Platform: "+temp[2].trim());
+			ap.contexts.addLast("Language: "+temp[3].trim());
+		}else{
+			ap.contexts.addLast(temp[0]);
+		}
+		
+		temp = attributes[6].split("€");
+		for(String solution: temp){
+			ap.solutions.add(solution.trim());
+		}
+		
+		temp = attributes[7].split("€");
+		for(String requirement: temp){
+			ap.requirements.add(requirement.trim());
+		}
+		
+		temp = attributes[8].split("€");
+		for(String method: temp){
+			ap.methods.add(method.trim());
+		}
+		
+		// for special processing, we need to check first whether this element is empty
+		temp = attributes[9].split("€");
+		for(String consequence: temp){
+			if(!consequence.contains("empty")){
+				String [] new_temp = consequence.split("∑");
+				if(new_temp.length>=2){ // prevent empty entries introduced by extra seperators
+					ap.consequences.add("Scope: "+new_temp[0]+"\n"+"Impact(Motivation): "+ new_temp[1]);
+				}
+			}
+			else{
+				ap.consequences.add(consequence);
+			}
+		}
+		
+		ap.description = attributes[10].trim();
+		
+		ap.completeness = attributes[11].trim();
+		
+		ap.abstraction = attributes[12].trim();
+		
+		temp = attributes[13].split("€");
+		for(String parent: temp){
+			ap.parents.add(parent.trim());
+		}
+		
+		temp = attributes[14].split("€");
+		for(String purpose: temp){
+			ap.purposes.add(purpose.trim());
+		}
+		//
+//		System.out.println(ap.getPrintString());
+		return ap;
+	}
+
+
+
+	/**
+	 * Get all attacks
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public LinkedList<String> getAllAttackIDs() {
+		String query = query_pre + "for $ap in $attacks//capec:Attack_Pattern " + "return data($ap/@ID)";
+		String result = "";
+		try {
+			result = session.execute(query);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return getList(result, " ");
+	}
+
+	
 	
 	/**
 	 * obtain all attack-domain pairs and load them into the memory in order to avoid highly frequent query
@@ -298,7 +488,7 @@ public class CAPECXMLQuerying {
 		String result = session.execute(query);
 //		System.out.println(result);
 		// a list of ID value, separated by " "
-		return getList(result);
+		return getList(result, " ");
 	}
 
 	/**
@@ -319,7 +509,7 @@ public class CAPECXMLQuerying {
 		String result = session.execute(query);
 //		System.out.println(result);
 		// a list of ID value, separated by " "
-		return getList(result);
+		return getList(result, " ");
 	}
 	
 	/**
@@ -336,7 +526,44 @@ public class CAPECXMLQuerying {
 		
 		String result = session.execute(query); 
 		
-		return getList(result);
+		return getList(result, " ");
+	}
+	
+	/**
+	 * Find a set of patterns that satisfy certain criteria
+	 * return a list of IDs of those patterns
+	 * @param property
+	 * @return
+	 * @throws IOException
+	 */
+	private LinkedList<String> arbitraryPatternQuery(String property) throws IOException {
+		String query = query_pre
+				+ "for $ap in $attacks//capec:Attack_Pattern "
+//				+ "where $ap[@Pattern_Completeness ='Complete' and @Pattern_Abstraction ='Meta']"
+				+ "where count($ap//capec:Method_of_Attack) =3 "
+				+ "return data($ap/@ID)";
+		
+		
+		query = query_pre
+				+ "for $ap in $attacks//capec:Consequence_Technical_Impact "
+//				+ "where $ap[@Pattern_Completeness ='Complete' and @Pattern_Abstraction ='Meta']"
+//				+ "where count($ap//capec:Method_of_Attack) =3 "
+				+ "return data(concat($ap, '#'))";
+		
+		query = query_pre
+				+ "for $ap in $attacks//capec:Attack_Pattern "
+				+ "where $ap//capec:Consequence_Technical_Impact = 'Hide activities' "
+//				+ "where count($ap//capec:Method_of_Attack) =3 "
+				+ "return data(concat($ap/@ID, '#'))";
+		
+//		query = query_pre
+//				+ "for $amc in $attacks//capec:Attack_Pattern//capec:Attack_Motivation-Consequence "
+//				+ "where $amc/capec:Consequence_Technical_Impact = 'Gain privileges / assume identity' "
+//				+ "return (data($amc/capec:Consequence_Scope), '#')";
+		
+		String result = session.execute(query);
+//		System.out.println(result);
+		return getList(result, "#");
 	}
 
 	
@@ -465,8 +692,8 @@ public class CAPECXMLQuerying {
 	 * @param result_list
 	 * @return
 	 */
-	private LinkedList<String> getList(String all_results) {
-		String[] result_list = all_results.split(" ");
+	private LinkedList<String> getList(String all_results, String separator) {
+		String[] result_list = all_results.split(separator);
 		final Set<String> set = new HashSet(); 
 		for(String result: result_list){
 			set.add(result);
