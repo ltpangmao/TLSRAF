@@ -13,11 +13,11 @@ public class NumberCounter {
 		System.out.println("TLSAF project has "+line_number+" lines so far.");
 
 		line_number = totalFileNumberCounter(new File(
-				"/Users/litong30/Dropbox/readings"));
+				"/Users/tongli/OneDrive/readings"));
 		System.out.println("The reading folder totally has "+line_number+" files so far.");
 		
 		line_number = totalLineNumberCounter(new File(
-				"/Users/litong30/research/Trento/Workspace/AuthorDiagram/src"));
+				"/Users/tongli/OneDrive/reseach/Workspace/PublicationSocialAnalysis/src"));
 		System.out.println("AuthorDiagram project has "+line_number+" lines so far.");
 	}
 

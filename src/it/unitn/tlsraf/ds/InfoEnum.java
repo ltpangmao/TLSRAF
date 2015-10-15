@@ -2,6 +2,8 @@ package it.unitn.tlsraf.ds;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author litong30 enumerate all types of elements and links for different
@@ -130,7 +132,7 @@ public class InfoEnum {
 
 	// Types of elements and links
 	public enum ModelCategory {
-		REQUIREMENT, BUSINESS_PROCESS, SOFTWARE_ARCHITECTURE, DEPLOYMENT, ASSET, ACTOR
+		REQUIREMENT, BUSINESS_PROCESS, SOFTWARE_ARCHITECTURE, DEPLOYMENT, ASSET, ACTOR, HOLISTIC_SECURITY_GOAL_MODEL
 	}
 	
 	// Dimensions of refinements

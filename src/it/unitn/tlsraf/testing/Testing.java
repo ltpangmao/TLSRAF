@@ -29,7 +29,10 @@ import net.xqj.basex.BaseXXQDataSource;
 public class Testing {
 
 	public static void main(String args[]) throws IOException, ScriptException, XQException{
-		ruleTesting();
+//		ruleTesting();
+		
+		newTesting();
+		
 //		 XQDataSource xqs = new BaseXXQDataSource();
 //		    
 ////		 xqs.setProperty("serverName", "localhost");
@@ -100,6 +103,47 @@ public class Testing {
 			for(String s:result)
 				System.out.println(s);
 		}
+	}
+	
+	public static void newTesting() throws IOException, ScriptException {
+		LinkedList<String> alternatives = new LinkedList<String>();
+
+		// prepare the model
+		String hsgm_file = InfoEnum.current_directory + "/dlv/models/holistic_security_goal_model.dl";
+
+		String dlv_command = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/find_alternative.rule " // rules
+				+ hsgm_file; // model files
+
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(dlv_command);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+
+		int number = 0;
+		while ((line = input.readLine()) != null) {
+			number++;
+			line = line.substring(1, line.length() - 1);
+			String[] result = line.split(", ");
+			for (String s : result) {
+//				 System.out.println(s);
+				 //process satisfied goals
+				 if(s.startsWith("satisfied")){
+//					 System.out.println(s);
+//					 String id = s.substring(s.indexOf("(")+1,s.indexOf(")"));
+//					 System.out.println(id);
+				 }
+				 if(s.startsWith("result")){
+//					 System.out.println(s);
+//					 String id = s.substring(s.indexOf("(")+1,s.indexOf(")"));
+//					 System.out.println(id);
+				 }
+			}
+		}
+		System.out.println(number);
+
+
+//		return alternatives;
 	}
 }
 

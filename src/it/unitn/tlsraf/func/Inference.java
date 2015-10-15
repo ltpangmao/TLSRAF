@@ -3,6 +3,7 @@ package it.unitn.tlsraf.func;
 import it.unitn.tlsraf.ds.Actor;
 import it.unitn.tlsraf.ds.ActorAssociationGraph;
 import it.unitn.tlsraf.ds.Element;
+import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.Link;
 import it.unitn.tlsraf.ds.RequirementElement;
@@ -99,6 +100,9 @@ public class Inference {
 		//writeFile("dlv/models/actor_association_model.dl", actor_model.generateFormalExpression());
 		CommandPanel.logger.info(actor_model.generateFormalExpression());
 	}
+	
+	
+
 
 	/**
 	 * Construct a single requirements model from selected elements or from files
@@ -1421,8 +1425,5 @@ public class Inference {
 		writer.println(content);
 		writer.close();
 	}
-
-
-	
 	
 }

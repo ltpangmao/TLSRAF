@@ -121,6 +121,9 @@ public class RequirementElement implements Element{
 	}
 
 
+	/**
+	 * return the formal name of an element, which will be used to generate the corresponding formal expression
+	 */
 	@Override
 	public String getFormalName() {
 		String expression = "";
@@ -136,6 +139,22 @@ public class RequirementElement implements Element{
 		return expression.toLowerCase();
 	}
 	
+	/**
+	 * filter illegal characters
+	 */
+	public String getLegalName() {
+		String expression = "";
+		if(this.name!=null){
+			 expression = this.getName();
+		}
+		else{
+			CommandPanel.logger.warning("Element's name is null! Type:"+this.remark);
+			return "null";
+		}
+		
+		expression = expression.replaceAll(" ", "_").replaceAll("\\[","z").replaceAll("\\]","z").replaceAll("\\(","k").replaceAll("\\)","k");
+		return expression.toLowerCase();
+	}
 	
 	
 	@Override

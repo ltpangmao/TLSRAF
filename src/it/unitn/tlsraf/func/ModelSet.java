@@ -1,6 +1,7 @@
 package it.unitn.tlsraf.func;
 
 import it.unitn.tlsraf.ds.ActorAssociationGraph;
+import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.Link;
 import it.unitn.tlsraf.ds.RequirementGraph;
@@ -26,6 +27,7 @@ public class ModelSet {
 	public RequirementGraph req_phy_model;
 	
 	public ActorAssociationGraph actor_model;
+	public HolisticSecurityGoalModel hsgm;
 	
 	public LinkedList<Link> bus_app_support_links = new LinkedList<Link>();
 	public LinkedList<Link> app_phy_support_links = new LinkedList<Link>();
@@ -43,6 +45,7 @@ public class ModelSet {
 				InfoEnum.Layer.PHYSICAL.name());
 		
 		actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
+		hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
 	}
 	
 	/**
