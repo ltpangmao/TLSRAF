@@ -34,7 +34,7 @@ public class HSGMInference {
 		holistic_security_model.importGraphInfo(result);
 
 		// writeFile("dlv/models/holistic_security_goal_model.dl", holistic_security_model.generateFormalExpression(), false);
-		CommandPanel.logger.info(holistic_security_model.generateFormalExpression());
+		// CommandPanel.logger.info(holistic_security_model.generateFormalExpression());
 	}
 
 	/**
@@ -105,22 +105,80 @@ public class HSGMInference {
 			}
 			all_alternatives.add(one_alternative);
 		}
-		
+
 		int number = 0;
-		for(LinkedList<Element> list: all_alternatives){
+		for (LinkedList<Element> list : all_alternatives) {
 			number++;
-			String temp = "Solution "+number+":\n {";
-			for(Element e: list){
-				temp += e.getName()+", "; 
+			String temp = "Solution " + number + "(" + list.size() + " mechanisms)" + ":{";
+			String business = "";
+			String application = "";
+			String infrstructure = "";
+			for (Element e : list) {
+				RequirementElement re = (RequirementElement) e;
+				// further consider layers of each mechanism, to better show the analysis result
+				if (re.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
+					business += e.getName() + ", ";
+				} else if (re.getLayer().equals(InfoEnum.Layer.APPLICATION.name())) {
+					application += e.getName() + ", ";
+				} else if (re.getLayer().equals(InfoEnum.Layer.PHYSICAL.name())) {
+					infrstructure += e.getName() + ", ";
+				} else {
+					// if the element has no layer information, we exclude it from the final result
+					System.out.println("Missing layer information");
+				}
 			}
-			temp = temp.substring(0, temp.length()-2);
-			temp += "}";
+			// add corresponding layer security solutions to the final result
+			if (business.length() > 0) {
+				business = business.substring(0, business.length() - 2);
+				temp += "\n Social Layer: " + business;
+			}
+			if (application.length() > 0) {
+				application = application.substring(0, application.length() - 2);
+				temp += "\n Software Layer: " + application;
+			}
+			if (infrstructure.length() > 0) {
+				infrstructure = infrstructure.substring(0, infrstructure.length() - 2);
+				temp += "\n Infrastructure Layer: " + infrstructure;
+			}
+
+			temp += "\n}\n";
 			// add the temporal description to the alternative description set
 			alternative_description.add(temp);
-			System.out.println(temp);
+			// System.out.println(temp);
+		}
+
+		return alternative_description;
+	}
+
+	/**
+	 * Check the content of the current graph to ensure the validity of the data itself This method checks whether there are two security mechanisms that have the same content
+	 * 
+	 * @param holistic_security_model
+	 * @return
+	 */
+	public static LinkedList<String> sanityCheckRepeat(HolisticSecurityGoalModel holistic_security_model) {
+		LinkedList<String> repeat_elements = new LinkedList<String>();
+
+		// first get the mechanisms set in order to reduce computational complexity.
+		LinkedList<Element> mechanisms = new LinkedList<Element>();
+		for (Element e1 : holistic_security_model.getElements()) {
+			// we check repeated elements except for domain assumptions
+			if (e1.getType().equals(InfoEnum.RequirementElementType.SECURITY_MECHANISM.name())) {
+				mechanisms.add(e1);
+			}
 		}
 		
-		return alternative_description;
+		// check repeat 
+		for (Element e1 : mechanisms) {
+			for (Element e2 : mechanisms) {
+				if ((!e1.getId().equals(e2.getId())) && e1.getName().equals(e2.getName())) {
+					repeat_elements.add(e1.getName());
+				}
+			}
+		}
+
+		return repeat_elements;
+
 	}
 
 }

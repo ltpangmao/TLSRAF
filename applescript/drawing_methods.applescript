@@ -172,7 +172,7 @@ on change_element_attribute(target_canvas_name, target_layer_name, target_id, th
 		
 		tell target_element
 			try
-				--set properties of target_link to {thickness:thick_value, stroke color:color_value}
+				--set properties of target_element to {thickness:thick_value, stroke color:color_value}
 				if (layer_value is not equal to "none") then
 					if (layer_temp is not equal to missing value) then
 						set layer of target_element to layer_temp
@@ -181,9 +181,9 @@ on change_element_attribute(target_canvas_name, target_layer_name, target_id, th
 				if (color_value is not equal to "none") then
 					set stroke color of target_element to color_value
 				end if
-				-- this is always assumed to have a valid input
-				set thickness of target_element to thick_value
-				
+				if (thick_value is not equal to -1) then
+					set thickness of target_element to thick_value
+				end if
 				return "success"
 			on error
 				return "error " & text of target_element
@@ -220,9 +220,9 @@ on change_link_attribute(target_canvas_name, target_layer_name, target_id, thick
 				if (color_value is not equal to "none") then
 					set stroke color of target_link to color_value
 				end if
-				-- this is always assumed to have a valid input
-				set thickness of target_link to thick_value
-				
+				if (thick_value is not equal to -1) then
+					set thickness of target_link to thick_value
+				end if
 				return "success"
 			on error
 				return "error " & text of target_link
@@ -231,6 +231,44 @@ on change_link_attribute(target_canvas_name, target_layer_name, target_id, thick
 	end tell
 end change_link_attribute
 
+on change_common_attribute(target_canvas_name, target_layer_name, target_id, thick_value, color_value, layer_value)
+	tell application id "OGfl"
+		set target_element to missing value
+		--search target_container 
+		set target_container to my find_container(target_canvas_name, target_layer_name)
+		--search target element.
+		set shape_list to graphics of target_container
+		repeat with shape_temp in shape_list
+			if (id of shape_temp is equal to target_id) then
+				set target_element to shape_temp
+			end if
+		end repeat
+		
+		--find the layer, which is to be set to the element
+		set layer_temp to my find_layer(target_canvas_name, layer_value)
+		
+		tell target_element
+			try
+				--set properties of target_link to {thickness:thick_value, stroke color:color_value}
+				if (layer_value is not equal to "none") then
+					if (layer_temp is not equal to missing value) then
+						set layer of target_element to layer_temp
+						set layer of label of target_link to layer_temp
+					end if
+				end if
+				if (color_value is not equal to "none") then
+					set stroke color of target_element to color_value
+				end if
+				if (thick_value is not equal to -1) then
+					set thickness of target_element to thick_value
+				end if
+				return "success"
+			on error
+				return "error " & text of target_link
+			end try
+		end tell
+	end tell
+end change_common_attribute
 
 --private methods 
 on find_container(target_canvas_name, target_layer_name)

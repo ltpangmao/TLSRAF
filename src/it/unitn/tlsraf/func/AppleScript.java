@@ -332,7 +332,6 @@ public class AppleScript {
 			CommandPanel.logger.severe("Draw elements size type error!");
 		}
 		
-		
 		//set parameters & call the exact method
 		String script = "";
 		script += "set target_canvas_name to \""+canvas+"\"\n"
@@ -368,6 +367,16 @@ public class AppleScript {
 	}
 	
 
+	/**
+	 * This method is supposed to change node-specific attributes. However, it is the same with link attributes for the time being
+	 * @param canvas: Mandatory
+	 * @param layer: use "none" to fit unknown layers
+	 * @param target_id: Mandatory
+	 * @param thickness: use "-1" to ignore color setting
+	 * @param color: use "none" to ignore color setting
+	 * @param layer_value: use "none" to ignore layer setting
+	 * @throws ScriptException
+	 */
 	public static void changeAttributeOfElement(String canvas, String layer, String target_id, String thickness, String color, String layer_value) throws ScriptException {
 		//set parameters & call the exact method
 		String script = "";
@@ -390,6 +399,17 @@ public class AppleScript {
 		executeAppleScript(script);
 	}
 	
+	
+	/**
+	 * This method is supposed to change link-specific attributes. However, it is the same with node attributes for the time being
+	 * @param canvas: Mandatory
+	 * @param layer: use "none" to fit unknown layers
+	 * @param target_id: Mandatory
+	 * @param thickness: use "-1" to ignore color setting
+	 * @param color: use "none" to ignore color setting
+	 * @param layer_value: use "none" to ignore layer setting
+	 * @throws ScriptException
+	 */
 	public static void changeAttributeOfLink(String canvas, String layer, String target_id, String thickness, String color, String layer_value) throws ScriptException {
 		//set parameters & call the exact method
 		String script = "";
@@ -401,6 +421,40 @@ public class AppleScript {
 				+ "set layer_value to \"" + layer_value + "\"\n"
 				
 				+ "change_link_attribute(target_canvas_name, target_layer_name, link_id, thick_value, color_value, layer_value)\n";
+		//import the method codes
+		String method_file = InfoEnum.drawing_method_file;
+		try {
+			script = loadMethods(script, method_file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//execute methods
+		executeAppleScript(script);
+	}
+	
+	
+	/**
+	 * This method is supposed to change common attributes that are shared by both nodes and links.
+	 * @param canvas: Mandatory
+	 * @param layer: use "none" to fit unknown layers
+	 * @param target_id: Mandatory
+	 * @param thickness: use "-1" to ignore color setting
+	 * @param color: use "none" to ignore color setting
+	 * @param layer_value: use "none" to ignore layer setting
+	 * @throws ScriptException
+	 */
+	public static void changeAttribute(String canvas, String layer, String target_id, String thickness, String color, String layer_value) throws ScriptException {
+		//set parameters & call the exact method
+		String script = "";
+		script += "set target_canvas_name to \""+canvas+"\"\n"
+				+ "set target_layer_name to \""+layer+"\"\n"
+				+ "set link_id to " + target_id +"\n"
+				+ "set thick_value to " + thickness + "\n"
+				+ "set color_value to \"" + color + "\"\n"
+				+ "set layer_value to \"" + layer_value + "\"\n"
+				
+				+ "change_common_attribute(target_canvas_name, target_layer_name, link_id, thick_value, color_value, layer_value)\n";
 		//import the method codes
 		String method_file = InfoEnum.drawing_method_file;
 		try {

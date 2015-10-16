@@ -682,6 +682,7 @@ public class NewCommandPanel{
 						for (String s : alternatives) {
 							result += s+"\n";
 						}
+						result += "There are "+ alternatives.size() +" holistic security solutions in total.";
 						alternative_list.setText(result);
 					JOptionPane.showMessageDialog(frmMuserControlPanel, "Generate all holistic security solutions!");
 				} catch (IOException e1) {

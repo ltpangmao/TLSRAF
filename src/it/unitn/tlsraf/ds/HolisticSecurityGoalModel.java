@@ -26,6 +26,7 @@ public class HolisticSecurityGoalModel {
 
 	public HolisticSecurityGoalModel() {
 		super();
+		type = InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name();
 	}
 
 	public HolisticSecurityGoalModel(String type) {

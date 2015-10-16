@@ -3,22 +3,16 @@ package it.unitn.tlsraf.otherfunc;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.func.AppleScript;
 import it.unitn.tlsraf.func.CAPECModelGeneration;
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.script.ScriptException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
