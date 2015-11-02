@@ -189,7 +189,7 @@ public class RequirementGraph {
 		/*
 		 * this part is exclusively for requirement elements 0)notation,element; 1)id,51670; 2)shape,Hexagon; 3)name,Calculate price; 4)layer,Business; 5)thickness, 1.0; 6)double
 		 * stroke; 7)size: 117.945899963379 43.817626953125; 8)no fill; 9)0.0 corner radius 10) stroke pattern: 0 11) origin: 87.234039306641 1084.06665039062 12) owner: xx 13)
-		 * Canvas, Model
+		 * Canvas, Model 
 		 */
 		// TODO: pre-process all numbers fields, don't know why so far...
 		factors.set(5, factors.get(5).replaceAll(",", "."));
@@ -231,7 +231,7 @@ public class RequirementGraph {
 			((AntiGoal) new_elem).extractInfoFromName();
 		}
 		// actors
-		else if (checkCircle(factors.get(7))) {
+		else if (checkCircle(factors.get(7)) & !factors.get(3).equals("empty")) {
 			new_elem = new Actor();
 			new_elem.setId(factors.get(1));
 			new_elem.setName(factors.get(3));
@@ -313,7 +313,12 @@ public class RequirementGraph {
 		if (target == null || source == null) {
 			return null;
 		}
-
+		
+		// remove inappropriate dependency modeling, which are linked to the dependency labels.
+		if (target.getType().equals(InfoEnum.RequirementElementType.LABEL.name()) || source.getType().equals(InfoEnum.RequirementElementType.LABEL.name())) {
+			return null;
+		}
+		
 		/*
 		 * this part is exclusively for requirement elements 0)link; 1)id,51690 2)arrow type,StickArrow; 3)line type, curved; 4)source/tail,51670; 5)destination/head,51490;
 		 * 6)label,NoLabel;(The shape of that label is not considered, only the content of that label) 7)dash type,0; 8)thickness,1.0; 9)head scale,1.0; 10) layer, BUSINESS
@@ -438,17 +443,24 @@ public class RequirementGraph {
 		if (elem.getType().equals(InfoEnum.RequirementElementType.ACTOR.name())) {
 			Actor actor = (Actor) elem;
 			// First find the boundary element for each actor
+			// choose the closest boundary, here is an assumption we made on the modeling style
+
+			RequirementElement temp_boundary = null;
+			double minimal = 1000000;
 			for (Element e : elements) {
 				RequirementElement boundary = (RequirementElement) e;
 				if (boundary.getType().equals(InfoEnum.RequirementElementType.ACTOR_BOUNDARY.name())) {
 					double distance = Math.sqrt((elem.origin_x - boundary.origin_x) * (elem.origin_x - boundary.origin_x) + (elem.origin_y - boundary.origin_y)
 							* (elem.origin_y - boundary.origin_y));
-					if (distance < 150) {
-						actor.setBoundary(boundary);
-						break;
+					if (distance < minimal) {
+						minimal = distance;
+						temp_boundary = boundary;
 					}
 				}
 			}
+			// assign the closest boundary to the actor
+			actor.setBoundary(temp_boundary);
+
 			// Then we find all elements within each actor, and attribute them to the actor
 			double left_up_x = actor.getBoundary().origin_x;
 			double left_up_y = actor.getBoundary().origin_y;

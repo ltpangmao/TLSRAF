@@ -1,0 +1,3 @@
+anti_goal(information_disclosure, energy_consumption_data, all).
+anti_goal(tampering, energy_consumption_data, all).
+

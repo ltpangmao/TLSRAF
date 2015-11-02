@@ -1,0 +1,6 @@
+asset(Resource2).
+asset(Resource3).
+asset(Resource1).
+part_of(Resource3,Resource1).
+part_of(Resource2,Resource1).
+

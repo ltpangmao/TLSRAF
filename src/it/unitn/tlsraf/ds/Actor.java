@@ -38,6 +38,7 @@ public class Actor extends RequirementElement {
 	@Override
 	public String getFormalExpressions() {
 		String expression =this.getSingleFormalExpression() + "\n";
+		
 		for (RequirementElement re : this.getOwnedElement()) {
 			expression += "has(" + this.getFormalName() + "," + re.getFormalName() + ").\n";
 //			if (!re.getName().equals("empty") && !re.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {

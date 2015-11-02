@@ -820,6 +820,70 @@ public class Inference {
 			}
 		}
 	}
+	
+	
+	
+	/**
+	 * Simplify security goals by identifying critical ones
+	 * @param req_model
+	 * @param actor_model
+	 * @param scope
+	 * @throws IOException
+	 * @throws ScriptException
+	 */
+	public static void threatBasedSecurityGoalSimplification(RequirementGraph req_model, int scope)
+			throws IOException, ScriptException {
+		String req_model_file = req_model.generateFormalExpressionToFile(scope);
+
+		String inference_rule = InfoEnum.current_directory+"/dlv/dlv -silent -nofacts " 
+				+ InfoEnum.current_directory+"/dlv/rules/threat_based_simplification.rule " 
+				+ InfoEnum.current_directory+"/dlv/models/data_flow_model.dl "
+				+ InfoEnum.current_directory+"/dlv/models/threat_model.dl "
+				+ InfoEnum.current_directory+"/dlv/models/asset_model.dl " 
+				+ req_model_file;
+		
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(inference_rule);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+
+		while ((line = input.readLine()) != null) {
+			// line = input.readLine();
+			line = line.substring(1, line.length() - 1);
+			String[] result = line.split(", ");
+			for (String s : result) {
+				CommandPanel.logger.info(s);
+
+				// highlight the critical one
+				if (s.startsWith("is_critical")) {
+					// parse facts
+					s = s.replaceAll("is\\_critical\\(", "");
+					s = s.replaceAll("\\)", "");
+
+					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
+					critical_sec_goal.setCriticality(true);
+					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(),
+							"5", "none", "none");
+				}
+				// show the not determined one.
+				else if (s.startsWith("non_deterministic")) {
+					// parse facts
+					s = s.replaceAll("non\\_deterministic\\(", "");
+					s = s.replaceAll("\\)", "");
+
+					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
+					critical_sec_goal.setNon_deterministic(true);
+					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(),
+							"3", "none", "none");
+				}
+			}
+		}
+
+	}
+
+	
+	
 
 	/**
 	 * Simplify security goals by identifying critical ones

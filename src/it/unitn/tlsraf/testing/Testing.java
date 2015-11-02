@@ -34,9 +34,9 @@ import net.xqj.basex.BaseXXQDataSource;
 public class Testing {
 
 	public static void main(String args[]) throws IOException, ScriptException, XQException{
-//		ruleTesting();
+		ruleTesting();
 		
-		newTesting();
+//		newTesting();
 		
 //		 XQDataSource xqs = new BaseXXQDataSource();
 //		    
@@ -92,10 +92,15 @@ public class Testing {
 				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/models/security_model_business.dl  "
 				+ "/Users/litong30/research/Trento/Workspace/TLSRAF/dlv/rules/refine_security_attribute.rule ";
 		
-		refine_rule ="/Users/litong30/research/Trento/Workspace/TLSARF/dlv/dlv  "
-				+ "/Users/litong30/research/Trento/Workspace/TLSARF/dlv/models/req_application_model.dl "
-				+ "/Users/litong30/research/Trento/Workspace/TLSARF/dlv/rules/refine_interval.rule ";
+		refine_rule =InfoEnum.current_directory+"/dlv/dlv -silent  "
+				+ InfoEnum.current_directory+"/dlv/models/req_business_model.dl "
+				+ InfoEnum.current_directory+"/dlv/models/data_flow_model.dl "
+				+ InfoEnum.current_directory+"/dlv/models/asset_model.dl "
+				+ InfoEnum.current_directory+"/dlv/models/threat_model.dl "
+				+ InfoEnum.current_directory+"/dlv/rules/threat_based_simplification.rule ";
 
+
+		
 		Runtime rt = Runtime.getRuntime();
 		Process pr = rt.exec(refine_rule);
 

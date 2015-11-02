@@ -37,7 +37,7 @@ tell application id "OGfl"
 				end try
 				
 				--continue to extract value
-				set element_info to element_info & ";" & name of currentShape & ";" & newText & ";" & name of layer of currentShape & ";" & thickness of currentShape & ";" & double stroke of currentShape & ";" & size of currentShape & ";" & fill of currentShape & ";" & corner radius of currentShape & ";" & stroke pattern of currentShape & ";" & origin of currentShape & ";" & owner & ";" & name of canvas of currentShape & "
+				set element_info to element_info & ";" & name of currentShape & ";" & newText & ";" & name of layer of currentShape & ";" & thickness of currentShape & ";" & double stroke of currentShape & ";" & size of currentShape & ";" & fill of currentShape & ";" & corner radius of currentShape & ";" & stroke pattern of currentShape & ";" & origin of currentShape & ";" & owner & ";" & name of canvas of currentShape & "; " & value of user data item "input" of currentShape & "; " & value of user data item "output" of currentShape & "; " & value of user data item "threat" of currentShape & "; " & value of user data item "asset" of currentShape & "; " & value of user data item "interval" of currentShape & "; " & "
 "
 				set element_list to element_list & element_info -- add element to list
 				-- then extract link info

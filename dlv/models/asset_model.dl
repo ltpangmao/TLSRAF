@@ -18,9 +18,12 @@ part_of(electronic_consumption_data,energy_consumption_data).
 
 
 
+%% the following part is geneated together with the requirements model. and We didn't capture the part_of relations among applications and hardware yet.
+
 % service (asset)
 service(G) :- goal(G).
 service(T) :- task(T).
+
 
 % application asset
 application(smart_meter_application).

@@ -1,0 +1,4 @@
+has_output(measure_energy_consumption,energy_consumption_data).
+has_output(sends_energy_consumption_data_to_es,energy_consumption_data).
+has_input(receive_energy_consumption_data_from_sm,energy_consumption_data).
+has_input(sends_energy_consumption_data_to_es,energy_consumption_data).

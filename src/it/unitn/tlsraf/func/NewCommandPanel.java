@@ -116,6 +116,9 @@ public class NewCommandPanel{
 		final JComboBox<String> modelType = new JComboBox<String>();
 		modelType.setName("Model Type");
 		modelType.addItem("Requirements model");
+		modelType.addItem("Resource schema");
+		modelType.addItem("Dataflow diagram");
+		modelType.addItem("Threat model");
 		modelType.addItem("Trust model");
 		modelType.addItem("Holistic security goal model");
 		modelType.setBounds(198, 56, 169, 27);
@@ -155,7 +158,20 @@ public class NewCommandPanel{
 						HSGMInference.importHolisticSecurityGoalModel(ms.hsgm, canvas);
 						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing holistic security goal models!");
+					} else if (model.equals(InfoEnum.ModelCategory.DATA_FLOW.name())) {
+						ReferenceModelInference.importDataFlowModel(canvas);
+						// TODO: customize the size of the dialog
+						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing data flow diagram!");
+					} else if (model.equals(InfoEnum.ModelCategory.THREAT_MODEL.name())) {
+						ReferenceModelInference.importThreatModel(canvas);;
+						// TODO: customize the size of the dialog
+						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing threat model!");
+					} else if (model.equals(InfoEnum.ModelCategory.RESOURCE_SCHEMA.name())) {
+						ReferenceModelInference.importResourceSchema(canvas);;
+						// TODO: customize the size of the dialog
+						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing resource schema!");
 					}
+					
 					  else {
 						logger.warning("Command error!");
 					}
@@ -401,19 +417,35 @@ public class NewCommandPanel{
 				String layer_choice = getCommand(layer);
 				String object_choice = getCommand(object);
 				try {
+//					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
+//						Inference.securityGoalSimplification(ms.req_bus_model, ms.actor_model, Integer.valueOf(object_choice));
+//						Inference.securityGoalSimplification(ms.req_app_model, ms.actor_model, Integer.valueOf(object_choice));
+//						Inference.securityGoalSimplification(ms.req_phy_model, ms.actor_model, Integer.valueOf(object_choice));
+//					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+//						Inference.securityGoalSimplification(ms.req_bus_model, ms.actor_model, Integer.valueOf(object_choice));
+//					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
+//						Inference.securityGoalSimplification(ms.req_app_model, ms.actor_model, Integer.valueOf(object_choice));
+//					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
+//						Inference.securityGoalSimplification(ms.req_phy_model, ms.actor_model, Integer.valueOf(object_choice));
+//					} else {
+//						NewCommandPanel.logger.severe("Layer selection error!");
+//					}
+					
 					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-						Inference.securityGoalSimplification(ms.req_bus_model, ms.actor_model, Integer.valueOf(object_choice));
-						Inference.securityGoalSimplification(ms.req_app_model, ms.actor_model, Integer.valueOf(object_choice));
-						Inference.securityGoalSimplification(ms.req_phy_model, ms.actor_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms.req_bus_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms.req_app_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms.req_phy_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-						Inference.securityGoalSimplification(ms.req_bus_model, ms.actor_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms.req_bus_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-						Inference.securityGoalSimplification(ms.req_app_model, ms.actor_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms.req_app_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
-						Inference.securityGoalSimplification(ms.req_phy_model, ms.actor_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms.req_phy_model, Integer.valueOf(object_choice));
 					} else {
 						NewCommandPanel.logger.severe("Layer selection error!");
 					}
+						
+					
 					JOptionPane.showMessageDialog(frmMuserControlPanel, "Identify critical security goals!");
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -723,6 +755,12 @@ public class NewCommandPanel{
 				return InfoEnum.ModelCategory.ACTOR.name();
 			} else if (input_box.getSelectedItem().equals("Holistic security goal model")){
 				return InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name();
+			} else if (input_box.getSelectedItem().equals("Threat model")){
+				return InfoEnum.ModelCategory.THREAT_MODEL.name();
+			} else if (input_box.getSelectedItem().equals("Dataflow diagram")){
+				return InfoEnum.ModelCategory.DATA_FLOW.name();
+			} else if (input_box.getSelectedItem().equals("Resource schema")){
+				return InfoEnum.ModelCategory.RESOURCE_SCHEMA.name();
 			}
 			
 		}

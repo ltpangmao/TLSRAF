@@ -2,9 +2,9 @@
 
 % Auxiliary rules (leaf & descendent) --- see the simplification_general file.
 
-%Critical Security Goal Identification rules --- see the simplification_general file.
+% Critical Security Goal Identification rules --- see the simplification_general file.
 
-%Asset Type Applicability rules --- see the simplification_general file.
+% Asset Type Applicability rules --- see the simplification_general file.
 
 
 %Application layer applicability rules

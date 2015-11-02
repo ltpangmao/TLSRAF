@@ -1,0 +1,54 @@
+%% Auxiliary facts --- security attribute model
+% general
+isa(confidentiality, security).
+isa(integrity, security).
+isa(availability, security).
+% specific
+isa(data_confidentiality, confidentiality).
+isa(data_integrity, integrity).
+isa(service_integrity, integrity).
+isa(application_integrity, integrity).
+isa(hardware_integrity, integrity).
+isa(data_availability, availability).
+isa(service_availability, availability).
+isa(application_availability, availability).
+isa(hardware_availability, availability).
+
+
+%% Auxiliary facts --- threat mapping
+against(information_disclosure,confidentiality).
+against(tampering,integrity).
+against(dos,availability).
+
+%% Auxiliary rules --- threat mapping propagation
+against(TH, SP2) :- against(TH, SP1), isa(SP2,SP1).
+
+
+%% Auxiliary rules --- descendants identification
+is_descendent(R1, R2) :- and_refine(R1, R2).
+is_descendent(R1, R2) :- refine(R2, R1).
+is_descendent(R1, R2) :- operationalize(R2, R1).
+is_descendent(R1, R2) :- is_descendent(R1, R2), is_descendent(R2, R3).
+is_descendent(INT, all) :- interval(INT).
+
+
+%Applicability rules (mainly focusing on the asset types)
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS, INT), data(AS), has_input(INT,AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS, INT), data(AS), has_input(INT,AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS, INT), data(AS), has_input(INT,AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS, INT), data(AS), has_output(INT,AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS, INT), data(AS), has_output(INT,AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS, INT), data(AS), has_output(INT,AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_integrity, AS, _), service(AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_availability, AS, _), service(AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, application_integrity, AS, _), application(AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, application_availability, AS, _), application(AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS, _), hardware(AS).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_availability, AS, _), hardware(AS).
+
+% Threaten rules
+threatened(SG) :- sec_goal(SG), has_properties(SG, _, SP, AS, INT1), anti_goal(TH, AS, INT2), against(TH, SP), is_descendent(INT1, INT2).
+
+
+% criticality rules
+is_critical(SG) :- is_applicable(SG), threatened(SG).
