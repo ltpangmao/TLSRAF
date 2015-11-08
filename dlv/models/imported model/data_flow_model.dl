@@ -1,3 +1,0 @@
-has_input(Provide_patientâs__medical_data,data1).
-has_output(Provide_patientâs__medical_data,data2).
-

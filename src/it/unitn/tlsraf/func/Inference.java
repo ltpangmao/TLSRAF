@@ -78,6 +78,7 @@ public class Inference {
 		// process the support links between layers.
 		ms.importSupportLinks();
 		
+		ms.req_bus_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);
 	}
 
 	/**
@@ -1462,12 +1463,20 @@ public class Inference {
 		Runtime runtime = Runtime.getRuntime();
 		String[] argus = { "osascript", "-e", script };
 		Process process = runtime.exec(argus);
+		
 		// get the output of the "process"
-		BufferedInputStream bio = (BufferedInputStream) process.getInputStream();		
 		String method_output="";
-		int read_int;
-		while ((read_int=bio.read())!=-1)
-			method_output+=(char)read_int;
+		String temp="";
+		BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		while ((temp=in.readLine())!=null){
+			method_output+=temp+"\n";
+		}
+		
+//		BufferedInputStream bio = (BufferedInputStream) process.getInputStream();		
+//		int read_int;
+//		while ((read_int=bio.read())!=-1)
+//			method_output+=(char)read_int;
+		
 //		System.out.println(method_output);		
 		
 		
@@ -1479,7 +1488,7 @@ public class Inference {
 		return method_output;
 	}
 
-	static String readFile(String path, Charset encoding) throws IOException {
+	public static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
 	}
@@ -1489,5 +1498,6 @@ public class Inference {
 		writer.println(content);
 		writer.close();
 	}
+
 	
 }

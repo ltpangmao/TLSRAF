@@ -1,8 +1,10 @@
+--use framework "Foundation"
 
 global element_info
 set element_info to missing value
 global element_list
 set element_list to {}
+
 
 
 ---scan graph information
@@ -36,8 +38,18 @@ tell application id "OGfl"
 					set owner to null
 				end try
 				
+				
+				--set objCDictionary to (current application's NSDictionary's dictionaryWithDictionary:(user data of currentShape))
+				--set allKeys to objCDictionary's allKeys()
+				--repeat with theKey in allKeys
+				--	log (theKey as text)
+				--	log (objCDictionary's valueForKey:theKey) as text
+				--end repeat
+				
+				
+				-- & value of user data item "Input" of currentShape & "; " & value of user data item "output" of currentShape & "; " & value of user data item "threat" of currentShape & "; " & value of user data item "asset" of currentShape & "; " & value of user data item "interval" of currentShape & "; " & 
 				--continue to extract value
-				set element_info to element_info & ";" & name of currentShape & ";" & newText & ";" & name of layer of currentShape & ";" & thickness of currentShape & ";" & double stroke of currentShape & ";" & size of currentShape & ";" & fill of currentShape & ";" & corner radius of currentShape & ";" & stroke pattern of currentShape & ";" & origin of currentShape & ";" & owner & ";" & name of canvas of currentShape & "; " & value of user data item "input" of currentShape & "; " & value of user data item "output" of currentShape & "; " & value of user data item "threat" of currentShape & "; " & value of user data item "asset" of currentShape & "; " & value of user data item "interval" of currentShape & "; " & "
+				set element_info to element_info & ";" & name of currentShape & ";" & newText & ";" & name of layer of currentShape & ";" & thickness of currentShape & ";" & double stroke of currentShape & ";" & size of currentShape & ";" & fill of currentShape & ";" & corner radius of currentShape & ";" & stroke pattern of currentShape & ";" & origin of currentShape & ";" & owner & ";" & name of canvas of currentShape & ";" & " " & recordToString(user data of currentShape) of me & "
 "
 				set element_list to element_list & element_info -- add element to list
 				-- then extract link info
@@ -141,3 +153,25 @@ on write_to_file(this_data, target_file, append_data) -- (string, file path as s
 		return false
 	end try
 end write_to_file
+
+
+-- coerce record to string...
+on recordToString(theRecord)
+	try
+		return theRecord as text
+	on error theError
+		try
+			set tids to text item delimiters
+			set text item delimiters to "{"
+			set a to text from text item 2 to -1 of theError
+			set text item delimiters to "}"
+			set b to text 1 thru text item -2 of a
+			set d to "{" & b & "}"
+			set text item delimiters to tids
+		on error theError2
+			return ""
+		end try
+		return d
+	end try
+end recordToString
+

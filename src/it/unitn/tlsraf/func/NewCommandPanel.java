@@ -71,12 +71,13 @@ public class NewCommandPanel{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					// first initalize the global logger
+					// first initialize the global logger
 //					NewCommandPanel.setup();
 					CommandPanel.setup(); 
-					// initalize the window
+					// initialize the window
 					NewCommandPanel window = new NewCommandPanel();
 					window.frmMuserControlPanel.setVisible(true);
+					window.frmMuserControlPanel.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

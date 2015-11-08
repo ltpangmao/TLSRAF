@@ -78,13 +78,12 @@ public class AuxiliaryPanel extends JFrame {
 					try {
 //						AppleScript.changeAttribute("Resulting model", "none", target_id.toString(), "-1", "none", "PHYSICAL");
 						AppleScript.changeAttribute(canvas, "none", target_id.toString(), "-1", "none", layer);
-						JOptionPane.showMessageDialog(null, "Finish setting layers!");
 					} catch (ScriptException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
-				
+				JOptionPane.showMessageDialog(null, "Finish setting layers!");
 			}
 		});
 		btnGenerate.setBounds(6, 38, 117, 29);
