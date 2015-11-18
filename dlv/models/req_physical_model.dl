@@ -1,9 +1,1 @@
-support(,send_appliance_info_to_hems).
-support(,remote_control_component).
-support(,collect_appliance_info).
-support(,send_price_info_to_hems).
-support(,send_energy_consumption_data_to_essa).
-support(,send_measurement_requests__to_sma).
-support(,receive__requests_from_essa).
-support(,communicate_with_essa).
 

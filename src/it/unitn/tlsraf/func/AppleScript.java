@@ -13,6 +13,8 @@ import java.util.List;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.ds.RequirementLink;
+import it.unitn.tlsraf.ds.SecurityGoal;
+
 import javax.script.ScriptException;
 
 /**
@@ -350,6 +352,7 @@ public class AppleScript {
 		String method_file=InfoEnum.drawing_method_file;
 		try {
 			script = loadMethods(script,method_file);
+			Func.writeFile("test.applescript", script, false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -439,7 +442,7 @@ public class AppleScript {
 	 * @param canvas: Mandatory
 	 * @param layer: use "none" to fit unknown layers
 	 * @param target_id: Mandatory
-	 * @param thickness: use "-1" to ignore color setting
+	 * @param thickness: use "-1" to ignore thickness setting
 	 * @param color: use "none" to ignore color setting
 	 * @param layer_value: use "none" to ignore layer setting
 	 * @throws ScriptException
@@ -449,12 +452,12 @@ public class AppleScript {
 		String script = "";
 		script += "set target_canvas_name to \""+canvas+"\"\n"
 				+ "set target_layer_name to \""+layer+"\"\n"
-				+ "set link_id to " + target_id +"\n"
+				+ "set target_id to " + target_id +"\n"
 				+ "set thick_value to " + thickness + "\n"
 				+ "set color_value to \"" + color + "\"\n"
 				+ "set layer_value to \"" + layer_value + "\"\n"
 				
-				+ "change_common_attribute(target_canvas_name, target_layer_name, link_id, thick_value, color_value, layer_value)\n";
+				+ "change_common_attribute(target_canvas_name, target_layer_name, target_id, thick_value, color_value, layer_value)\n";
 		//import the method codes
 		String method_file = InfoEnum.drawing_method_file;
 		try {
@@ -467,15 +470,59 @@ public class AppleScript {
 		executeAppleScript(script);
 	}
 	
+	/**
+	 * This method specifies user data for newly generated security goals
+	 * however, as we have changed the way of processing security goals, this method is replaced by addUserData2
+	 * @deprecated  
+	 * @param canvas
+	 * @param layer
+	 * @param target_id
+	 * @param owner
+	 * @throws ScriptException
+	 */
+//	public static void addUserData(String canvas, String layer, String target_id, String owner) throws ScriptException {
+//		//set parameters & call the exact method
+//		String script = "";
+//		script += "set target_canvas_name to \""+canvas+"\"\n"
+//				+ "set target_layer_name to \""+layer+"\"\n"
+//				+ "set owner to \"" + owner + "\"\n"
+//				+ "set target_id to " + target_id +"\n"
+//				+ "add_user_data(target_canvas_name, target_layer_name, target_id, owner)\n";
+//						
+//		//import the method codes
+//		String method_file = InfoEnum.drawing_method_file;
+//		try {
+//			script = loadMethods(script, method_file);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		//System.out.println(script);
+//
+//		//execute methods
+//		executeAppleScript(script);
+//	}
 	
-	public static void addUserData(String canvas, String layer, String target_id, String owner) throws ScriptException {
+	/**
+	 * This method specifies all important information of a security goal as user data 
+	 * @param canvas
+	 * @param layer
+	 * @param target_id
+	 * @param owner
+	 * @throws ScriptException
+	 */
+	public static void addUserData2(String canvas, String layer, SecurityGoal sg, String owner) throws ScriptException {
 		//set parameters & call the exact method
 		String script = "";
 		script += "set target_canvas_name to \""+canvas+"\"\n"
 				+ "set target_layer_name to \""+layer+"\"\n"
 				+ "set owner to \"" + owner + "\"\n"
-				+ "set target_id to " + target_id +"\n"
-				+ "add_user_data(target_canvas_name, target_layer_name, target_id, owner)\n";
+				+ "set target_id to " + sg.getId() +"\n"
+				+ "set target_importance to \"" + sg.getImportance() +"\"\n"
+				+ "set target_sec_property to \"" + sg.getSecurityAttribute() +"\"\n"
+				+ "set target_asset to \"" + sg.getAsset() +"\"\n"
+				+ "set target_interval_id to \"" + sg.getInterval().getId() +"\"\n"
+				+ "add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id)\n";
 						
 		//import the method codes
 		String method_file = InfoEnum.drawing_method_file;
@@ -489,6 +536,14 @@ public class AppleScript {
 
 		//execute methods
 		executeAppleScript(script);
+		
+		
+//		try {
+//			Func.writeFile("tt.applescript", script, false);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	
@@ -534,7 +589,7 @@ public class AppleScript {
 		List<String> elements = Arrays.asList(result.split("\n"));
 		boolean methods = false;
 		for (String s : elements) {
-			//find the start point
+			// find the start point
 			if (!methods && s.indexOf("methods") >= 0) {
 				methods = true;
 			}

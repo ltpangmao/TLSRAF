@@ -1,6 +1,7 @@
 package it.unitn.tlsraf.ds;
 
 import it.unitn.tlsraf.func.CommandPanel;
+import it.unitn.tlsraf.func.Func;
 
 import java.util.LinkedList;
 
@@ -133,20 +134,22 @@ public class RequirementElement implements Element {
 	/**
 	 * return the formal name of an element, which will be used to generate the corresponding formal expression
 	 * 2015-11-02, why don't we directly use the id of each element in order to avoid potential problems....
+	 * In this case, the getFromalName is not really the formal name, but formal ID, which is fine. This is the most convenient way to implement current reqs. Just to be aware
 	 */
 	@Override
 	public String getFormalName() {
 		String expression = "";
 		if (this.name != null) {
-			expression = this.getName();
-//			expression = this.getId();
+//			expression = this.getName();
+			// try to use id instead
+			expression = this.getId();
 		} else {
 			CommandPanel.logger.warning("Element's name is null! Type:" + this.remark);
 			return "null";
 		}
 
-		expression = expression.replaceAll(" ", "_");
-		return expression.toLowerCase();
+		expression = Func.prepareFormalExpression(expression);
+		return expression;
 	}
 
 	/**

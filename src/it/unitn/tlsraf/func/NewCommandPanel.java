@@ -1,5 +1,7 @@
 package it.unitn.tlsraf.func;
 
+import it.unitn.tlsraf.ds.ActorAssociationGraph;
+import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.RequirementGraph;
 
@@ -22,7 +24,9 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.JSeparator;
 import javax.swing.border.Border;
@@ -36,6 +40,7 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 import java.awt.ScrollPane;
 
 public class NewCommandPanel{
@@ -160,19 +165,19 @@ public class NewCommandPanel{
 						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing holistic security goal models!");
 					} else if (model.equals(InfoEnum.ModelCategory.DATA_FLOW.name())) {
-						ReferenceModelInference.importDataFlowModel(canvas);
+//						ReferenceModelInference.importDataFlowModel(canvas);
+						ReferenceModelInference.importDataFlowModelWithID(ms, canvas);
 						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing data flow diagram!");
 					} else if (model.equals(InfoEnum.ModelCategory.THREAT_MODEL.name())) {
-						ReferenceModelInference.importThreatModel(canvas);;
+						ReferenceModelInference.importThreatModel(ms, canvas);;
 						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing threat model!");
 					} else if (model.equals(InfoEnum.ModelCategory.RESOURCE_SCHEMA.name())) {
-						ReferenceModelInference.importResourceSchema(canvas);;
+						ReferenceModelInference.importResourceSchema(ms.assets, canvas);;
 						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing resource schema!");
 					}
-					
 					  else {
 						logger.warning("Command error!");
 					}
@@ -192,10 +197,15 @@ public class NewCommandPanel{
 				ms.req_bus_model = new RequirementGraph(ms.req_bus_model.getType(), ms.req_bus_model.getLayer());
 				ms.req_app_model = new RequirementGraph(ms.req_app_model.getType(), ms.req_app_model.getLayer());
 				ms.req_phy_model = new RequirementGraph(ms.req_phy_model.getType(), ms.req_phy_model.getLayer());
+				
+				ms.actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
+				ms.hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
+				ms.assets = new LinkedList<String>();
+				
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Delete all models!");
 			}
 		});
-		btnDelete.setBounds(134, 84, 86, 39);
+		btnDelete.setBounds(125, 84, 86, 39);
 		frmMuserControlPanel.getContentPane().add(btnDelete);
 		
 		JLabel lblAnalysisType = new JLabel("Analysis Type");
@@ -243,9 +253,32 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnPrint.setBounds(242, 84, 86, 39);
+		btnPrint.setBounds(223, 84, 86, 39);
 		frmMuserControlPanel.getContentPane().add(btnPrint);
 		
+		
+		JButton btnSavetofile = new JButton("SaveToFile");
+		btnSavetofile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				try {
+					ms.req_bus_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);					
+					ms.req_app_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);
+					ms.req_phy_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);
+					ms.writeSupportLinksToFile();
+
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish writing support links to a file!");
+			}
+		});
+		btnSavetofile.setBounds(321, 84, 86, 39);
+		frmMuserControlPanel.getContentPane().add(btnSavetofile);
 		
 		
 		final JComboBox<String> object = new JComboBox<String>();
@@ -665,7 +698,7 @@ public class NewCommandPanel{
 		final JTextArea alternative_list = new JTextArea();
 		alternative_list.setEditable(false);
 		alternative_list.setBackground(new Color(211, 211, 211));
-		alternative_list.setBounds(27, 255, 982, 373);
+		alternative_list.setBounds(0, 0, 982, 373);
 		frmMuserControlPanel.getContentPane().add(alternative_list);
 		alternative_list.setLineWrap(true);
 		
@@ -727,6 +760,8 @@ public class NewCommandPanel{
 		});
 		btnStepGenerate.setBounds(758, 188, 211, 55);
 		frmMuserControlPanel.getContentPane().add(btnStepGenerate);
+		
+		
 		
 		
 //		JScrollPane scrollPane = new JScrollPane(textArea, 

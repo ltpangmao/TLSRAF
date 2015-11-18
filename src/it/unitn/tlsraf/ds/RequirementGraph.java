@@ -2,6 +2,7 @@ package it.unitn.tlsraf.ds;
 
 import it.unitn.tlsraf.func.AppleScript;
 import it.unitn.tlsraf.func.CommandPanel;
+import it.unitn.tlsraf.func.Func;
 import it.unitn.tlsraf.func.Inference;
 
 import java.io.BufferedReader;
@@ -125,7 +126,7 @@ public class RequirementGraph {
 	public void importGraphInfo(String result) throws IOException {
 		List<String> elements = Arrays.asList(result.split("\n"));
 		// first processing, which simply imports all information from the
-		// text file
+		// first process elements
 		for (String element : elements) {
 			if (element.startsWith("element")) {
 				List<String> factors = Arrays.asList(element.split(";"));
@@ -136,6 +137,7 @@ public class RequirementGraph {
 				}
 			}
 		}
+		// then process links
 		for (String element : elements) {
 			if (element.startsWith("link")) {
 				List<String> factors = Arrays.asList(element.split(";"));
@@ -156,18 +158,19 @@ public class RequirementGraph {
 			reprocessRequirementElement((RequirementElement) elem);
 		}
 
+		// No this should not happen anyway...
 		// in case a security goal still lacks of owner
-		for (Element e : this.getElements()) {
-			if (e.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
-				SecurityGoal sg = (SecurityGoal) e;
-				if (sg.owner_text.equals(null)) {
-					CommandPanel.logger.severe("Missing the ownership of security goal " + sg.getName());
-				} else {
-					sg.owner = new Actor();
-					sg.owner.setName(sg.owner_text);
-				}
-			}
-		}
+//		for (Element e : this.getElements()) {
+//			if (e.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
+//				SecurityGoal sg = (SecurityGoal) e;
+//				if (sg.owner_text.equals(null)) {
+//					CommandPanel.logger.severe("Missing the ownership of security goal " + sg.getName());
+//				} else {
+//					sg.owner = new Actor();
+//					sg.owner.setName(sg.owner_text);
+//				}
+//			}
+//		}
 
 		/*
 		 * finally identify the owner of each security goal Here we check whether all security goals have been added with owner info In our analysis, we don't really need the Actor
@@ -179,7 +182,11 @@ public class RequirementGraph {
 		 * 
 		 * if (this.getType().equals(InfoEnum.Layer.BUSINESS.name())) { reprocessSecurityGoalOwnership(this.getLayer(), this.getElements()); }
 		 */
+		
 
+//		for (String element : elements) {
+//			System.out.println(element);
+//		}
 	}
 
 	/*
@@ -189,7 +196,7 @@ public class RequirementGraph {
 		/*
 		 * this part is exclusively for requirement elements 0)notation,element; 1)id,51670; 2)shape,Hexagon; 3)name,Calculate price; 4)layer,Business; 5)thickness, 1.0; 6)double
 		 * stroke; 7)size: 117.945899963379 43.817626953125; 8)no fill; 9)0.0 corner radius 10) stroke pattern: 0 11) origin: 87.234039306641 1084.06665039062 12) owner: xx 13)
-		 * Canvas, Model 
+		 * Canvas, Model； 14)user data, input
 		 */
 		// TODO: pre-process all numbers fields, don't know why so far...
 		factors.set(5, factors.get(5).replaceAll(",", "."));
@@ -216,9 +223,16 @@ public class RequirementGraph {
 			} else {
 				((SecurityGoal) new_elem).setCriticality(false);
 			}
-			// this value can be useful in the following analysis
-			new_elem.owner_text = factors.get(12);
-			((SecurityGoal) new_elem).extractInfoFromName();
+			
+			// this value is formalized and then further being used
+			new_elem.owner_text = Func.prepareFormalExpression(factors.get(12));
+//			((SecurityGoal) new_elem).extractInfoFromName();
+			if (!factors.get(14).equals(" ")) {
+				((SecurityGoal) new_elem).extractInfoFromUserData(factors.get(14), this);
+			}
+			else{
+				CommandPanel.logger.info(("Information of security goal (ID:"+factors.get(1)+") is missing! Should be covered later") );
+			}
 		}
 		// anti-goals
 		else if (factors.get(2).equals("Circle") & factors.get(10).equals("2")) {
@@ -256,10 +270,14 @@ public class RequirementGraph {
 				new_elem.setType(InfoEnum.RequirementElementType.ACTOR_BOUNDARY.name());
 				new_elem.setRemark(InfoEnum.ElementRemark.BOUNDARY.name());
 			}
-			// dependency labels
-			else if (factors.get(2).equals("AndGate") || (factors.get(2).equals("Rectangle") & factors.get(9).equals("0.0"))) {// Why rectangle? for the permissions....
+			// dependency labels --
+			else if (factors.get(2).equals("AndGate")) {
 				new_elem.setType(InfoEnum.RequirementElementType.LABEL.name());
 			}
+			// dependency labels -- permissions? already depleted I think...
+			// else if (factors.get(2).equals("Rectangle") & factors.get(9).equals("0.0")) {
+			// new_elem.setType(InfoEnum.RequirementElementType.LABEL.name());
+			// }
 			// all others should be able to mapped to current mappings.
 			else {
 				new_elem.setType(InfoEnum.req_elem_type_map.get(factors.get(2)));
@@ -313,12 +331,12 @@ public class RequirementGraph {
 		if (target == null || source == null) {
 			return null;
 		}
-		
+
 		// remove inappropriate dependency modeling, which are linked to the dependency labels.
 		if (target.getType().equals(InfoEnum.RequirementElementType.LABEL.name()) || source.getType().equals(InfoEnum.RequirementElementType.LABEL.name())) {
 			return null;
 		}
-		
+
 		/*
 		 * this part is exclusively for requirement elements 0)link; 1)id,51690 2)arrow type,StickArrow; 3)line type, curved; 4)source/tail,51670; 5)destination/head,51490;
 		 * 6)label,NoLabel;(The shape of that label is not considered, only the content of that label) 7)dash type,0; 8)thickness,1.0; 9)head scale,1.0; 10) layer, BUSINESS
@@ -361,6 +379,7 @@ public class RequirementGraph {
 			new_link.setRemark(InfoEnum.LinkRemark.REDUNDANT.name());
 		} else {
 			CommandPanel.logger.severe("Unknown links cannot be imported");
+			CommandPanel.logger.severe(factors.get(1));
 		}
 
 		return new_link;
@@ -439,8 +458,21 @@ public class RequirementGraph {
 	 * @param elem
 	 */
 	private void reprocessRequirementElement(RequirementElement elem) {
+		// process the interval element of a security goal
+		if (elem.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
+			SecurityGoal sg = (SecurityGoal)elem;
+			if(sg.getInterval()==null){
+				Element temp = findElementById(sg.interval_id);
+				if(temp!=null){
+					sg.setInterval(temp);
+				}
+				else{
+					CommandPanel.logger.severe("Securigy goal ("+sg.interval_id+") is missing interval");
+				}
+			}
+		}
 		// first tackle actor-related issues
-		if (elem.getType().equals(InfoEnum.RequirementElementType.ACTOR.name())) {
+		else if (elem.getType().equals(InfoEnum.RequirementElementType.ACTOR.name())) {
 			Actor actor = (Actor) elem;
 			// First find the boundary element for each actor
 			// choose the closest boundary, here is an assumption we made on the modeling style
@@ -468,9 +500,13 @@ public class RequirementGraph {
 			double right_down_y = actor.getBoundary().origin_y + actor.getBoundary().height;
 			for (Element e : elements) {
 				RequirementElement re = (RequirementElement) e;
-				if (re.origin_x > left_up_x && re.origin_x < right_down_x && re.origin_y > left_up_y && re.origin_y < right_down_y) {
-					if (!actorOwn(actor, re)) {
-						actor.getOwnedElement().add(re);
+				// only calculate the ownership for goal, task, domain assumption for the time being
+				if (re.getType().equals(InfoEnum.RequirementElementType.TASK.name()) || re.getType().equals(InfoEnum.RequirementElementType.GOAL.name())
+						|| re.getType().equals(InfoEnum.RequirementElementType.DOMAIN_ASSUMPTION.name())) {
+					if (re.origin_x > left_up_x && re.origin_x < right_down_x && re.origin_y > left_up_y && re.origin_y < right_down_y) {
+						if (!actorOwn(actor, re)) {
+							actor.getOwnedElement().add(re);
+						}
 					}
 				}
 			}
@@ -513,7 +549,9 @@ public class RequirementGraph {
 		} else {
 			for (RequirementLink link : elem.getInLinks()) {
 				// insert this to facilitate security operationalization analysis.
-				if (link.getType().equals(InfoEnum.RequirementLinkType.MAKE.name()) || link.getType().equals(InfoEnum.RequirementLinkType.HELP.name())) {
+				if (link.getType() == null) {
+					CommandPanel.logger.severe("Link ID: " + link.getId() + " has problem.");
+				} else if (link.getType().equals(InfoEnum.RequirementLinkType.MAKE.name()) || link.getType().equals(InfoEnum.RequirementLinkType.HELP.name())) {
 					link.getTarget().make_help_links.add(link);
 				}
 				// trust relation processing decides whether an element is a "xxdum"
@@ -544,7 +582,10 @@ public class RequirementGraph {
 						// deplete the out_depend_link
 						elem.getOutLinks().getFirst().setRemark(InfoEnum.LinkRemark.REDUNDANT.name());
 					} else {
-						CommandPanel.logger.severe("depend link processing error");
+						CommandPanel.logger.severe("depend link processing error: Link id-->"+link.getId());
+						CommandPanel.logger.severe("Element id-->"+elem.getId());
+						CommandPanel.logger.severe("elem.getInLinks().size()-->"+elem.getInLinks().size());
+						CommandPanel.logger.severe("elem.getOutLinks().size()-->"+elem.getOutLinks().size());
 					}
 					return;
 				}
@@ -699,7 +740,7 @@ public class RequirementGraph {
 	 */
 	public SecurityGoal findExhausiveSecurityGoalByAttributes(String importance, String attribute, String asset, String interval) {
 		for (SecurityGoal sg : sg_elems) {
-			if (sg.getImportance().equals(importance) && sg.getSecurityAttribute().equals(attribute) && sg.getAsset().equals(asset) && sg.getInterval().equals(interval)) {
+			if (sg.getImportance().equals(importance) && sg.getSecurityAttribute().equals(attribute) && sg.getAsset().equals(asset) && sg.getInterval().getId().equals(interval)) {
 				return sg;
 			}
 		}

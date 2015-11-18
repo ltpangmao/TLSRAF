@@ -14,22 +14,33 @@ isa(service_availability, availability).
 isa(application_availability, availability).
 isa(hardware_availability, availability).
 
-
+%%%% threat
 %% Auxiliary facts --- threat mapping
 against(information_disclosure,confidentiality).
 against(tampering,integrity).
 against(dos,availability).
-
 %% Auxiliary rules --- threat mapping propagation
 against(TH, SP2) :- against(TH, SP1), isa(SP2,SP1).
 
 
+%%%% interval
 %% Auxiliary rules --- descendants identification
 is_descendent(R1, R2) :- and_refine(R1, R2).
 is_descendent(R1, R2) :- refine(R2, R1).
 is_descendent(R1, R2) :- operationalize(R2, R1).
 is_descendent(R1, R2) :- is_descendent(R1, R2), is_descendent(R2, R3).
 is_descendent(INT, all) :- interval(INT).
+%% Auxiliary rules --- interval coverage
+associated(INT1,INT2) :- is_descendent(INT1, INT2).
+associated(INT,INT) :- interval(INT).
+%associated(INT1,INT2) :- is_descendent(INT2, INT1).
+
+
+%%%% asset
+is_descendent(A1, A2) :- part_of(A1, A2).
+is_descendent(A1, A3) :- is_descendent(A1, A2), is_descendent(A2, A3).
+associated(A1,A2) :- is_descendent(A1, A2).
+associated(A,A) :- interval(A).
 
 
 %Applicability rules (mainly focusing on the asset types)
@@ -47,7 +58,9 @@ is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS,
 is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_availability, AS, _), hardware(AS).
 
 % Threaten rules
-threatened(SG) :- sec_goal(SG), has_properties(SG, _, SP, AS, INT1), anti_goal(TH, AS, INT2), against(TH, SP), is_descendent(INT1, INT2).
+threatened(SG) :- sec_goal(SG), has_properties(SG, _, SP, AS1, INT1), anti_goal(TH, AS2, INT2), against(TH, SP), associated(INT1, INT2), associated(A1, A2).
+% threatened(SG) :- sec_goal(SG), has_properties(SG, _, SP, AS, INT), anti_goal(TH, AS, INT), against(TH, SP).
+
 
 
 % criticality rules

@@ -1,6 +1,8 @@
 package it.unitn.tlsraf.ds;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,12 +41,15 @@ public class InfoEnum {
 	public static final String REQ_TARGET_CANVAS="Model";
 //	public static final String ESG_BP_CANVAS="Business SG";
 	
+	// canvas names
 	public static final Map<String, String> esg_canvas_mapping = new HashMap<String, String>();
 	static {
 		esg_canvas_mapping.put(InfoEnum.Layer.BUSINESS.name(), "Business SG");
 		esg_canvas_mapping.put(InfoEnum.Layer.APPLICATION.name(), "Application SG");
 		esg_canvas_mapping.put(InfoEnum.Layer.PHYSICAL.name(), "Physical SG");
 	}
+	
+	// anti-goal canvas names
 	public static final Map<String, String> eag_canvas_mapping = new HashMap<String, String>();
 	static {
 		eag_canvas_mapping.put(InfoEnum.Layer.BUSINESS.name(), "Business AG");
@@ -213,6 +218,8 @@ public class InfoEnum {
 	public enum Commands {
 		IMP_SELECTION, IMP_FILE, REF_ALL_ONE_STEP, REF_ALL_EXHAUSTIVE
 	}
+	
+	public static String[] threats = {"spoofing","tampering","repudiation","information disclosure","denial of service", "elevation of privilege" };
 	
 	
 	//Current directory

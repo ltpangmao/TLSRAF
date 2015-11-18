@@ -1,6 +1,7 @@
 package it.unitn.tlsraf.func;
 
 import it.unitn.tlsraf.ds.ActorAssociationGraph;
+import it.unitn.tlsraf.ds.Element;
 import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.Link;
@@ -10,6 +11,7 @@ import it.unitn.tlsraf.ds.InfoEnum.Layer;
 import it.unitn.tlsraf.ds.InfoEnum.ModelCategory;
 import it.unitn.tlsraf.ds.InfoEnum.RequirementLinkType;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class ModelSet {
 	
 	public ActorAssociationGraph actor_model;
 	public HolisticSecurityGoalModel hsgm;
+	public LinkedList<String> assets;
 	
 	public LinkedList<Link> bus_app_support_links = new LinkedList<Link>();
 	public LinkedList<Link> app_phy_support_links = new LinkedList<Link>();
@@ -46,6 +49,7 @@ public class ModelSet {
 		
 		actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
 		hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
+		assets = new LinkedList<String>(); 
 	}
 	
 	/**
@@ -57,8 +61,43 @@ public class ModelSet {
 	public void importSupportLinks(){
 		parseSupportLinks(this.req_bus_model, this.req_app_model, this.bus_app_support_links);
 		parseSupportLinks(this.req_app_model, this.req_phy_model, this.app_phy_support_links);
+//		writeToFile();
+	}
+
+
+	/**
+	 * Output existing support links 
+	 */
+	public void writeSupportLinksToFile() {
+		String support = "";
+		support += getSupportLinkFormalExpression(this.bus_app_support_links);
+		support += getSupportLinkFormalExpression(this.app_phy_support_links);
+		
+		try {
+			Func.writeFile("dlv/models/support_links.dl", support, false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+	
+	
+	
+	
+	/**
+	 * Get formal expressions of all support links 
+	 * @param support_link_set
+	 * @return
+	 */
+	private String getSupportLinkFormalExpression(LinkedList<Link> support_link_set) {
+		String result = "";
+		for(Link link: support_link_set){
+			result+=link.getFormalExpressions()+"\n";
+		}
+		return result;
+	}
+
 	/**
 	 * This method complements the information of each support link and adds it to the set of support links.
 	 * If the info of requirements models is not complete, then the support link will be still empty.
@@ -71,8 +110,15 @@ public class ModelSet {
 			RequirementLink support = (RequirementLink) link;
 			if(support.getType().equals(InfoEnum.RequirementLinkType.SUPPORT.toString())){
 				//search the source/target elements for each support link
-				support.setSource(low_req_model.findElementById(support.source_id));
-				support.setTarget(high_req_model.findElementById(support.des_id));
+				// assign the value only if we can find such an element
+				Element elem = low_req_model.findElementById(support.source_id);
+				if(elem!=null){
+					support.setSource(elem);
+				}
+				elem =high_req_model.findElementById(support.des_id);
+				if(elem!=null){
+					support.setTarget(elem);
+				}
 				// add this link to the set of support links
 				support_links.add(support);
 			}

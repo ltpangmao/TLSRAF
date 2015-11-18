@@ -37,8 +37,8 @@ import net.xqj.basex.BaseXXQDataSource;
 public class Testing {
 
 	public static void main(String args[]) throws IOException, ScriptException, XQException {
-		stringTesting();
-		// ruleTesting();
+//		stringTesting();
+		 ruleTesting();
 
 		// newTesting();
 
@@ -96,6 +96,14 @@ public class Testing {
 		refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent  " + InfoEnum.current_directory + "/dlv/models/req_business_model.dl " + InfoEnum.current_directory
 				+ "/dlv/models/data_flow_model.dl " + InfoEnum.current_directory + "/dlv/models/asset_model.dl " + InfoEnum.current_directory + "/dlv/models/threat_model.dl "
 				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule ";
+		
+		//-nofacts
+		refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent  " 
+				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule "
+				+ InfoEnum.current_directory + "/dlv/models/data_flow_model.dl " 
+				+ InfoEnum.current_directory + "/dlv/models/threat_model.dl " 
+				+ InfoEnum.current_directory + "/dlv/models/asset_model.dl "
+				+ InfoEnum.current_directory + "/dlv/models/req_business_model.dl ";
 
 		Runtime rt = Runtime.getRuntime();
 		Process pr = rt.exec(refine_rule);

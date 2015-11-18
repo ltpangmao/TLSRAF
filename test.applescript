@@ -1,44 +1,13 @@
--- parameters
-set target_canvas_name to "BUSINESS"
-set target_layer_name to "none"
-set target_size to {50, 51}
-set target_name to "Rectangle"
-set target_text to "test sfs asdf  asf asd "
-set target_origin to {500, 500}
+set target_canvas_name to "Business SG"
+set target_layer_name to "All"
+set target_size to {214,144}
+set target_name to "Cloud"
+set target_text to "very high data confidentiality [patient billing information, Respond to request  from patient]"
+set target_origin to {500,500}
 set corner_ridius to 0
-set reference_element_id to 53651
-set target_offset to {100, 100}
-
-set target_id to 53652
-set source_id to 53651
-set head_type to "SharpArrow"
-set stroke_pattern to 1
-set label_text to "DD"
-set link_layer to "testtest"
 set stroke_pattern to 0
 set target_thickness to 1
-
-set owner to "ahahahahahah"
-
-set thick_value to 1
-set color_value to "Red"
-set layer_value to "test"
-
-set link_id to 43426
---executing method
---draw_isolated_element(target_canvas_name, target_layer_name, target_size, target_name, target_text, target_origin, corner_ridius)
---draw_referred_element(reference_element_id, target_canvas_name, target_layer_name, target_size, target_name, target_text, corner_ridius, target_offset)
---draw_link(target_canvas_name, target_layer_name, target_id, source_id, head_type, stroke_pattern, label_text, link_layer)
---add_user_data(target_canvas_name, target_layer_name, target_id, owner)
---change_element_attribute(target_canvas_name, target_layer_name, target_id, thick_value, color_value, layer_value)
---change_link_attribute(target_canvas_name, target_layer_name, link_id, thick_value, color_value, layer_value)
---get_selected_graph()
-
-set target_canvas_name to "Model"
-set target_layer_name to "APPLICATION"
-
-add_user_data(target_canvas_name, target_layer_name, "54201", "energy_supplier")
-
+draw_isolated_element(target_canvas_name, target_layer_name, target_size, target_name, target_text, target_origin, corner_ridius, stroke_pattern, target_thickness)
 ---methods
 --global global_text_size, global_sub_text_size
 --set global_text_size to 24
@@ -382,3 +351,4 @@ on get_selected_graph()
 		end tell
 	end tell
 end get_selected_graph
+
