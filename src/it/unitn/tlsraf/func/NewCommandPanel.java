@@ -134,6 +134,19 @@ public class NewCommandPanel{
 		lblModelType.setBounds(205, 36, 95, 16);
 		frmMuserControlPanel.getContentPane().add(lblModelType);
 		
+		final JTextArea alternative_list = new JTextArea();
+		alternative_list.setLineWrap(true);
+//		scrollPane.setColumnHeaderView(alternative_list);
+//		alternative_list.setBounds(27, 293, 982, 335);
+//		frmMuserControlPanel.getContentPane().add(alternative_list);
+
+		
+		JScrollPane scrollPane = new JScrollPane(alternative_list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(27, 293, 982, 335);
+		frmMuserControlPanel.getContentPane().add(scrollPane);
+		
+		
 		JButton btnImport = new JButton("Import");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -194,13 +207,14 @@ public class NewCommandPanel{
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ms.req_bus_model = new RequirementGraph(ms.req_bus_model.getType(), ms.req_bus_model.getLayer());
-				ms.req_app_model = new RequirementGraph(ms.req_app_model.getType(), ms.req_app_model.getLayer());
-				ms.req_phy_model = new RequirementGraph(ms.req_phy_model.getType(), ms.req_phy_model.getLayer());
-				
-				ms.actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
-				ms.hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
-				ms.assets = new LinkedList<String>();
+				ms = new ModelSet();
+//				ms.req_bus_model = new RequirementGraph(ms.req_bus_model.getType(), ms.req_bus_model.getLayer());
+//				ms.req_app_model = new RequirementGraph(ms.req_app_model.getType(), ms.req_app_model.getLayer());
+//				ms.req_phy_model = new RequirementGraph(ms.req_phy_model.getType(), ms.req_phy_model.getLayer());
+//				
+//				ms.actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
+//				ms.hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
+//				ms.assets = new LinkedList<String>();
 				
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Delete all models!");
 			}
@@ -227,7 +241,8 @@ public class NewCommandPanel{
 		
 		final JComboBox<String> layer = new JComboBox<String>();
 		layer.setName("Layer");
-		layer.addItem("All");
+		// although it is possible to run all inference rules for all layers, it is really useless to do so 
+//		layer.addItem("All");
 		layer.addItem("Business");
 		layer.addItem("Application");
 		layer.addItem("Physical");
@@ -283,10 +298,11 @@ public class NewCommandPanel{
 		
 		final JComboBox<String> object = new JComboBox<String>();
 		object.setName("Object");
-		object.addItem("All models");
 		object.addItem("Selected models");
+		object.addItem("All models");
 		object.setBounds(294, 194, 117, 27);
 		frmMuserControlPanel.getContentPane().add(object);
+//		object.setSelectedItem("Selected models");
 		
 		JLabel lblObject = new JLabel("Object");
 		lblObject.setBounds(294, 177, 61, 16);
@@ -359,11 +375,7 @@ public class NewCommandPanel{
 				try {
 					if (analysis_choice.equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
 						if (mode_choice.equals(InfoEnum.Commands.REF_ALL_ONE_STEP.name())) {
-							if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-								Inference.securityGoalRefine(ms.req_bus_model, dimension_choice, Integer.valueOf(object_choice));
-								Inference.securityGoalRefine(ms.req_app_model, dimension_choice, Integer.valueOf(object_choice));
-								Inference.securityGoalRefine(ms.req_phy_model, dimension_choice, Integer.valueOf(object_choice));
-							} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+							if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
 								Inference.securityGoalRefine(ms.req_bus_model, dimension_choice, Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
 								Inference.securityGoalRefine(ms.req_app_model, dimension_choice, Integer.valueOf(object_choice));
@@ -374,21 +386,14 @@ public class NewCommandPanel{
 							}
 							JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish one-step refinement!");
 						} else if (mode_choice.equals(InfoEnum.Commands.REF_ALL_EXHAUSTIVE.name())) {
-							if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_bus_model, ms.actor_model,
-										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_app_model, ms.actor_model,
-										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_phy_model, ms.actor_model,
-										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-							} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_bus_model, ms.actor_model,
+							if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_bus_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_app_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_app_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_phy_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_phy_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else {
 								NewCommandPanel.logger.severe("Layer selection error!");
@@ -398,11 +403,7 @@ public class NewCommandPanel{
 					}
 					else if(analysis_choice.equals(InfoEnum.RequirementElementType.ANTI_GOAL.name())){
 						if (mode_choice.equals(InfoEnum.Commands.REF_ALL_ONE_STEP.name())) {
-							if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-								AntiGoalInference.antiGoalRefine(ms.req_bus_model, dimension_choice, Integer.valueOf(object_choice));
-								AntiGoalInference.antiGoalRefine(ms.req_app_model, dimension_choice, Integer.valueOf(object_choice));
-								AntiGoalInference.antiGoalRefine(ms.req_phy_model, dimension_choice, Integer.valueOf(object_choice));
-							} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+							if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
 								AntiGoalInference.antiGoalRefine(ms.req_bus_model, dimension_choice, Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
 								AntiGoalInference.antiGoalRefine(ms.req_app_model, dimension_choice, Integer.valueOf(object_choice));
@@ -413,14 +414,7 @@ public class NewCommandPanel{
 							}
 							JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish one-step refinement!");
 						} else if (mode_choice.equals(InfoEnum.Commands.REF_ALL_EXHAUSTIVE.name())) {
-							if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-								AntiGoalInference.exhaustiveAntiGoalRefineAnalysis(ms.req_bus_model, ms.actor_model,
-										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-								AntiGoalInference.exhaustiveAntiGoalRefineAnalysis(ms.req_app_model, ms.actor_model,
-										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-								AntiGoalInference.exhaustiveAntiGoalRefineAnalysis(ms.req_phy_model, ms.actor_model,
-										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-							} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+							if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
 								AntiGoalInference.exhaustiveAntiGoalRefineAnalysis(ms.req_bus_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
@@ -451,34 +445,15 @@ public class NewCommandPanel{
 				String layer_choice = getCommand(layer);
 				String object_choice = getCommand(object);
 				try {
-//					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-//						Inference.securityGoalSimplification(ms.req_bus_model, ms.actor_model, Integer.valueOf(object_choice));
-//						Inference.securityGoalSimplification(ms.req_app_model, ms.actor_model, Integer.valueOf(object_choice));
-//						Inference.securityGoalSimplification(ms.req_phy_model, ms.actor_model, Integer.valueOf(object_choice));
-//					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-//						Inference.securityGoalSimplification(ms.req_bus_model, ms.actor_model, Integer.valueOf(object_choice));
-//					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-//						Inference.securityGoalSimplification(ms.req_app_model, ms.actor_model, Integer.valueOf(object_choice));
-//					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
-//						Inference.securityGoalSimplification(ms.req_phy_model, ms.actor_model, Integer.valueOf(object_choice));
-//					} else {
-//						NewCommandPanel.logger.severe("Layer selection error!");
-//					}
-					
-					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-						Inference.threatBasedSecurityGoalSimplification(ms.req_bus_model, Integer.valueOf(object_choice));
-						Inference.threatBasedSecurityGoalSimplification(ms.req_app_model, Integer.valueOf(object_choice));
-						Inference.threatBasedSecurityGoalSimplification(ms.req_phy_model, Integer.valueOf(object_choice));
-					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-						Inference.threatBasedSecurityGoalSimplification(ms.req_bus_model, Integer.valueOf(object_choice));
+					if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+						Inference.threatBasedSecurityGoalSimplification(ms, ms.req_bus_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-						Inference.threatBasedSecurityGoalSimplification(ms.req_app_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms, ms.req_app_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
-						Inference.threatBasedSecurityGoalSimplification(ms.req_phy_model, Integer.valueOf(object_choice));
+						Inference.threatBasedSecurityGoalSimplification(ms, ms.req_phy_model, Integer.valueOf(object_choice));
 					} else {
 						NewCommandPanel.logger.severe("Layer selection error!");
 					}
-						
 					
 					JOptionPane.showMessageDialog(frmMuserControlPanel, "Identify critical security goals!");
 				} catch (IOException e1) {
@@ -499,28 +474,25 @@ public class NewCommandPanel{
 				// merge the alternative calculation method into the
 				LinkedList<String> alternatives = null;
 				try {
-					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
+					if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
 						Inference.securityGoalOperationalization(ms.req_bus_model, Integer.valueOf(object_choice));
-						Inference.securityGoalOperationalization(ms.req_app_model, Integer.valueOf(object_choice));
-						Inference.securityGoalOperationalization(ms.req_phy_model, Integer.valueOf(object_choice));
-					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-						Inference.securityGoalOperationalization(ms.req_bus_model, Integer.valueOf(object_choice));
-						alternatives = Inference.securityAlternativeSolutions(ms.req_bus_model, Integer.valueOf(object_choice));
+//						alternatives = Inference.securityAlternativeSolutions(ms.req_bus_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
 						Inference.securityGoalOperationalization(ms.req_app_model, Integer.valueOf(object_choice));
-						alternatives = Inference.securityAlternativeSolutions(ms.req_app_model, Integer.valueOf(object_choice));
+//						alternatives = Inference.securityAlternativeSolutions(ms.req_app_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
 						Inference.securityGoalOperationalization(ms.req_phy_model, Integer.valueOf(object_choice));
-						alternatives = Inference.securityAlternativeSolutions(ms.req_phy_model, Integer.valueOf(object_choice));
+//						alternatives = Inference.securityAlternativeSolutions(ms.req_phy_model, Integer.valueOf(object_choice));
 					} else {
 						NewCommandPanel.logger.severe("Layer selection error!");
 					}
 					
-					String result = "";
+					// we will not do the alternative analysis here, but in the end of the analysis
+//					String result = "";
 //					alternative_list.removeAll();
-					for (String s : alternatives) {
-						result += s+"\n";
-					}
+//					for (String s : alternatives) {
+//						result += s+"\n";
+//					}
 //					alternative_list.setText(result);
 					
 					JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish Operationalization of critical security goals!");
@@ -544,9 +516,7 @@ public class NewCommandPanel{
 				String object_choice = getCommand(object);
 				LinkedList<String> results = null;
 				try {
-					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-						// tackle each layer separately by default
-					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+					if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
 						results = Inference.checkSecurityPatternContext(ms.req_bus_model, Integer.valueOf(object_choice), true);
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
 						results = Inference.checkSecurityPatternContext(ms.req_app_model, Integer.valueOf(object_choice), true);
@@ -621,9 +591,7 @@ public class NewCommandPanel{
 				String object_choice = getCommand(object);
 				LinkedList<String> results = null;
 				try {
-					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-						// tackle each layer separately by default
-					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+					if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
 						results = Inference.checkSecurityPatternContext(ms.req_bus_model, Integer.valueOf(object_choice), false);
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
 						results = Inference.checkSecurityPatternContext(ms.req_app_model, Integer.valueOf(object_choice), false);
@@ -694,19 +662,9 @@ public class NewCommandPanel{
 		btnStep_42.setBounds(583, 188, 163, 55);
 		btnStep_42.setMargin(new Insets(0, 0, 0, 0));
 		frmMuserControlPanel.getContentPane().add(btnStep_42);
-		
-		final JTextArea alternative_list = new JTextArea();
-		alternative_list.setEditable(false);
-		alternative_list.setBackground(new Color(211, 211, 211));
-		alternative_list.setBounds(0, 0, 982, 373);
-		frmMuserControlPanel.getContentPane().add(alternative_list);
-		alternative_list.setLineWrap(true);
-		
-		JScrollPane scrollPane = new JScrollPane(alternative_list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(27, 255, 982, 373);
-		frmMuserControlPanel.getContentPane().add(scrollPane);
 
+		
+		
 	
 		JButton btnStep_5 = new JButton("<html>Step 5: Transfer security concern</html>");
 		btnStep_5.addActionListener(new ActionListener() {
@@ -714,13 +672,10 @@ public class NewCommandPanel{
 				String layer_choice = getCommand(layer);
 				String object_choice = getCommand(object);
 				try {
-					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-						Inference.securityBusToAppTransformation(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
-						Inference.securityAppToPhyTransformation(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
-					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-						Inference.securityBusToAppTransformation(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
+					if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
+						Inference.transferSecurityAcrossLayers(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-						Inference.securityAppToPhyTransformation(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
+						Inference.transferSecurityAcrossLayers(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
 					} else {
 						NewCommandPanel.logger.severe("Layer selection error!");
@@ -745,8 +700,16 @@ public class NewCommandPanel{
 						alternatives = HSGMInference.generateHolisticSecuritySolutions(ms.hsgm);
 						String result = "";
 						alternative_list.removeAll();
-						for (String s : alternatives) {
-							result += s+"\n";
+						// for the large set of inference result, we only show the first 100 elements
+						if(alternatives.size()>100){
+							for(int i=0; i<100; i++){
+								result += alternatives.get(i)+"\n";
+							}
+						}
+						else{
+							for (String s : alternatives) {
+								result += s+"\n";
+							}
 						}
 						result += "There are "+ alternatives.size() +" holistic security solutions in total.";
 						alternative_list.setText(result);
@@ -760,6 +723,54 @@ public class NewCommandPanel{
 		});
 		btnStepGenerate.setBounds(758, 188, 211, 55);
 		frmMuserControlPanel.getContentPane().add(btnStepGenerate);
+		
+		JButton btnShowThreatScenarios = new JButton("Show threat scenarios");
+		btnShowThreatScenarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String threat_scenarios = SupportingFunctions.getThreatScenarios(ms);
+				if(threat_scenarios==null){
+					JOptionPane.showMessageDialog(frmMuserControlPanel, "No elements have been selected");
+				}
+				else{
+					alternative_list.setText("Threat scenarios of the selected security goal: \n" + threat_scenarios);
+				}
+			}
+		});
+		btnShowThreatScenarios.setBounds(439, 6, 163, 46);
+		frmMuserControlPanel.getContentPane().add(btnShowThreatScenarios);
+		
+		JButton btnGenerateSupportElements = new JButton("Generate Support Elements");
+		btnGenerateSupportElements.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// this analysis has to target a specific layer, otherwise we should pop-up an alert to let users select layer
+				String current_layer = getCommand(layer);
+				if (current_layer.equals(InfoEnum.Layer.BUSINESS.name())) {
+					SupportingFunctions.generateCrossLayerSupport(ms.req_bus_model, ms.req_app_model, InfoEnum.SELECTED_MODELS);
+				} else if (current_layer.equals(InfoEnum.Layer.APPLICATION.name())) {
+					SupportingFunctions.generateCrossLayerSupport(ms.req_app_model, ms.req_phy_model, InfoEnum.SELECTED_MODELS);
+				} else if (current_layer.equals(InfoEnum.Layer.APPLICATION.name())) {
+					JOptionPane.showMessageDialog(frmMuserControlPanel, "The physical layer is not supported by any other layer.");
+				} else {
+					CommandPanel.logger.severe("The \"getCommand\" has problems.");
+				}
+				JOptionPane.showMessageDialog(frmMuserControlPanel, "Support link has been generated!");
+			}
+		});
+		btnGenerateSupportElements.setBounds(614, 6, 183, 46);
+		frmMuserControlPanel.getContentPane().add(btnGenerateSupportElements);
+		
+		JButton btnCritical = new JButton("Tag criticality");
+		btnCritical.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean result = SupportingFunctions.criticalityTagging(ms);
+				if(result){
+					JOptionPane.showMessageDialog(frmMuserControlPanel, "Selected elements have been highlighted!");
+				}
+			}
+			
+		});
+		btnCritical.setBounds(809, 6, 130, 46);
+		frmMuserControlPanel.getContentPane().add(btnCritical);
 		
 		
 		

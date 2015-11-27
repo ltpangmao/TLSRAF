@@ -156,7 +156,7 @@ on add_user_data(target_canvas_name, target_layer_name, target_id, owner)
 end add_user_data
 
 -- this method is an extended version which also include interval_id, important etc.
-on add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id)
+on add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id, target_threat_ids)
 	tell application id "OGfl"
 		set target_element to missing value
 		--search target_container 
@@ -179,6 +179,7 @@ on add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, targ
 				set value of user data item "sec_property" of target_element to target_sec_property
 				set value of user data item "asset" of target_element to target_asset
 				set value of user data item "interval_id" of target_element to target_interval_id
+				set value of user data item "threat_ids" of target_element to target_threat_ids
 				return "success"
 			on error
 				return "error" --& text of target_element

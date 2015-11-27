@@ -1,34 +1,79 @@
+%%%%%%%%%%%%%
+% Rules for transfer the support relations
+%%%%%%%%%%%%%
+
+%%%% interval
+%% Auxiliary rules --- descendants identification
+is_descendent(R1, R2) :- and_refine(R1, R2).
+is_descendent(R1, R2) :- refine(R1, R2).
+is_descendent(R1, R2) :- operationalize(R1, R2).
+is_descendent(R1, R3) :- is_descendent(R1, R2), is_descendent(R2, R3).
+% this is used for depedency analysis
+is_descendent(R2, R1) :- depend(R1, R2, _).
+
+% this is used to transfer support relations
+support(R3, R1) :- support(R3, R2), is_descendent(R2, R1).
+
+
+
+%%%%%%%%%%%%%
+% Current operationalization-based and layer-independent rules
+%%%%%%%%%%%%%
+
+% the rule which generates security goals to support the security mechanism
+support_sec_mechanism(IMP, security, A, G, SM, SG) :- operationalize(SM,SG), sec_goal(SG), has_properties(SG, IMP, SP, AS, T), support(G, SM), has(A, G).
+% here either application(A) or hardware(A). 
+
+
+% the rule which refine critical security goals into detailed security goals in the next layer down
+% each critical security goal will be and-refined into two sub-security goals
+% has(A, G)
+% this should only work for the data asset
+and_refine_sec_goal_1(IMP, SP, AS, G, SG1):- sec_goal(SG1), critical(SG1), has_properties(SG1, IMP, SP, AS, T), support(G, T), data(AS).
+% this is for other types of asset
+and_refine_sec_goal_2(IMP, security, A, G, SG1):- sec_goal(SG1), critical(SG1), has_properties(SG1, IMP, SP, AS, T), support(G, T), has(A, G).
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%
+% Previous make/help based and layer-specific rules
+%%%%%%%%%%%%%
+
+
 % auxilary rules --- treatment check rules
-is_treated(SG) :- make(SM, SG).
-is_treated(SG) :- help(SM, SG).
+%is_treated(SG) :- make(SM, SG).
+%is_treated(SG) :- help(SM, SG).
 
 
 % temporary facts --- a% auxilary rules --- treatment check rules
-is_treated(SG) :- make(SM, SG).
-is_treated(SG) :- help(SM, SG).
-
-
-% temporary facts --- application layer facts
-% support(support_energy_supplier_communicates_with_smart_meter, energy_supplier_communicates_with_smart_meter).
-
-
-
+%is_treated(SG) :- make(SM, SG).
+%is_treated(SG) :- help(SM, SG).
 
 
 
 % business to application rule
 
 % security properties regarding to services
-refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, service_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
-refined_sec_goal(IMP, application_availability, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, service_availability, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
+%refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, service_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
+%refined_sec_goal(IMP, application_availability, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, service_availability, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
 
 % security properties regarding to data
 % data confidentiality
-refined_sec_goal(IMP, data_confidentiality, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
-refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
+%refined_sec_goal(IMP, data_confidentiality, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
+%refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
 % data integrity
-refined_sec_goal(IMP, data_integrity, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
-refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
+%refined_sec_goal(IMP, data_integrity, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
+%refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(APP, G), application(APP).
 
 
 
@@ -36,17 +81,17 @@ refined_sec_goal(IMP, application_integrity, APP, G, SG) :- sec_goal(SG), has_pr
 % application to physical rule
 
 % security properties regarding to application
-refined_sec_goal(IMP, hardware_integrity, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, application_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
-refined_sec_goal(IMP, hardware_availability, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, application_availability, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
+%refined_sec_goal(IMP, hardware_integrity, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, application_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
+%refined_sec_goal(IMP, hardware_availability, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, application_availability, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
 
 
 % security properties regarding to data
 % data confidentiality
-refined_sec_goal(IMP, data_confidentiality, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
-refined_sec_goal(IMP, hardware_integrity, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
+%refined_sec_goal(IMP, data_confidentiality, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
+%refined_sec_goal(IMP, hardware_integrity, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_confidentiality, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
 % data integrity
-refined_sec_goal(IMP, data_integrity, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
-refined_sec_goal(IMP, hardware_integrity, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
+%refined_sec_goal(IMP, data_integrity, AS, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
+%refined_sec_goal(IMP, hardware_integrity, HW, G, SG) :- sec_goal(SG), has_properties(SG, IMP, data_integrity, AS, T), is_critical(SG), not is_treated(SG), support(G, T), has(HW, G), hardware(HW).
 
 
 

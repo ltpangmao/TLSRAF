@@ -142,6 +142,9 @@ public class RequirementLink implements Link {
 			break;
 		case DEPEND:
 			expression = "depend(" + source + "," + target + "," + attachment + ").";
+			// here we treat dependency links as normal refinement links during our current analysis, which may be revised in the future
+//			expression = "refine(" + target + "," + source + ").";
+//			we tackle this issue with the refinement rules.
 			break;
 		
 		case SUPPORT:

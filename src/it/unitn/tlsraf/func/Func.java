@@ -14,6 +14,11 @@ public class Func {
 		return target.trim().replaceAll(" ", "_").replaceAll("-|'|’", "").toLowerCase().replaceAll("__", "_").replaceAll("__", "_").replaceAll("__", "_").replaceAll("__", "_");
 	}
 	
+	public static String fitGraphviz(String target) {
+		return target.replace("\\[", "").replace("\\]", "");
+		
+	}
+	
 	public static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
@@ -24,4 +29,6 @@ public class Func {
 		writer.println(content);
 		writer.close();
 	}
+	
+	
 }

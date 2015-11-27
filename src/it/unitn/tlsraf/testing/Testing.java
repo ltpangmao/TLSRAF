@@ -4,10 +4,12 @@ import it.unitn.tlsraf.ds.AttackPattern;
 import it.unitn.tlsraf.ds.Element;
 import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
+import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.func.AppleScript;
 import it.unitn.tlsraf.func.CommandPanel;
 import it.unitn.tlsraf.func.Func;
 import it.unitn.tlsraf.func.HSGMInference;
+import it.unitn.tlsraf.func.Inference;
 import it.unitn.tlsraf.func.ReferenceModelInference;
 
 import java.io.BufferedInputStream;
@@ -36,12 +38,13 @@ import net.xqj.basex.BaseXXQDataSource;
 
 public class Testing {
 
-	public static void main(String args[]) throws IOException, ScriptException, XQException {
+	public static void main(String args[]) throws IOException, ScriptException, XQException, InterruptedException {
 //		stringTesting();
 		 ruleTesting();
-
+//		processTesting();
 		// newTesting();
 
+		
 		// XQDataSource xqs = new BaseXXQDataSource();
 		//
 		// // xqs.setProperty("serverName", "localhost");
@@ -98,12 +101,48 @@ public class Testing {
 				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule ";
 		
 		//-nofacts
-		refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent  " 
+		refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " 
 				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule "
 				+ InfoEnum.current_directory + "/dlv/models/data_flow_model.dl " 
 				+ InfoEnum.current_directory + "/dlv/models/threat_model.dl " 
 				+ InfoEnum.current_directory + "/dlv/models/asset_model.dl "
 				+ InfoEnum.current_directory + "/dlv/models/req_business_model.dl ";
+		
+		// draw pdf figure for the corresponding graph
+		int visualization =1;
+		 refine_rule = InfoEnum.current_directory + "/graphviz/dot -Tpdf " + InfoEnum.current_directory + "/graphviz/sec_goal_" + visualization + ".gv -o "
+						+ InfoEnum.current_directory + "/graphviz/sec_goal_" + visualization + ".pdf";
+		 refine_rule = "/usr/bin/neato -Tpdf -O" + InfoEnum.current_directory + "/graphviz/sec_goal_" + visualization + ".gv";
+		
+		 
+		 refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/operationalization.rule " 
+		 + "/Users/tongli/research/Trento/Workspace/TLSRAF/dlv/models/req_business_model.dl  "
+		+ "/Users/tongli/research/Trento/Workspace/TLSRAF/dlv/models/security_model_business.dl ";
+		 
+		 refine_rule = "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/dlv -silent -nofacts "
+		 		+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/rules/operationalization.rule "
+		 		+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/req_business_model.dl  "
+		 		+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/security_model_business.dl  ";
+		 
+		 refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent  -nofacts " 
+					+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule "
+					+ InfoEnum.current_directory + "/dlv/models/data_flow_model.dl " 
+					+ InfoEnum.current_directory + "/dlv/models/threat_model.dl " 
+					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl "
+					+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/req_business_model.dl  "
+					+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/req_application_model.dl  ";
+
+		 refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/cross_layer.rule "					
+				 	+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/req_physical_model.dl  "
+					+ "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/req_application_model.dl  ";
+
+		 String hsgm_file = InfoEnum.current_directory + "/dlv/models/holistic_security_goal_model.dl";
+			
+
+			// inference
+		 refine_rule= InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/find_alternative.rule " // rules
+					+ hsgm_file; // model files
+
 
 		Runtime rt = Runtime.getRuntime();
 		Process pr = rt.exec(refine_rule);
@@ -118,6 +157,14 @@ public class Testing {
 				System.out.println(s);
 		}
 	}
+	
+	public static void processTesting() throws IOException, InterruptedException {
+		ProcessBuilder pb = new ProcessBuilder("./graphviz/dot", "-Tpdf /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/graphviz/sec_goal_0.gv -o /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/graphviz/sec_goal_0.pdf");
+//		System.out.println("Run echo command");
+		Process process = pb.start();
+		int errCode = process.waitFor();
+
+	}
 
 	public static void newTesting() throws IOException, ScriptException {
 		CommandPanel.setup();
@@ -130,6 +177,13 @@ public class Testing {
 	}
 
 	public static void stringTesting() throws IOException, ScriptException {
+		
+		
+		String result = "and_refine_sec_goal_1(very_high,data_confidentiality,patient_information,2351,53933)";
+		result = result.substring(result.indexOf("(") + 1, result.indexOf(")"));
+		System.out.println(result);
+		
+		
 		String target = "{Asset:\"Social worker information, \", Threat:\"Spoofing, Tampering,Repudiation,Information disclosure,Information disclosure,\", Interval:\"Dispense medicine to patient,Deliver medice to patient\"}";
 
 		// here we specifically assume all properties have been specified, the value of which is separated using ","
@@ -187,10 +241,7 @@ public class Testing {
 		}
 			
 		
-		System.out.println(formal_expressions);
-//		if(temp.length()>3){
-//			System.out.println(temp);
-//		}
+//		System.out.println(formal_expressions);
 
 	}
 }

@@ -1,9 +1,10 @@
-set target_canvas_name to "Business SG"
-set target_layer_name to "All"
-set target_size to {214,144}
-set target_name to "Cloud"
-set target_text to "very high data confidentiality [patient billing information, Respond to request  from patient]"
-set target_origin to {500,500}
+set target_canvas_name to "Model"
+set target_layer_name to "PHYSICAL"
+set target_size to {180,110}
+set target_name to "Hexagon"
+set target_text to "(S)
+cabling security"
+set target_origin to {25167.0,5502.55}
 set corner_ridius to 0
 set stroke_pattern to 0
 set target_thickness to 1
@@ -125,7 +126,7 @@ on add_user_data(target_canvas_name, target_layer_name, target_id, owner)
 end add_user_data
 
 -- this method is an extended version which also include interval_id, important etc.
-on add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id)
+on add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id, target_threat_ids)
 	tell application id "OGfl"
 		set target_element to missing value
 		--search target_container 
@@ -148,6 +149,7 @@ on add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, targ
 				set value of user data item "sec_property" of target_element to target_sec_property
 				set value of user data item "asset" of target_element to target_asset
 				set value of user data item "interval_id" of target_element to target_interval_id
+				set value of user data item "threat_ids" of target_element to target_threat_ids
 				return "success"
 			on error
 				return "error" --& text of target_element

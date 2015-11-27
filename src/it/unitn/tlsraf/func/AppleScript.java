@@ -70,7 +70,7 @@ public class AppleScript {
 			head_type = "SharpArrow";
 			stroke_pattern = "0";
 			label = "none";
-		} else if (rl.getTarget().equals(InfoEnum.RequirementLinkType.OPERATIONALIZE.name())) {
+		} else if (rl.getType().equals(InfoEnum.RequirementLinkType.OPERATIONALIZE.name())) {
 			head_type = "StickArrow";
 			stroke_pattern = "0";
 			label = "none";
@@ -512,6 +512,19 @@ public class AppleScript {
 	 * @throws ScriptException
 	 */
 	public static void addUserData2(String canvas, String layer, SecurityGoal sg, String owner) throws ScriptException {
+		// reformat threats
+		
+		String threat_ids = "";
+		for(String threat_id: sg.threats){
+			if(!threat_id.equals("")){ // avoid add empty string
+				threat_ids += threat_id +",";
+			}
+		}
+		//remove the last comma
+		if(threat_ids!=""){
+			threat_ids = threat_ids.substring(0, threat_ids.length()-1);
+		}
+		
 		//set parameters & call the exact method
 		String script = "";
 		script += "set target_canvas_name to \""+canvas+"\"\n"
@@ -522,7 +535,8 @@ public class AppleScript {
 				+ "set target_sec_property to \"" + sg.getSecurityAttribute() +"\"\n"
 				+ "set target_asset to \"" + sg.getAsset() +"\"\n"
 				+ "set target_interval_id to \"" + sg.getInterval().getId() +"\"\n"
-				+ "add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id)\n";
+				+ "set target_threat_ids to \"" + threat_ids +"\"\n"
+				+ "add_user_data_2(target_canvas_name, target_layer_name, target_id, owner, target_importance, target_sec_property, target_asset, target_interval_id, target_threat_ids)\n";
 						
 		//import the method codes
 		String method_file = InfoEnum.drawing_method_file;

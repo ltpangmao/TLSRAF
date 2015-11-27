@@ -1,8 +1,6 @@
-% reasoning a bit to reach the higher abstraction level, targeting CIA (specifically for the anti-goal analysis)
-s_make(SM, SP1) :- s_make(SM, SP2), isa(SP2, SP1).
-s_help(SM, SP1) :- s_help(SM, SP2), isa(SP2, SP1).
-s_contribute(SM, SP) :- s_make(SM, SP).
-s_contribute(SM, SP) :- s_help(SM, SP).
+%%%%%% 
+% current verion of operationalization facts 
+%%%%%% 
 
 
 % security attribute model
@@ -10,26 +8,61 @@ isa(confidentiality, security).
 isa(integrity, security).
 isa(availability, security).
 isa(data_confidentiality, confidentiality).
-isa(service_integrity, integrity).
 isa(data_integrity, integrity).
-isa(application_integrity, integrity).
+isa(data_availability, availability).
 isa(hardware_integrity, integrity).
-isa(service_availability, availability).
-isa(application_availability, availability).
 isa(hardware_availability, availability).
 
 
 
+% pattern-related facts
+sec_pattern(equipment_siting_and_protection,hardware_availability).
+sec_pattern(supporting_utility,hardware_availability).
+sec_pattern(physical_entry_control,hardware_availability).
+%
+sec_pattern(equipment_siting_and_protection,hardware_integrity).
+sec_pattern(physical_entry_control,hardware_integrity).
+%
+sec_pattern(supporting_utility,data_availability).
+sec_pattern(physical_entry_control,data_availability).
+sec_pattern(cabling_security,data_availability).
+%
+sec_pattern(physical_entry_control,data_confidentiality).
+sec_pattern(cabling_security,data_confidentiality).
+%
+sec_pattern(physical_entry_control,data_integrity).
+sec_pattern(cabling_security,data_integrity).
+
+
+
+
+
+
+
+
+%%%%%% 
+% previous operationalization facts using make/help rules etc.
+%%%%%%
+
+
+
+% reasoning a bit to reach the higher abstraction level, targeting CIA (specifically for the anti-goal analysis)
+%s_make(SM, SP1) :- s_make(SM, SP2), isa(SP2, SP1).
+%s_help(SM, SP1) :- s_help(SM, SP2), isa(SP2, SP1).
+%s_contribute(SM, SP) :- s_make(SM, SP).
+%s_contribute(SM, SP) :- s_help(SM, SP).
+
+
 
 % physical layer security model
-s_help(secure_office, data_confidentiality).
-s_help(secure_office, data_integrity).
-s_make(physical_entry_control, data_confidentiality).
-s_make(physical_entry_control, data_integrity).
-s_help(physical_entry_control, hardware_integrity).
-s_help(physical_entry_control, hardware_availability).
-s_help(monitor, hardware_integrity).
-s_help(monitor, hardware_availability).
-s_make(anti_tamper_protection, hardware_integrity).
-s_help(anti_tamper_protection, hardware_availability).
-s_make(ups, hardware_availability).
+%s_help(secure_office, data_confidentiality).
+%s_help(secure_office, data_integrity).
+%s_make(physical_entry_control, data_confidentiality).
+%s_make(physical_entry_control, data_integrity).
+%s_help(physical_entry_control, hardware_integrity).
+%s_help(physical_entry_control, hardware_availability).
+%s_help(monitor, hardware_integrity).
+%s_help(monitor, hardware_availability).
+%s_make(anti_tamper_protection, hardware_integrity).
+%s_help(anti_tamper_protection, hardware_availability).
+%s_make(ups, hardware_availability).

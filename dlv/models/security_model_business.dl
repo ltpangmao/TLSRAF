@@ -1,11 +1,7 @@
-% reasoning a bit to reach the higher abstraction level, targeting CIA (specifically for the anti-goal analysis)
-s_make(SM, SP1) :- s_make(SM, SP2), isa(SP2, SP1).
-s_help(SM, SP1) :- s_help(SM, SP2), isa(SP2, SP1).
-s_contribute(SM, SP) :- s_make(SM, SP).
-s_contribute(SM, SP) :- s_help(SM, SP).
 
-
-
+%%%%%% 
+% current verion of operationalization facts 
+%%%%%% 
 
 % security attribute model
 isa(confidentiality, security).
@@ -15,19 +11,63 @@ isa(data_confidentiality, confidentiality).
 isa(service_integrity, integrity).
 isa(data_integrity, integrity).
 isa(service_availability, availability).
+isa(data_availability, availability).
 
+
+% pattern-related facts
+sec_pattern(alternative_service,service_availability).
+sec_pattern(alternative_service,data_availability).
+%
+sec_pattern(client_checking,service_integrity).
+sec_pattern(separation_of_duty,service_integrity).
+sec_pattern(certification_authority,service_integrity).
+sec_pattern(supervision_relation,service_integrity).
+sec_pattern(access_control,service_integrity).
+sec_pattern(auditing,service_integrity).
+%
+sec_pattern(access_control,data_confidentiality).
+%
+sec_pattern(access_control,data_integrity).
+sec_pattern(auditing,data_integrity).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%% 
+% previous operationalization facts using make/help rules etc.
+%%%%%%
+
+% reasoning a bit to reach the higher abstraction level, targeting CIA (specifically for the anti-goal analysis)
+%s_make(SM, SP1) :- s_make(SM, SP2), isa(SP2, SP1).
+%s_help(SM, SP1) :- s_help(SM, SP2), isa(SP2, SP1).
+%s_contribute(SM, SP) :- s_make(SM, SP).
+%s_contribute(SM, SP) :- s_help(SM, SP).
 
 
 % contribution link: make/help(SM, SA)
 % business layer security model
-s_make(cryptographic_control,data_confidentiality).
-s_make(cryptographic_control,data_integrity).
-s_make(access_control,data_confidentiality).
-s_help(access_control,data_integrity).
-s_help(access_control,service_integrity).
-s_help(access_control,service_availability).
-s_make(auditing,data_integrity).
-s_make(auditing,service_integrity).
-s_help(auditing,service_availability).
-s_make(backup,service_availability).
-s_help(backup,service_integrity).
+%s_make(cryptographic_control,data_confidentiality).
+%s_make(cryptographic_control,data_integrity).
+%s_make(access_control,data_confidentiality).
+%s_help(access_control,data_integrity).
+%s_help(access_control,service_integrity).
+%s_help(access_control,service_availability).
+%s_make(auditing,data_integrity).
+%s_make(auditing,service_integrity).
+%s_help(auditing,service_availability).
+%s_make(backup,service_availability).
+%s_help(backup,service_integrity).

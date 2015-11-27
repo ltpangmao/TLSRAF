@@ -19,3 +19,18 @@ non_leaf(R1) :- support(R2, R1).
 and_refined_sec_goal(IMP, SA, AS, INT2, SG) :- has_properties(SG, IMP, SA, AS, INT1), and_refine(INT2, INT1), not non_leaf(SG), sec_goal(SG), interval(INT2), interval(INT1), INT1<>INT2.
 and_refined_sec_goal(IMP, SA, AS, INT2, SG) :- has_properties(SG, IMP, SA, AS, INT1), refine(INT2, INT1), not non_leaf(SG), sec_goal(SG), interval(INT2), interval(INT1), INT1<>INT2.
 and_refined_sec_goal(IMP, SA, AS, INT2, SG) :- has_properties(SG, IMP, SA, AS, INT1), operationalize(INT2, INT1), not non_leaf(SG), sec_goal(SG), interval(INT2), interval(INT1), INT1<>INT2.
+
+%%%%%%%%%%%%%%
+% This is for dependency link, which is process the same as refine
+%%%%%%%%%%%%%%
+and_refined_sec_goal(IMP, SA, AS, INT2, SG) :- has_properties(SG, IMP, SA, AS, INT1), depend(INT1, INT2, _), not non_leaf(SG), not application(AS), not hardware(AS).
+
+
+%%%%%%%%%%%%%%
+% This is specially designed for depend-based refinement, which will change the asset in the application and physical layer
+%%%%%%%%%%%%%%
+and_refined_sec_goal(IMP, SA, AS2, INT2, SG) :- has_properties(SG, IMP, SA, AS1, INT1), depend(INT1, INT2, _), not non_leaf(SG), application(AS1), has(AS2, INT2).
+
+and_refined_sec_goal(IMP, SA, AS2, INT2, SG) :- has_properties(SG, IMP, SA, AS, INT1), depend(INT1, INT2, _), not non_leaf(SG), hardware(AS), has(AS2, INT2).
+
+% this is useless for current analysis , sec_goal(SG), interval(INT2), interval(INT1), INT1<>INT2.

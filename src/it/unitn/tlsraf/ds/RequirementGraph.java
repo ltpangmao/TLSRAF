@@ -206,7 +206,7 @@ public class RequirementGraph {
 
 		RequirementElement new_elem;
 		// security goals
-		if (factors.get(3).startsWith("(S)") & factors.get(2).equals("Cloud")) {
+		if (factors.get(3).startsWith("(S)") && factors.get(2).equals("Cloud")) {
 			new_elem = new SecurityGoal();
 			new_elem.setId(factors.get(1));
 			new_elem.setType(InfoEnum.RequirementElementType.SECURITY_GOAL.name());
@@ -231,11 +231,11 @@ public class RequirementGraph {
 				((SecurityGoal) new_elem).extractInfoFromUserData(factors.get(14), this);
 			}
 			else{
-				CommandPanel.logger.info(("Information of security goal (ID:"+factors.get(1)+") is missing! Should be covered later") );
+//				CommandPanel.logger.info(("Information of security goal (ID:"+factors.get(1)+") is missing! Should be covered later") );
 			}
 		}
 		// anti-goals
-		else if (factors.get(2).equals("Circle") & factors.get(10).equals("2")) {
+		else if (factors.get(2).equals("Circle") && factors.get(10).equals("2")) {
 			new_elem = new AntiGoal();
 			new_elem.setId(factors.get(1));
 			new_elem.setName(factors.get(3));
@@ -245,7 +245,7 @@ public class RequirementGraph {
 			((AntiGoal) new_elem).extractInfoFromName();
 		}
 		// actors
-		else if (checkCircle(factors.get(7)) & !factors.get(3).equals("empty")) {
+		else if (checkCircle(factors.get(7)) && !factors.get(3).equals("empty")) {
 			new_elem = new Actor();
 			new_elem.setId(factors.get(1));
 			new_elem.setName(factors.get(3));
@@ -257,16 +257,16 @@ public class RequirementGraph {
 			new_elem = new RequirementElement();
 			new_elem.setId(factors.get(1));
 			// security mechanism
-			if (factors.get(3).startsWith("(S)") & factors.get(2).equals("Hexagon")) {
+			if (factors.get(3).startsWith("(S)") && factors.get(2).equals("Hexagon")) {
 				new_elem.setType(InfoEnum.RequirementElementType.SECURITY_MECHANISM.name());
 			}
 			// and-refine middle point
-			else if (factors.get(3).equals("empty") & factors.get(2).equals("Circle") & factors.get(10).equals("0")) {
+			else if (factors.get(3).equals("empty") && factors.get(2).equals("Circle") && factors.get(10).equals("0")) {
 				new_elem.setType(InfoEnum.RequirementElementType.MIDDLE_POINT.name());
 				// new_elem.setRemark(InfoEnum.ElementRemark.REFINEUM.name());
 			}
 			// actor boundary
-			else if (factors.get(3).equals("empty") & factors.get(2).equals("Circle") & factors.get(10).equals("1")) {
+			else if (factors.get(3).equals("empty") && factors.get(2).equals("Circle") && factors.get(10).equals("1")) {
 				new_elem.setType(InfoEnum.RequirementElementType.ACTOR_BOUNDARY.name());
 				new_elem.setRemark(InfoEnum.ElementRemark.BOUNDARY.name());
 			}
@@ -275,7 +275,7 @@ public class RequirementGraph {
 				new_elem.setType(InfoEnum.RequirementElementType.LABEL.name());
 			}
 			// dependency labels -- permissions? already depleted I think...
-			// else if (factors.get(2).equals("Rectangle") & factors.get(9).equals("0.0")) {
+			// else if (factors.get(2).equals("Rectangle") && factors.get(9).equals("0.0")) {
 			// new_elem.setType(InfoEnum.RequirementElementType.LABEL.name());
 			// }
 			// all others should be able to mapped to current mappings.
@@ -311,7 +311,7 @@ public class RequirementGraph {
 		 */
 
 		// if this is a support link, we record its sourceID and desId, which will be processed later
-		if (factors.get(2).equals("SharpArrow") & factors.get(7).equals("1")) {
+		if (factors.get(2).equals("SharpArrow") && factors.get(7).equals("1")) {
 			RequirementLink new_link = new RequirementLink();
 			new_link.setId(factors.get(1));
 			new_link.setType(InfoEnum.RequirementLinkType.SUPPORT.name());
@@ -349,31 +349,31 @@ public class RequirementGraph {
 		source.getOutLinks().add(new_link);
 		target.getInLinks().add(new_link);
 
-		if (factors.get(2).equals("SharpArrow") & factors.get(7).equals("0") & !new_link.getSource().getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
+		if (factors.get(2).equals("SharpArrow") && factors.get(7).equals("0") && !new_link.getSource().getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
 			new_link.setType(InfoEnum.RequirementLinkType.REFINE.name());
-		} else if (factors.get(2).equals("NoHead") & factors.get(7).equals("0") & factors.get(6).equals("NoLabel")) {
+		} else if (factors.get(2).equals("NoHead") && factors.get(7).equals("0") && factors.get(6).equals("NoLabel")) {
 			new_link.setType(InfoEnum.RequirementLinkType.AND_REFINE.name());
-		} else if (factors.get(2).equals("SharpArrow") & factors.get(7).equals("1")) {
+		} else if (factors.get(2).equals("SharpArrow") && factors.get(7).equals("1")) {
 			new_link.setType(InfoEnum.RequirementLinkType.SUPPORT.name());
-		} else if (factors.get(2).equals("StickArrow") & factors.get(7).equals("0") & factors.get(6).equals("NoLabel")) {
+		} else if (factors.get(2).equals("StickArrow") && factors.get(7).equals("0") && factors.get(6).equals("NoLabel")) {
 			new_link.setType(InfoEnum.RequirementLinkType.OPERATIONALIZE.name());
-		} else if (factors.get(2).equals("NoHead") & factors.get(7).equals("0")
-				& (factors.get(6).equals("T1") || factors.get(6).equals("T2") || factors.get(6).equals("T3") || factors.get(6).equals("T4") || factors.get(6).equals("T5"))) {
+		} else if (factors.get(2).equals("NoHead") && factors.get(7).equals("0")
+				&& (factors.get(6).equals("T1") || factors.get(6).equals("T2") || factors.get(6).equals("T3") || factors.get(6).equals("T4") || factors.get(6).equals("T5"))) {
 			new_link.setType(InfoEnum.RequirementLinkType.TRUST.name());
 			new_link.setRemark(factors.get(6).substring(0, 1));
-		} else if (factors.get(2).equals("NoHead") & factors.get(7).equals("0") & factors.get(6).equals("D")) {
+		} else if (factors.get(2).equals("NoHead") && factors.get(7).equals("0") && factors.get(6).equals("D")) {
 			new_link.setType(InfoEnum.RequirementLinkType.DEPEND.name());
-		} else if (factors.get(2).equals("StickArrow") & factors.get(7).equals("0") & factors.get(6).toLowerCase().equals("make")) {
+		} else if (factors.get(2).equals("StickArrow") && factors.get(7).equals("0") && factors.get(6).toLowerCase().equals("make")) {
 			new_link.setType(InfoEnum.RequirementLinkType.MAKE.name());
-		} else if (factors.get(2).equals("StickArrow") & factors.get(7).equals("0") & factors.get(6).toLowerCase().equals("help")) {
+		} else if (factors.get(2).equals("StickArrow") && factors.get(7).equals("0") && factors.get(6).toLowerCase().equals("help")) {
 			new_link.setType(InfoEnum.RequirementLinkType.HELP.name());
-		} else if (factors.get(2).equals("StickArrow") & factors.get(7).equals("0") & factors.get(6).toLowerCase().equals("hurt")) {
+		} else if (factors.get(2).equals("StickArrow") && factors.get(7).equals("0") && factors.get(6).toLowerCase().equals("hurt")) {
 			new_link.setType(InfoEnum.RequirementLinkType.HURT.name());
-		} else if (factors.get(2).equals("StickArrow") & factors.get(7).equals("0") & factors.get(6).toLowerCase().equals("break")) {
+		} else if (factors.get(2).equals("StickArrow") && factors.get(7).equals("0") && factors.get(6).toLowerCase().equals("break")) {
 			new_link.setType(InfoEnum.RequirementLinkType.BREAK.name());
-		} else if (factors.get(2).equals("DoubleArrow") & factors.get(7).equals("0")) {
+		} else if (factors.get(2).equals("DoubleArrow") && factors.get(7).equals("0")) {
 			new_link.setType(InfoEnum.RequirementLinkType.PREFERRED_TO.name());
-		} else if (factors.get(2).equals("SharpArrow") & factors.get(7).equals("0") & new_link.getSource().getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
+		} else if (factors.get(2).equals("SharpArrow") && factors.get(7).equals("0") && new_link.getSource().getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
 			new_link.setType(InfoEnum.RequirementLinkType.AND_REFINE_ARROW.name());
 			// mark as redundant
 			new_link.setRemark(InfoEnum.LinkRemark.REDUNDANT.name());
@@ -462,7 +462,7 @@ public class RequirementGraph {
 		if (elem.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
 			SecurityGoal sg = (SecurityGoal)elem;
 			if(sg.getInterval()==null){
-				Element temp = findElementById(sg.interval_id);
+				Element temp = findElementByFormalName(sg.interval_id);
 				if(temp!=null){
 					sg.setInterval(temp);
 				}
@@ -552,13 +552,13 @@ public class RequirementGraph {
 				if (link.getType() == null) {
 					CommandPanel.logger.severe("Link ID: " + link.getId() + " has problem.");
 				} else if (link.getType().equals(InfoEnum.RequirementLinkType.MAKE.name()) || link.getType().equals(InfoEnum.RequirementLinkType.HELP.name())) {
-					link.getTarget().make_help_links.add(link);
+					link.getTarget().op_links.add(link);
 				}
 				// trust relation processing decides whether an element is a "xxdum"
 				// this part has been depleted
 				else if (link.getType().equals(InfoEnum.RequirementLinkType.TRUST.name())) {
 					elem.setRemark(InfoEnum.ElementRemark.TRUSTUM.name());
-					if (elem.getOutLinks().size() == 1 & elem.getInLinks().size() == 1) {
+					if (elem.getOutLinks().size() == 1 && elem.getInLinks().size() == 1) {
 						RequirementLink in_trust_link = elem.getInLinks().getFirst();
 						// use the in_trust_link to represent the whole trust relation
 						in_trust_link.setAttachment((RequirementElement) elem);
@@ -573,8 +573,9 @@ public class RequirementGraph {
 				// depend relation processing decides whether an element is a "xxdum"
 				// because actors have been processed before, it will not appear here.
 				else if (link.getType().equals(InfoEnum.RequirementLinkType.DEPEND.name())) {
-					elem.setRemark(InfoEnum.ElementRemark.DEPENDUM.name());
-					if (elem.getOutLinks().size() == 1 & elem.getInLinks().size() == 1) {
+					if (elem.getOutLinks().size() == 1 && elem.getInLinks().size() == 1
+							&& elem.getOutLinks().getFirst().getType().equals(InfoEnum.RequirementLinkType.DEPEND.name())) {
+						elem.setRemark(InfoEnum.ElementRemark.DEPENDUM.name());
 						RequirementLink in_depend_link = elem.getInLinks().getFirst();
 						// use the in_depend_link to represent the whole depend relation
 						in_depend_link.setAttachment((RequirementElement) elem);
@@ -582,10 +583,10 @@ public class RequirementGraph {
 						// deplete the out_depend_link
 						elem.getOutLinks().getFirst().setRemark(InfoEnum.LinkRemark.REDUNDANT.name());
 					} else {
-						CommandPanel.logger.severe("depend link processing error: Link id-->"+link.getId());
-						CommandPanel.logger.severe("Element id-->"+elem.getId());
-						CommandPanel.logger.severe("elem.getInLinks().size()-->"+elem.getInLinks().size());
-						CommandPanel.logger.severe("elem.getOutLinks().size()-->"+elem.getOutLinks().size());
+//						CommandPanel.logger.severe("depend link processing error: Link id-->"+link.getId());
+//						CommandPanel.logger.severe("Element id-->"+elem.getId());
+//						CommandPanel.logger.severe("elem.getInLinks().size()-->"+elem.getInLinks().size());
+//						CommandPanel.logger.severe("elem.getOutLinks().size()-->"+elem.getOutLinks().size());
 					}
 					return;
 				}
@@ -623,14 +624,16 @@ public class RequirementGraph {
 			// obtain selected elements' id
 			ArrayList<Long> selected_elements = null;
 			try {
+				// here the returned value won't be null
 				selected_elements = AppleScript.getSelectedGraph();
 			} catch (ScriptException e1) {
 				e1.printStackTrace();
 			}
 			for (Element e : this.elements) {
-				// We only selectively choose security goal model, other models are all chosen by default
+				// We only selectively choose security goal model, including security goals and security mechanisms, other models are all chosen by default
 				// so only the security security goal that are not selected will be excluded.
-				if (!e.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name()) || selected_elements.contains(Long.valueOf(e.getId()))) {
+				if (!(e.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name()) || e.getType().equals(InfoEnum.RequirementElementType.SECURITY_MECHANISM.name()))
+						|| selected_elements.contains(Long.valueOf(e.getId()))) {
 					if (e.getFormalExpressions() != "")
 						result += e.getFormalExpressions() + "\n";
 				}
@@ -695,12 +698,12 @@ public class RequirementGraph {
 		writer.println(result);
 		writer.close();
 
-		return output;
+		return output+" ";
 	}
 
 	public Element findElementById(String id) {
 		for (Element e : this.elements) {
-			if (e.getId().equals(id))
+			if (e.getId()!=null && e.getId().equals(id))
 				return e;
 		}
 		return null;

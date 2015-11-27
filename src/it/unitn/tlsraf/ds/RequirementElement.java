@@ -21,7 +21,7 @@ public class RequirementElement implements Element {
 	// redundant variable
 	public LinkedList<RequirementLink> and_refine_links = new LinkedList<RequirementLink>(); // facilitate and-refinement
 	public LinkedList<RequirementLink> refine_links = new LinkedList<RequirementLink>(); // facilitate xxx refinement
-	public LinkedList<RequirementLink> make_help_links = new LinkedList<RequirementLink>(); // facilitate operationalization
+	public LinkedList<RequirementLink> op_links = new LinkedList<RequirementLink>(); // facilitate operationalization
 	// layout information
 	public double origin_x = -1;
 	public double origin_y = -1;
@@ -187,6 +187,7 @@ public class RequirementElement implements Element {
 			} else {
 
 			}
+			expression += "\n"+"asset(" + this.getFormalName() + ").";
 			break;
 		case GOAL:
 			expression = "goal(" + this.getFormalName() + ").";
@@ -194,6 +195,7 @@ public class RequirementElement implements Element {
 			if (this.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
 				expression += "\n"+"service(" + this.getFormalName() + ").";
 			}
+			expression += "\n"+"asset(" + this.getFormalName() + ").";
 			break;
 		case TASK:
 			expression = "task(" + this.getFormalName() + ").";

@@ -10,6 +10,7 @@ import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.ds.RequirementGraph;
 import it.unitn.tlsraf.ds.RequirementLink;
 import it.unitn.tlsraf.ds.SecurityGoal;
+import it.unitn.tlsraf.ds.Threat;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -83,11 +84,13 @@ public class Inference {
 
 	/**
 	 * Construct actor models from selected elements or from files
+	 * As this is used to perform the trust-based analysis, we deprecate this function for now
 	 * 
 	 * @param actor_model
 	 * @param from_canvas
 	 * @throws IOException
 	 * @throws ScriptException
+	 * @deprecated
 	 */
 	public static void importActorModel(ActorAssociationGraph actor_model, Boolean from_canvas) throws IOException, ScriptException {
 		String result = "";
@@ -103,44 +106,279 @@ public class Inference {
 		CommandPanel.logger.info(actor_model.generateFormalExpression());
 	}
 
+	
+	
+	
+	
+
+
+
+
+	public static void securityGoalRefine(RequirementGraph req_model, String type, int scope) throws IOException, ScriptException {
+		String expression_file = req_model.generateFormalExpressionToFile(scope);
+
+		String security_model_file = InfoEnum.current_directory + "/dlv/models/security_model_" + req_model.getLayer().toLowerCase() + ".dl ";
+		// absolute path: /Users/litong30/research/Trento/Workspace/research/TLSAF/
+		String refine_rule = "";
+		if (type.equals(InfoEnum.RefinementDimension.ASSET.name())) {
+			refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/refine_asset.rule " + InfoEnum.current_directory
+					+ "/dlv/models/asset_model.dl " + expression_file;
+		} else if (type.equals(InfoEnum.RefinementDimension.SECURITY_PROPERTY.name())) {
+			refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/refine_security_attribute.rule " + expression_file
+					+ " " + security_model_file;
+		} else if (type.equals(InfoEnum.RefinementDimension.INTERVAL.name())) {
+			refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/refine_interval.rule " + expression_file;
+		} else {
+			CommandPanel.logger.severe("Error refinement type!");
+		}
+
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(refine_rule);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+
+		/*
+		 * having the restriction that we only process "and_refined_sec_goal" we could harden a bit drawing logic into code.
+		 */
+		// LinkedList<RequirementLink> new_links = new LinkedList<RequirementLink>();
+		LinkedList<RequirementElement> refined_elems = new LinkedList<RequirementElement>();
+
+		// parse reasoning result
+		while ((line = input.readLine()) != null) {
+			line = line.substring(1, line.length() - 1);
+			String[] result = line.split(", ");
+			for (String s : result) {
+				// System.out.println(s);
+				// only consider related security goals
+				if (s.startsWith("and_refined_sec_goal")) {
+					// parse facts
+					s = s.replaceAll("and_refined_sec_goal\\(", "");
+					s = s.replaceAll("\\)", "");
+					String[] sg = s.split(",");
+					// create new element`
+//					SecurityGoal refined_goal = (SecurityGoal) req_model.findElementByFormalName(sg[4]);
+					SecurityGoal refined_goal = (SecurityGoal) req_model.findElementById(sg[4]);
+
+					// find the actor element, which is an asset in application and physical layer
+					Element asset = null;
+					if(req_model.getLayer().equals(InfoEnum.Layer.APPLICATION.name())||req_model.getLayer().equals(InfoEnum.Layer.PHYSICAL.name())){
+						asset = req_model.findElementById(sg[2]);
+						if(asset==null){
+							CommandPanel.logger.severe("Asset error");
+						}
+					}
+					
+					// find the corresponding goal/task element according to the obtained id
+					Element re = req_model.findElementById(sg[3]);
+					SecurityGoal new_sg = null;
+					if (re != null) {
+						new_sg = new SecurityGoal(sg[0], sg[1], sg[2], re, InfoEnum.RequirementElementType.SECURITY_GOAL.name(), refined_goal.getLayer());
+						if(asset!=null){
+							// as the asset here is just the ID of application (actor) and hardware (actor), to be readable, we manually change the name of the security goal
+							new_sg.setName((new_sg.getImportance() + " " + new_sg.getSecurityAttribute() + " [" + asset.getName() + ", " + new_sg.getInterval().getName() + "]").replaceAll("\\_", " "));
+						}
+					} else {
+						CommandPanel.logger.severe("Security goal cannot be created: interval id-->" + sg[3]);
+					}
+					
+					// update ownership relations
+					new_sg.owner_text = refined_goal.owner_text;
+					if (refined_goal.owner != null) {
+						refined_goal.owner.getOwnedElement().add(new_sg);
+						new_sg.owner = refined_goal.owner;
+					}
+					else{
+						// as this is not really important at all for our current analysis, we just fake the onwer for the time being
+						// we here assume the owner only used for its formal name...
+						Actor fake_owner = new Actor(refined_goal.owner_text, InfoEnum.RequirementElementType.ACTOR.name(), refined_goal.getLayer());
+						fake_owner.setId(refined_goal.owner_text);
+						new_sg.owner = fake_owner;
+//						CommandPanel.logger.severe("Security goal misses owner information: interval, the security goal id-->" + refined_goal.getId());
+//						return;
+					}
+
+					req_model.getElements().add(new_sg);
+					// create new link
+					RequirementLink new_and_refine = new RequirementLink(InfoEnum.RequirementLinkType.AND_REFINE.name(), new_sg, refined_goal);
+					req_model.getLinks().add(new_and_refine);
+
+					refined_goal.and_refine_links.add(new_and_refine);
+					if (refined_elems.indexOf(refined_goal) == -1) {
+						refined_elems.add(refined_goal);
+					}
+					// System.out.println(new_sg.getFormalExpression()+"\n"+new_and_refine.getFormalExpression());
+					// no id for newly added elements and links. This should be
+					// done after graphic representation.
+				}
+			}
+		}
+		VisualizationFunctions.drawAndRefinement(refined_elems);
+	}
+
+	
+
+
 	/**
-	 * Construct a single requirements model from selected elements or from files
+	 * Simplify security goals by identifying critical ones
+	 * Here we adopt the threat-based approach for identifying the critical security goal
 	 * 
-	 * @param req_model
-	 * @param from_canvas
+	 * To accommodate the simplification analysis across layers, we need to include all model files, not only the specific layer
+	 * @param ms
+	 * @param scope
 	 * @throws IOException
 	 * @throws ScriptException
 	 */
-	@Deprecated
-	private static void importReqModel(RequirementGraph req_model, boolean from_canvas) throws IOException, ScriptException {
-		if (from_canvas) {
-			String script_path = InfoEnum.current_directory + "/applescript/import_info.applescript";
-			execAppleScript(script_path);
+	public static void threatBasedSecurityGoalSimplification(ModelSet ms, RequirementGraph req_model, int scope) throws IOException, ScriptException {
+		String req_bus_model_file = ms.req_bus_model.generateFormalExpressionToFile(scope);
+		String req_app_model_file = ms.req_app_model.generateFormalExpressionToFile(scope);
+		String req_phy_model_file = ms.req_phy_model.generateFormalExpressionToFile(scope);
+
+		String inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " 
+				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule "
+				+ InfoEnum.current_directory + "/dlv/models/data_flow_model.dl " 
+				+ InfoEnum.current_directory + "/dlv/models/threat_model.dl " 
+				+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " 
+				+ req_bus_model_file + req_app_model_file + req_phy_model_file;
+
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(inference_rule);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+
+		// this is used to store all the security goals that are to be highlighted
+		LinkedList<SecurityGoal> highlight_sgs = new LinkedList<SecurityGoal>();
+		
+		while ((line = input.readLine()) != null) {
+			// line = input.readLine();
+			line = line.substring(1, line.length() - 1);
+			String[] result = line.split(", ");
+			for (String s : result) {
+//				CommandPanel.logger.info(s);
+
+				// highlight the critical one
+				if (s.startsWith("is_critical")) {
+					// parse facts
+					s = s.replaceAll("is\\_critical\\(", "");
+					s = s.replaceAll("\\)", "");
+
+//					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
+					int separator = s.indexOf(",");
+					String sg_id = s.substring(0, separator);
+					String threat_id = s.substring(separator+1);
+					
+					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementById(sg_id);
+					if (critical_sec_goal != null) {
+						critical_sec_goal.setCriticality(true);
+						// add the threat information
+						if(!critical_sec_goal.threats.contains(threat_id)){
+							critical_sec_goal.threats.add(threat_id);
+						}
+						// add the critical security goal to the highlight queue
+						if(!highlight_sgs.contains(critical_sec_goal)){
+							highlight_sgs.add(critical_sec_goal);
+						}
+					} else {
+						CommandPanel.logger.severe("Simplification error: cannot find the security goal element");
+					}
+				}
+				
+				// show the not determined one. not used anymore
+//				else if (s.startsWith("non_deterministic")) {
+//					// parse facts
+//					s = s.replaceAll("non\\_deterministic\\(", "");
+//					s = s.replaceAll("\\)", "");
+//
+//					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementById(s);
+//					critical_sec_goal.setNon_deterministic(true);
+//					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "3", "none", "none");
+//				}
+			}
+		}
+		
+		for(SecurityGoal critical_sec_goal: highlight_sgs){
+			AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "5", "none", "none");
+			AppleScript.addUserData2(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal, critical_sec_goal.owner_text);
+		}
+	}
+
+	/**
+	 * Simplify security goals by identifying critical ones
+	 * Here we adopt the trust-based approach for identifying the critical security goal, which probably will not be used in the future
+	 * 
+	 * @param req_model
+	 * @param actor_model
+	 * @param scope
+	 * @throws IOException
+	 * @throws ScriptException
+	 * @deprecated
+	 */
+	public static void securityGoalSimplification(RequirementGraph req_model, ActorAssociationGraph actor_model, int scope) throws IOException, ScriptException {
+		String req_model_file = req_model.generateFormalExpressionToFile(scope);
+		// normally the actor association model keeps unchanged, so no need to rewrite it.
+		String actor_model_file = InfoEnum.current_directory + "/dlv/models/actor_association_model.dl ";
+		if (actor_model.getElements().size() != 0) {
+			actor_model_file = actor_model.generateFormalExpressionToFile();
 		}
 
-		String result = readFile(InfoEnum.current_directory + "/applescript/graph_info.txt", Charset.defaultCharset());
-		req_model.importGraphInfo(result);
+		String inference_rule = "";
+		if (req_model.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
+			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_bus.rule "
+					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/business_process_model.dl "
+					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file + " " + actor_model_file;
+		} else if (req_model.getLayer().equals(InfoEnum.Layer.APPLICATION.name())) {
+			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_app.rule "
+					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/software_architecture_model.dl "
+					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file + " " + actor_model_file;
+			// + "dlv/rules/sec_goal_ownership.rule " + "dlv/models/temp_app_fact.dl "
+		} else if (req_model.getLayer().equals(InfoEnum.Layer.PHYSICAL.name())) {
+			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_phy.rule "
+					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/deployment_model.dl "
+					+ InfoEnum.current_directory + "/dlv/models/software_architecture_model.dl " // infer additional knowledge from software
+					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file + " " + actor_model_file;
+		} else {
+			CommandPanel.logger.severe("Error refinement type!");
+		}
 
-		// for(Element re: req_model.getElements()){
-		// System.out.println(re.getFormalExpression());
-		// }
-		// for(Link l: req_model.getLinks()){
-		// System.out.println(l.getFormalExpression());
-		// }
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(inference_rule);
 
-		// for(Element re: req_model.getElements()){
-		// if(re.getType().equals(InfoEnum.RequirementElementType.ACTOR.name())){
-		// System.out.println(re.getName());
-		// Actor a = (Actor) re;
-		// for(RequirementElement children: a.getOwnedElement()){
-		// if(!children.getName().equals("empty"))
-		// System.out.println(children.getName());
-		// }
-		// System.out.println();
-		// }
-		// }
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+
+		while ((line = input.readLine()) != null) {
+			// line = input.readLine();
+			line = line.substring(1, line.length() - 1);
+			String[] result = line.split(", ");
+			for (String s : result) {
+				CommandPanel.logger.info(s);
+
+				// highlight the critical one
+				if (s.startsWith("is_critical")) {
+					// parse facts
+					s = s.replaceAll("is\\_critical\\(", "");
+					s = s.replaceAll("\\)", "");
+
+					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
+					critical_sec_goal.setCriticality(true);
+					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "5", "none", "none");
+				}
+				// show the not determined one.
+				else if (s.startsWith("non_deterministic")) {
+					// parse facts
+					s = s.replaceAll("non\\_deterministic\\(", "");
+					s = s.replaceAll("\\)", "");
+
+					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
+					critical_sec_goal.setNon_deterministic(true);
+					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "3", "none", "none");
+
+				}
+			}
+		}
 	}
-	
+
 	
 	/**
 	 * This method calculate all possible refinements and represent them in another graph. Thus, the analysis result will not be shown in the graph. The output of this analysis
@@ -152,7 +390,7 @@ public class Inference {
 	 * @throws IOException
 	 * @throws ScriptException
 	 */
-	public static void exhaustiveSecurityGoalRefineAnalysis(RequirementGraph req_model, ActorAssociationGraph actor_model, int visual_type, int scope) throws IOException,
+	public static void exhaustiveSecurityGoalRefineAnalysis(ModelSet ms, RequirementGraph req_model, ActorAssociationGraph actor_model, int visual_type, int scope) throws IOException,
 			ScriptException {
 		// first empty the potential security goal set.
 		req_model.getSg_elem().clear();
@@ -176,7 +414,8 @@ public class Inference {
 			String[] result = line.split(", ");
 
 			// Assign all security goals with ordered numbers, which are just used as identifiers.
-			int number = 1;
+			// to avoid conflicts with existing element id.
+			int number = 100000;
 			for (String s : result) {
 				// only consider related security goals
 				if (s.startsWith("ex_and_refined_sec_goal")) {
@@ -243,14 +482,14 @@ public class Inference {
 			// visualize exhaustive refinements via Graphviz
 			if (visual_type == InfoEnum.GRAPHVIZ) {
 				// graphviz can generate the three view separately
-				visualizeGraph(req_model, actor_model, InfoEnum.GRAPHVIZ, InfoEnum.INITIAL_VIEW);
-				visualizeGraph(req_model, actor_model, InfoEnum.GRAPHVIZ, InfoEnum.HIGHLIGHT_VIEW);
-				visualizeGraph(req_model, actor_model, InfoEnum.GRAPHVIZ, InfoEnum.SIMPLIFIED_VIEW);
+				VisualizationFunctions.visualizeGraph(ms, req_model, actor_model, InfoEnum.GRAPHVIZ, InfoEnum.INITIAL_VIEW);
+				VisualizationFunctions.visualizeGraph(ms, req_model, actor_model, InfoEnum.GRAPHVIZ, InfoEnum.HIGHLIGHT_VIEW);
+				VisualizationFunctions.visualizeGraph(ms, req_model, actor_model, InfoEnum.GRAPHVIZ, InfoEnum.SIMPLIFIED_VIEW);
 			} else if (visual_type == InfoEnum.CANVAS) {
 				// we only provide one view in the canvas
 				// the highlight and simpliefied view are put together in one view
 				// visualizeGraph(req_model, actor_model, InfoEnum.CANVAS, InfoEnum.INITIAL_VIEW);
-				visualizeGraph(req_model, actor_model, InfoEnum.CANVAS, InfoEnum.HIGHLIGHT_VIEW);
+				VisualizationFunctions.visualizeGraph(ms, req_model, actor_model, InfoEnum.CANVAS, InfoEnum.HIGHLIGHT_VIEW);
 			} else {
 				CommandPanel.logger.warning("Visualization type error!");
 			}
@@ -259,685 +498,10 @@ public class Inference {
 			// visualizeGraph(req_model, actor_model, 2);
 		}
 	}
+
 	
 	
-
-
-	/**
-	 * @param req_model
-	 * @param actor_model
-	 * @param visualization
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
-	 * @throws ScriptException
-	 */
-	private static void visualizeGraph(RequirementGraph req_model, ActorAssociationGraph actor_model, int type, int visualization) throws IOException, FileNotFoundException,
-			UnsupportedEncodingException, ScriptException {
-		// original graph
-		if (visualization == InfoEnum.INITIAL_VIEW) {
-			if (type == InfoEnum.GRAPHVIZ) {
-				// visualize security goals in Graphviz
-				showSimpleGraphInGraphviz(req_model, visualization);
-			} else if (type == InfoEnum.CANVAS) {
-				// visualize security goals in Canvas
-				showSimpleGraphInCanvas(req_model, visualization);
-			} else {
-			}
-		} else {
-			// reprocess ownership of security goals
-			for (SecurityGoal sg : req_model.getSg_elem()) {
-				SecurityGoal temp_sg = (SecurityGoal) req_model.findElementByFormalName(sg.getFormalName());
-				if (temp_sg != null) {
-					sg.setRemark(InfoEnum.ElementRemark.TOPSG.name());
-					sg.owner = temp_sg.owner;
-					propagateSecurityGoalOwnership(sg, temp_sg.owner);
-				}
-			}
-			// identify criticality for each potential security goals
-			identifyCriticalSecurityGoal(req_model, actor_model);
-			// identify best refinement path
-			identifyBestRefinePath(req_model);
-			// visualize security goals according to the type of visualization
-			if (type == InfoEnum.GRAPHVIZ) {
-				// visualize security goals in Graphviz
-				showSimpleGraphInGraphviz(req_model, visualization);
-			} else if (type == InfoEnum.CANVAS) {
-				// visualize security goals in Canvas
-				showSimpleGraphInCanvas(req_model, visualization);
-			} else {
-			}
-
-		}
-	}
-
-	private static void propagateSecurityGoalOwnership(SecurityGoal sg, Actor owner) {
-		for (RequirementLink rl : sg.and_refine_links) {
-			SecurityGoal temp_sg = (SecurityGoal) rl.getSource();
-			temp_sg.owner = owner;
-			propagateSecurityGoalOwnership(temp_sg, owner);
-		}
-	}
-
-	/**
-	 * bottom-up way for identifying best path currently the path is not guaranteed to be the best one, as the parent of critical goals are always replaced by the last one.
-	 * 
-	 * @param req_model
-	 */
-	private static void identifyBestRefinePath(RequirementGraph req_model) {
-		for (SecurityGoal sg : req_model.getSg_elem()) {
-			if (sg.isCriticality()) {
-				if (sg.parent != null && sg.parent_link != null) {
-					sg.parent.setRemark(InfoEnum.ElementRemark.BESTPATH.name());
-					sg.parent_link.setRemark(InfoEnum.LinkRemark.BESTPATH.name());
-					propagateBestRefinePath(sg.parent);
-				}
-			}
-		}
-	}
-
-	private static void propagateBestRefinePath(SecurityGoal sg) {
-		if (sg.parent != null && sg.parent_link != null) {
-			sg.parent.setRemark(InfoEnum.ElementRemark.BESTPATH.name());
-			sg.parent_link.setRemark(InfoEnum.LinkRemark.BESTPATH.name());
-			propagateBestRefinePath(sg.parent);
-		} else {
-			return;
-		}
-
-	}
-
-	/**
-	 * top-down analysis for refinement path
-	 * 
-	 * @param req_model
-	 */
-	private static void identifyTopDownBestRefinePath(RequirementGraph req_model) {
-
-		for (SecurityGoal sg : req_model.getSg_elem()) {
-			if (sg.getRemark().equals(InfoEnum.ElementRemark.TOPSG.name())) {
-				propagateTopDownBestRefinePath(sg);
-			}
-		}
-	}
-
-	private static void propagateTopDownBestRefinePath(SecurityGoal sg) {
-		// sg.setRemark(InfoEnum.ElementRemark.BESTPATH.name());
-		boolean refined = false;
-		if (sg.isCriticality() || sg.isNon_deterministic()) {
-			return;
-		} else {
-			// first refine via interval
-			for (RequirementLink rl : sg.and_refine_links) {
-				if (rl.refine_type.equals(InfoEnum.RefineType.INTERVAL.name())) {
-					refined = true;
-					rl.setRemark(InfoEnum.LinkRemark.BESTPATH.name());
-					rl.getSource().setRemark(InfoEnum.ElementRemark.BESTPATH.name());
-					propagateTopDownBestRefinePath((SecurityGoal) rl.getSource());
-				}
-			}
-			// then, refine via security attribute
-			if (!refined) {
-				for (RequirementLink rl : sg.and_refine_links) {
-					if (rl.refine_type.equals(InfoEnum.RefineType.ATTRIBUTE.name())) {
-						refined = true;
-						rl.setRemark(InfoEnum.LinkRemark.BESTPATH.name());
-						rl.getSource().setRemark(InfoEnum.ElementRemark.BESTPATH.name());
-						propagateTopDownBestRefinePath((SecurityGoal) rl.getSource());
-					}
-				}
-				// finally, refine via asset
-				if (!refined) {
-					for (RequirementLink rl : sg.and_refine_links) {
-						if (rl.refine_type.equals(InfoEnum.RefineType.ASSET.name())) {
-							refined = true;
-							rl.setRemark(InfoEnum.LinkRemark.BESTPATH.name());
-							rl.getSource().setRemark(InfoEnum.ElementRemark.BESTPATH.name());
-							propagateTopDownBestRefinePath((SecurityGoal) rl.getSource());
-						}
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * for exhaustive security goal refinement analysis
-	 * 
-	 * @param req_model
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
-	 * @throws IOException
-	 * @throws ScriptException
-	 */
-	private static void identifyCriticalSecurityGoal(RequirementGraph req_model, ActorAssociationGraph actor_model) throws FileNotFoundException, UnsupportedEncodingException,
-			IOException, ScriptException {
-
-		String ex_req_model_file = req_model.generateExhaustiveFormalExpression();
-		// normally the actor association model keeps unchanged, so no need to rewrite it.
-		String actor_model_file = InfoEnum.current_directory + "/dlv/models/actor_association_model.dl ";
-		if (actor_model.getElements().size() != 0) {
-			actor_model_file = actor_model.generateFormalExpressionToFile();
-		}
-
-		
-		String inference_rule = "";
-		// original trust-based criticality analysis
-//		if (req_model.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
-//			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_bus.rule "
-//					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/business_process_model.dl "
-//					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + ex_req_model_file + " " + actor_model_file;
-//		} else if (req_model.getLayer().equals(InfoEnum.Layer.APPLICATION.name())) {
-//			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_app.rule "
-//					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule "
-//					+ InfoEnum.current_directory
-//					+ "/dlv/rules/sec_goal_ownership.rule " // infer security goal ownership from upper layers (deprecated).
-//					// + InfoEnum.current_directory+"/dlv/models/temp_app_fact.dl "
-//					+ InfoEnum.current_directory + "/dlv/models/software_architecture_model.dl " + InfoEnum.current_directory + "/dlv/models/asset_model.dl " + ex_req_model_file
-//					+ " " + actor_model_file;
-//		} else if (req_model.getLayer().equals(InfoEnum.Layer.PHYSICAL.name())) {
-//			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_phy.rule "
-//					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/deployment_model.dl "
-//					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + ex_req_model_file + " " + actor_model_file;
-//		} else {
-//			CommandPanel.logger.severe("Error refinement type!");
-//		}
-
-		// Threat-based criticality analysis
-		inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " 
-				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule "
-				+ InfoEnum.current_directory + "/dlv/models/data_flow_model.dl " 
-				+ InfoEnum.current_directory + "/dlv/models/threat_model.dl " 
-				+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + ex_req_model_file;
-
-
-		Runtime rt = Runtime.getRuntime();
-		Process pr = rt.exec(inference_rule);
-
-		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		String line = null;
-
-		while ((line = input.readLine()) != null) {
-			// line = input.readLine();
-			line = line.substring(1, line.length() - 1);
-			String[] result = line.split(", ");
-			for (String s : result) {
-				// highlight the critical one
-				if (s.startsWith("is_critical")) {
-					// parse facts
-					s = s.replaceAll("is\\_critical\\(", "");
-					s = s.replaceAll("\\)", "");
-					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findExhaustiveSecurityGoalByFormalName(s);
-					if (critical_sec_goal != null) {
-						critical_sec_goal.setCriticality(true);
-					} else {
-						CommandPanel.logger.severe("critical secuirty goal error!");
-					}
-				}
-				// show the not determined one.
-				else if (s.startsWith("non_deterministic")) {
-					// parse facts
-					s = s.replaceAll("non\\_deterministic\\(", "");
-					s = s.replaceAll("\\)", "");
-					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findExhaustiveSecurityGoalByFormalName(s);
-					critical_sec_goal.setNon_deterministic(true);
-				}
-			}
-		}
-	}
-
-	private static void showSimpleGraphInCanvas(RequirementGraph req_model, int visualization) throws ScriptException {
-		// processing elements
-		for (SecurityGoal sg : req_model.getSg_elem()) {
-			String element_id = AppleScript.drawArbitraryRequirementElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "All",
-					InfoEnum.reverse_req_elem_type_map.get(InfoEnum.RequirementElementType.SOFTGOAL.name()), InfoEnum.NORMAL_SIZE, "{500,500}", "0", sg.getName(), "0", "1");
-			sg.setId(element_id);
-
-			if (sg.isCriticality()) {
-				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id, "5", "Red", "Simple");
-			} else if (sg.isNon_deterministic()) {
-			} else if (visualization != InfoEnum.INITIAL_VIEW && sg.getRemark().equals(InfoEnum.ElementRemark.BESTPATH.name())) {
-				// only process under particular view.
-				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id, "5", "Blue", "Simple");
-			}
-			// if(sg.getRemark().equals(InfoEnum.ElementRemark.TOPSG.name()))
-		}
-
-		// processing links
-		for (RequirementLink rl : req_model.getSg_links()) {
-			String link_id = AppleScript.drawExhaustiveRefinementLink(rl);
-			rl.setId(link_id);
-			// set the layer of the link to "All", which cannot be done in last step...
-			// TODO: further work might be done to fix this problem.
-			AppleScript.changeAttributeOfLink(InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer()), "none", rl.getId(), "1", "none", "All");
-
-			if (visualization != InfoEnum.INITIAL_VIEW && rl.getRemark().equals(InfoEnum.LinkRemark.BESTPATH.name())) {
-				AppleScript.changeAttributeOfLink(InfoEnum.esg_canvas_mapping.get(rl.getSource().getLayer()), "none", rl.getId(), "3", "Blue", "Simple");
-			}
-			// if(((SecurityGoal)rl.getSource()).isCriticality() && ((SecurityGoal)rl.getTarget()).isCriticality())
-		}
-	}
-
-	/**
-	 * for exhaustive security goal refinement analysis This one only shows id of each security goal.
-	 * 
-	 * @param req_model
-	 * @param visualization
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
-	 * @throws IOException
-	 */
-	private static void showSimpleGraphInGraphviz(RequirementGraph req_model, int visualization) throws IOException {
-		// export the security goal graph and visualize it.
-		// the simple way to represent the graph, which is based on the id of each element, it is simple, but does not make much sense.
-		String graph = "digraph G {\n" + "rankdir = BT;\n";// Determine layout direction
-
-		for (SecurityGoal sg : req_model.getSg_elem()) {
-			String temp_graph = "";
-
-			if (sg.isCriticality()) {
-				temp_graph += "sg_" + sg.getId() + "[shape=ellipse, fontname=\"Helvetica-Bold\", style = filled, color = red];\n";
-			} else if (sg.isNon_deterministic()) {
-				temp_graph += "sg_" + sg.getId() + "[shape=ellipse, fontname=\"Helvetica-Bold\", style = filled, color = green];\n";
-			} else {
-				temp_graph += "sg_" + sg.getId() + "[shape=ellipse, fontname=\"Helvetica-Bold\"";
-				// only process when visualization is 1.
-				if (sg.getRemark().equals(InfoEnum.ElementRemark.BESTPATH.name())) {
-					temp_graph += ", style = filled, color=blue";
-				}
-				temp_graph += "];\n";
-			}
-
-			// conditionally adding this edge.
-			if (visualization != 2) {
-				graph += temp_graph;
-			} else if (sg.isCriticality() || sg.getRemark().equals(InfoEnum.ElementRemark.TOPSG.name()) || sg.getRemark().equals(InfoEnum.ElementRemark.BESTPATH.name())) {
-				graph += temp_graph;
-			}
-		}
-
-		for (RequirementLink rl : req_model.getSg_links()) {
-			String temp_graph = "";
-			SecurityGoal sg_source = (SecurityGoal) rl.getSource();
-			SecurityGoal sg_target = (SecurityGoal) rl.getTarget();
-			temp_graph += "sg_" + sg_source.getId() + " -> " + "sg_" + sg_target.getId();
-			if (rl.refine_type.equals(InfoEnum.RefineType.ATTRIBUTE.name())) {
-				temp_graph += "[label=\"S\"";
-			} else if (rl.refine_type.equals(InfoEnum.RefineType.ASSET.name())) {
-				temp_graph += "[label=\"A\"";
-			} else if (rl.refine_type.equals(InfoEnum.RefineType.INTERVAL.name())) {
-				temp_graph += "[label=\"I\"";
-			} else {
-				CommandPanel.logger.severe("Refinement type of the graph has problems.");
-			}
-
-			if (rl.getRemark().equals(InfoEnum.LinkRemark.BESTPATH.name())) {
-				temp_graph += ", penwidth = 2.5, color=blue";
-			}
-
-			temp_graph += "];\n";
-
-			// conditionally adding this edge.
-			if (visualization != 2) { // non-trimmed graph
-				graph += temp_graph;
-			}
-			// trimmed graph contains links, which are in the best path and are highlighted in blue
-			else if (rl.getRemark().equals(InfoEnum.LinkRemark.BESTPATH.name())) {
-				graph += temp_graph;
-			}
-			// trimmed graph also contains refinement links, which connect critical security goals
-			else if (((SecurityGoal) rl.getSource()).isCriticality() && ((SecurityGoal) rl.getTarget()).isCriticality()) {
-				graph += temp_graph;
-			}
-		}
-
-		graph += "}";
-
-		writeFile(InfoEnum.current_directory + "/graphviz/sec_goal_" + visualization + ".gv", graph, false);
-
-		// draw pdf figure for the corresponding graph
-		Runtime rt;
-		Process pr;
-		String draw_graphviz = InfoEnum.current_directory + "/graphviz/dot -Tpdf " + InfoEnum.current_directory + "/graphviz/sec_goal_" + visualization + ".gv -o "
-				+ InfoEnum.current_directory + "/graphviz/sec_goal_" + visualization + ".pdf";
-		rt = Runtime.getRuntime();
-		pr = rt.exec(draw_graphviz);
-	}
-
-	/**
-	 * for exhaustive security goal refinement analysis This one shows the detailed content of each security goal
-	 * 
-	 * @param req_model
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
-	 * @throws IOException
-	 */
-	@Deprecated
-	@SuppressWarnings({ "unused" })
-	private static void showComplexGraph(RequirementGraph req_model) throws FileNotFoundException, UnsupportedEncodingException, IOException {
-
-		// export the security goal graph and visualize it.
-		String graph = "digraph G {\n" + "rankdir = BT\n";// Determine layout direction
-
-		// This is a more complex way to represent security goals, which shows all dimensions.
-		for (RequirementLink rl : req_model.getSg_links()) {
-			SecurityGoal sg_source = (SecurityGoal) rl.getSource();
-			SecurityGoal sg_target = (SecurityGoal) rl.getTarget();
-			graph += sg_source.getId() + " [shape=none, margin=0, label=< " + "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"5\">" + " <TR><TD>sg_"
-					+ sg_source.getId() + "</TD></TR>" + " <TR><TD>" + sg_source.getImportance() + "</TD></TR>" + " <TR><TD>" + sg_source.getSecurityAttribute() + "</TD></TR>"
-					+ " <TR><TD>" + sg_source.getAsset() + "</TD></TR>" + " <TR><TD>" + sg_source.getInterval() + "</TD></TR>" + " </TABLE>>];" + sg_target.getId()
-					+ " [shape=none, margin=0, label=<" + "<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"5\">" + "<TR><TD>sg_" + sg_target.getId()
-					+ "</TD></TR>" + "<TR><TD>" + sg_target.getImportance() + "</TD></TR>" + " <TR><TD>" + sg_target.getSecurityAttribute() + "</TD></TR>" + "<TR><TD>"
-					+ sg_target.getAsset() + "</TD></TR>" + "<TR><TD>" + sg_target.getInterval() + "</TD></TR>" + "</TABLE>>];" + sg_source.getId() + " -> " + sg_target.getId();
-			if (rl.refine_type.equals(InfoEnum.RefineType.ATTRIBUTE.name())) {
-				graph += "[color=red, label=\"S\"];\n";
-			} else if (rl.refine_type.equals(InfoEnum.RefineType.ASSET.name())) {
-				graph += "[color=blue, label=\"A\"];\n";
-			} else if (rl.refine_type.equals(InfoEnum.RefineType.INTERVAL.name())) {
-				graph += "[color=green, label=\"I\"];\n";
-			} else {
-				CommandPanel.logger.severe("Refinement type of the graph has problems.");
-			}
-		}
-
-		graph += "}";
-
-		writeFile(InfoEnum.current_directory + "/graphviz/sec_goal.gv", graph, false);
-
-		// draw pdf figure for the corresponding graph
-		Runtime rt;
-		Process pr;
-		String draw_graphviz = InfoEnum.current_directory + "/graphviz/dot -Tpdf " + InfoEnum.current_directory + "/graphviz/sec_goal.gv -o " + InfoEnum.current_directory
-				+ "/graphviz/sec_goal.pdf";
-		rt = Runtime.getRuntime();
-		pr = rt.exec(draw_graphviz);
-	}
-
-	public static void securityGoalRefine(RequirementGraph req_model, String type, int scope) throws IOException, ScriptException {
-		String expression_file = req_model.generateFormalExpressionToFile(scope);
-
-		String security_model_file = InfoEnum.current_directory + "/dlv/models/security_model_" + req_model.getLayer().toLowerCase() + ".dl ";
-		// absolute path: /Users/litong30/research/Trento/Workspace/research/TLSAF/
-		String refine_rule = "";
-		if (type.equals(InfoEnum.RefinementDimension.ASSET.name())) {
-			refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/refine_asset.rule " + InfoEnum.current_directory
-					+ "/dlv/models/asset_model.dl " + expression_file;
-		} else if (type.equals(InfoEnum.RefinementDimension.SECURITY_PROPERTY.name())) {
-			refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/refine_security_attribute.rule " + expression_file
-					+ " " + security_model_file;
-		} else if (type.equals(InfoEnum.RefinementDimension.INTERVAL.name())) {
-			refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/refine_interval.rule " + expression_file;
-		} else {
-			CommandPanel.logger.severe("Error refinement type!");
-		}
-
-		Runtime rt = Runtime.getRuntime();
-		Process pr = rt.exec(refine_rule);
-
-		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		String line = null;
-
-		/*
-		 * having the restriction that we only process "and_refined_sec_goal" we could harden a bit drawing logic into code.
-		 */
-		// LinkedList<RequirementLink> new_links = new LinkedList<RequirementLink>();
-		LinkedList<RequirementElement> refined_elems = new LinkedList<RequirementElement>();
-
-		// parse reasoning result
-		while ((line = input.readLine()) != null) {
-			line = line.substring(1, line.length() - 1);
-			String[] result = line.split(", ");
-			for (String s : result) {
-				// System.out.println(s);
-				// only consider related security goals
-				if (s.startsWith("and_refined_sec_goal")) {
-					// parse facts
-					s = s.replaceAll("and_refined_sec_goal\\(", "");
-					s = s.replaceAll("\\)", "");
-					String[] sg = s.split(",");
-					// create new element`
-//					SecurityGoal refined_goal = (SecurityGoal) req_model.findElementByFormalName(sg[4]);
-					SecurityGoal refined_goal = (SecurityGoal) req_model.findElementById(sg[4]);
-					
-					// find the corresponding goal/task element according to the obtained id
-					Element re = req_model.findElementById(sg[3]);
-					SecurityGoal new_sg = null;
-					if (re != null) {
-						new_sg = new SecurityGoal(sg[0], sg[1], sg[2], re, InfoEnum.RequirementElementType.SECURITY_GOAL.name(), refined_goal.getLayer());
-					} else {
-						CommandPanel.logger.severe("Security goal cannot be created: interval id-->" + sg[3]);
-					}
-					
-					// update ownership relations
-					if (refined_goal.owner != null) {
-						refined_goal.owner.getOwnedElement().add(new_sg);
-						new_sg.owner = refined_goal.owner;
-					}
-					else{
-						CommandPanel.logger.severe("Security goal misses owner information: interval id-->" + refined_goal.getId());
-						return;
-					}
-
-					req_model.getElements().add(new_sg);
-					// create new link
-					RequirementLink new_and_refine = new RequirementLink(InfoEnum.RequirementLinkType.AND_REFINE.name(), new_sg, refined_goal);
-					req_model.getLinks().add(new_and_refine);
-
-					refined_goal.and_refine_links.add(new_and_refine);
-					if (refined_elems.indexOf(refined_goal) == -1) {
-						refined_elems.add(refined_goal);
-					}
-					// System.out.println(new_sg.getFormalExpression()+"\n"+new_and_refine.getFormalExpression());
-					// no id for newly added elements and links. This should be
-					// done after graphic representation.
-				}
-			}
-		}
-		drawAndRefinement(refined_elems);
-	}
-
-	/**
-	 * As the and-refine is not directly drawn in the picture, a bit more processing is required.
-	 * 
-	 * Currently, this method is particularly designed for refining "security goals" (specific notes) The more general one can be found in the AntiGoalInference class
-	 * 
-	 * @param refined_elems
-	 *            : a list of elements (security goals) that are fined.
-	 * @throws ScriptException
-	 */
-	private static void drawAndRefinement(LinkedList<RequirementElement> refined_elems) throws ScriptException {
-		// draw the reasoning result on omnigraffle
-		for (RequirementElement refined_goal : refined_elems) {
-			if (refined_goal.and_refine_links.size() == 1) {
-				RequirementLink target_link = refined_goal.and_refine_links.getFirst();
-				String source_id = AppleScript.drawRequirementElement(target_link.getSource(), refined_goal, "down");
-				target_link.getSource().setId(source_id);
-				// add mouse-over annotation
-				AppleScript.addUserData2(InfoEnum.REQ_TARGET_CANVAS, target_link.getSource().getLayer(), (SecurityGoal)target_link.getSource(),
-						target_link.getSource().owner.getFormalName());
-				// if there is only one refinement, we change and_refine to
-				// refine
-				target_link.setType(InfoEnum.RequirementLinkType.REFINE.name());
-				String link_id = AppleScript.drawRequirementLink(target_link, InfoEnum.SINGLE_LAYER);
-				target_link.setId(link_id);
-			} else {
-				// redundant link
-				RequirementElement mid = new RequirementElement("", InfoEnum.RequirementElementType.MIDDLE_POINT.name(), refined_goal.getLayer());
-				String mid_id = AppleScript.drawRequirementElement(mid, refined_goal, "down");
-				mid.setId(mid_id);
-				// doesn't add this into the logic model, as it does not make
-				// sense.
-				RequirementLink redundant_link = new RequirementLink(InfoEnum.RequirementLinkType.AND_REFINE_ARROW.name(), mid, refined_goal);
-				redundant_link.setRemark(InfoEnum.LinkRemark.REDUNDANT.name());
-
-				String redundant_id = AppleScript.drawRequirementLink(redundant_link, InfoEnum.SINGLE_LAYER);
-				redundant_link.setId(redundant_id);
-				// every and_refine link
-				RequirementLink first_rl = refined_goal.and_refine_links.getFirst();
-				RequirementElement first_re = first_rl.getSource();
-				String temp_id = AppleScript.drawRequirementElement(first_re, mid, "down");
-				first_re.setId(temp_id);
-				// add mouse-over annotation
-				AppleScript.addUserData2("Model", first_re.getLayer(), (SecurityGoal)first_re, first_re.owner.getFormalName());
-
-				RequirementLink fake_rl = new RequirementLink(first_rl.getType(), first_rl.getSource(), mid);
-				String link_id = AppleScript.drawRequirementLink(fake_rl, InfoEnum.SINGLE_LAYER);
-				fake_rl.setId(link_id);
-
-				// refined_goal.refine_links.removeFirst();
-				RequirementElement next = null;
-				RequirementElement reference = first_re;
-				RequirementLink rl = null;
-				for (int i = 1; i < refined_goal.and_refine_links.size(); i++) {
-					rl = refined_goal.and_refine_links.get(i);
-					fake_rl = new RequirementLink(rl.getType(), rl.getSource(), mid);
-					next = rl.getSource();
-					String next_id = AppleScript.drawRequirementElement(next, reference, "right");
-					next.setId(next_id);
-					reference = next;
-					// add mouse-over annotation
-					AppleScript.addUserData2("Model", next.getLayer(), (SecurityGoal)next, next.owner.getFormalName());
-
-					link_id = AppleScript.drawRequirementLink(fake_rl, InfoEnum.SINGLE_LAYER);
-					fake_rl.setId(link_id);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Simplify security goals by identifying critical ones
-	 * 
-	 * @param req_model
-	 * @param actor_model
-	 * @param scope
-	 * @throws IOException
-	 * @throws ScriptException
-	 */
-	public static void threatBasedSecurityGoalSimplification(RequirementGraph req_model, int scope) throws IOException, ScriptException {
-		String req_model_file = req_model.generateFormalExpressionToFile(scope);
-
-		String inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " 
-				+ InfoEnum.current_directory + "/dlv/rules/threat_based_simplification.rule "
-				+ InfoEnum.current_directory + "/dlv/models/data_flow_model.dl " 
-				+ InfoEnum.current_directory + "/dlv/models/threat_model.dl " 
-				+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file;
-
-		Runtime rt = Runtime.getRuntime();
-		Process pr = rt.exec(inference_rule);
-
-		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		String line = null;
-
-		while ((line = input.readLine()) != null) {
-			// line = input.readLine();
-			line = line.substring(1, line.length() - 1);
-			String[] result = line.split(", ");
-			for (String s : result) {
-//				CommandPanel.logger.info(s);
-
-				// highlight the critical one
-				if (s.startsWith("is_critical")) {
-					// parse facts
-					s = s.replaceAll("is\\_critical\\(", "");
-					s = s.replaceAll("\\)", "");
-
-//					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
-					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementById(s);
-					critical_sec_goal.setCriticality(true);
-					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "5", "none", "none");
-				}
-				// show the not determined one.
-				else if (s.startsWith("non_deterministic")) {
-					// parse facts
-					s = s.replaceAll("non\\_deterministic\\(", "");
-					s = s.replaceAll("\\)", "");
-
-//					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
-					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementById(s);
-					critical_sec_goal.setNon_deterministic(true);
-					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "3", "none", "none");
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Simplify security goals by identifying critical ones
-	 * 
-	 * @param req_model
-	 * @param actor_model
-	 * @param scope
-	 * @throws IOException
-	 * @throws ScriptException
-	 */
-	public static void securityGoalSimplification(RequirementGraph req_model, ActorAssociationGraph actor_model, int scope) throws IOException, ScriptException {
-		String req_model_file = req_model.generateFormalExpressionToFile(scope);
-		// normally the actor association model keeps unchanged, so no need to rewrite it.
-		String actor_model_file = InfoEnum.current_directory + "/dlv/models/actor_association_model.dl ";
-		if (actor_model.getElements().size() != 0) {
-			actor_model_file = actor_model.generateFormalExpressionToFile();
-		}
-
-		String inference_rule = "";
-		if (req_model.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
-			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_bus.rule "
-					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/business_process_model.dl "
-					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file + " " + actor_model_file;
-		} else if (req_model.getLayer().equals(InfoEnum.Layer.APPLICATION.name())) {
-			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_app.rule "
-					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/software_architecture_model.dl "
-					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file + " " + actor_model_file;
-			// + "dlv/rules/sec_goal_ownership.rule " + "dlv/models/temp_app_fact.dl "
-		} else if (req_model.getLayer().equals(InfoEnum.Layer.PHYSICAL.name())) {
-			inference_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/simplification_phy.rule "
-					+ InfoEnum.current_directory + "/dlv/rules/simplification_general.rule " + InfoEnum.current_directory + "/dlv/models/deployment_model.dl "
-					+ InfoEnum.current_directory + "/dlv/models/software_architecture_model.dl " // infer additional knowledge from software
-					+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + req_model_file + " " + actor_model_file;
-		} else {
-			CommandPanel.logger.severe("Error refinement type!");
-		}
-
-		Runtime rt = Runtime.getRuntime();
-		Process pr = rt.exec(inference_rule);
-
-		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		String line = null;
-
-		while ((line = input.readLine()) != null) {
-			// line = input.readLine();
-			line = line.substring(1, line.length() - 1);
-			String[] result = line.split(", ");
-			for (String s : result) {
-				CommandPanel.logger.info(s);
-
-				// highlight the critical one
-				if (s.startsWith("is_critical")) {
-					// parse facts
-					s = s.replaceAll("is\\_critical\\(", "");
-					s = s.replaceAll("\\)", "");
-
-					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
-					critical_sec_goal.setCriticality(true);
-					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "5", "none", "none");
-				}
-				// show the not determined one.
-				else if (s.startsWith("non_deterministic")) {
-					// parse facts
-					s = s.replaceAll("non\\_deterministic\\(", "");
-					s = s.replaceAll("\\)", "");
-
-					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
-					critical_sec_goal.setNon_deterministic(true);
-					AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "3", "none", "none");
-
-				}
-			}
-		}
-
-	}
-
+	
 	/**
 	 * Operationalize security goals into security mechanisms by using security patterns
 	 * 
@@ -952,7 +516,8 @@ public class Inference {
 		// only consider security mechanisms that are specific for the current layer
 		String security_model_file = InfoEnum.current_directory + "/dlv/models/security_model_" + req_model.getLayer().toLowerCase() + ".dl ";
 
-		String refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/operationalization.rule " + expression_file + " "
+		String refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " 
+		+ InfoEnum.current_directory + "/dlv/rules/operationalization.rule " + expression_file + " "
 				+ security_model_file;
 
 		Runtime rt = Runtime.getRuntime();
@@ -968,62 +533,55 @@ public class Inference {
 			String[] result = line.split(", ");
 			for (String s : result) {
 				// System.out.println(s);
-				if (s.startsWith("make")) {
+				if (s.startsWith("operationalize")) {
 					// parse facts
-					s = s.replaceAll("make\\(", "");
+					s = s.replaceAll("operationalize\\(", "");
 					s = s.replaceAll("\\)", "");
 					String[] sg = s.split(",");
+					// we should only operationalize security goals that have been selected. 
+					// Here we have an additional control, as DLV -nofacts doesn't work well for no reason
+					if (VisualizationFunctions.selectionCheck(sg[1])) {
+						// create new element
+						SecurityGoal op_goal = (SecurityGoal) req_model.findElementByFormalName(sg[1]);
+						sg[0] = sg[0].replaceAll("\\_", " ");
+						RequirementElement sec_mech = new RequirementElement(sg[0], InfoEnum.RequirementElementType.SECURITY_MECHANISM.name(), op_goal.getLayer());
+						req_model.getElements().add(sec_mech);
+						// create new link
+						RequirementLink new_op = new RequirementLink(InfoEnum.RequirementLinkType.OPERATIONALIZE.name(), sec_mech, op_goal);
+						req_model.getLinks().add(new_op);
 
-					// if (!InfoEnum.security_mechanisms.get(sg[0]).equals(req_model.getLayer())) {
-					// continue;
-					// }
-					// create new element
-					SecurityGoal makedGoal = (SecurityGoal) req_model.findElementByFormalName(sg[1]);
-					sg[0] = sg[0].replaceAll("\\_", " ");
-					RequirementElement sec_mech = new RequirementElement(sg[0], InfoEnum.RequirementElementType.SECURITY_MECHANISM.name(), makedGoal.getLayer());
-					req_model.getElements().add(sec_mech);
-					// create new link
-					RequirementLink new_make = new RequirementLink(InfoEnum.RequirementLinkType.MAKE.name(), sec_mech, makedGoal);
-					req_model.getLinks().add(new_make);
-
-					makedGoal.make_help_links.add(new_make);
-					if (operated_elems.indexOf(makedGoal) == -1) {
-						operated_elems.add(makedGoal);
+						op_goal.op_links.add(new_op);
+						if (operated_elems.indexOf(op_goal) == -1) {
+							operated_elems.add(op_goal);
+						}
 					}
-
-				} else if (s.startsWith("help")) {
-					// parse facts
-					s = s.replaceAll("help\\(", "");
-					s = s.replaceAll("\\)", "");
-					String[] sg = s.split(",");
-					// create new element
-					SecurityGoal helpedGoal = (SecurityGoal) req_model.findElementByFormalName(sg[1]);
-					sg[0] = sg[0].replaceAll("\\_", " ");
-					RequirementElement sec_mech = new RequirementElement(sg[0], InfoEnum.RequirementElementType.SECURITY_MECHANISM.name(), helpedGoal.getLayer());
-					req_model.getElements().add(sec_mech);
-					// create new link
-					RequirementLink new_help = new RequirementLink(InfoEnum.RequirementLinkType.HELP.name(), sec_mech, helpedGoal);
-					req_model.getLinks().add(new_help);
-
-					helpedGoal.make_help_links.add(new_help);
-					if (operated_elems.indexOf(helpedGoal) == -1) {
-						operated_elems.add(helpedGoal);
-					}
-				} else {
+				} 
+				else {
 				}
 			}
 			// draw the reasoning result on omnigraffle
 			for (RequirementElement operated_elem : operated_elems) {
-				for (RequirementLink mh : operated_elem.make_help_links) {
-					String source_id = AppleScript.drawRequirementElement(mh.getSource(), mh.getTarget(), "down");
-					mh.getSource().setId(source_id);
-					String link_id = AppleScript.drawRequirementLink(mh, InfoEnum.SINGLE_LAYER);
-					mh.setId(link_id);
+				for (RequirementLink op : operated_elem.op_links) {
+					String source_id = AppleScript.drawRequirementElement(op.getSource(), op.getTarget(), "down");
+					op.getSource().setId(source_id);
+					String link_id = AppleScript.drawRequirementLink(op, InfoEnum.SINGLE_LAYER);
+					op.setId(link_id);
 				}
 			}
 		}
 	}
 
+	
+	/**
+	 * This function is initially used for generating security mechanism alternatives in one layer
+	 * As we have already implement the holistic security goal model analysis for generating holistic security solution across three layers,
+	 * this method is thus deprecated.
+	 * @param req_model
+	 * @param scope
+	 * @return
+	 * @deprecated
+	 */
+	@SuppressWarnings("unchecked")
 	public static LinkedList<String> securityAlternativeSolutions(RequirementGraph req_model, int scope) {
 
 		LinkedList<SecurityGoal> sg_set = new LinkedList<SecurityGoal>();
@@ -1058,7 +616,7 @@ public class Inference {
 
 		@SuppressWarnings("rawtypes")
 		LinkedList<LinkedList> all = new LinkedList<LinkedList>();
-		for (LinkedList<RequirementLink> temp : all) {
+		for (@SuppressWarnings("unused") LinkedList<RequirementLink> temp : all) {
 			temp = new LinkedList<RequirementLink>();
 		}
 		LinkedList<RequirementLink> one = new LinkedList<RequirementLink>();
@@ -1070,7 +628,7 @@ public class Inference {
 			 */
 			RequirementElement empty = new RequirementElement("not treat " + sg.getName(), InfoEnum.RequirementElementType.SECURITY_MECHANISM.name(), sg.getLayer());
 			RequirementLink rl = new RequirementLink(InfoEnum.RequirementLinkType.MAKE.name(), empty, sg);
-			sg.make_help_links.add(rl);
+			sg.op_links.add(rl);
 		}
 		getCombination(sg_set, all, one, 0);
 
@@ -1096,7 +654,7 @@ public class Inference {
 
 	private static void getCombination(LinkedList<SecurityGoal> sg_set, @SuppressWarnings("rawtypes") LinkedList<LinkedList> all, LinkedList<RequirementLink> one, int current) {
 		if (current == sg_set.size() - 1) {
-			for (RequirementLink mh : sg_set.get(current).make_help_links) {
+			for (RequirementLink mh : sg_set.get(current).op_links) {
 				one.add(mh);
 				LinkedList<RequirementLink> backup = new LinkedList<RequirementLink>();
 				for (RequirementLink temp : one) {
@@ -1108,7 +666,7 @@ public class Inference {
 			return;
 		}
 
-		for (RequirementLink mh : sg_set.get(current).make_help_links) {
+		for (RequirementLink mh : sg_set.get(current).op_links) {
 			one.add(mh);
 			getCombination(sg_set, all, one, current + 1);
 			one.removeLast();
@@ -1161,178 +719,205 @@ public class Inference {
 			return results_secondary;
 		}
 	}
+	
+	
+	
+	
 
+	
 	/**
-	 * Transfer security concerns over layers In particular, from BP to APP
-	 * 
-	 * @param req_bus_model
-	 * @param req_app_model
-	 * @param scope
-	 * @throws ScriptException
-	 * @throws IOException
-	 */
-	public static void securityBusToAppTransformation(RequirementGraph req_bus_model, RequirementGraph req_app_model, int scope) throws ScriptException, IOException {
-		// complete information for cross-layer links, e.g. support
-		crossLayerFacts(req_bus_model, req_app_model);
-
-		// process security mechanisms
-		crossLayerSecurityMechanism(req_bus_model, req_app_model, scope);
-
-		// process untreated security goals
-		crossLayerSecurityGoal(req_bus_model, req_app_model, scope);
-	}
-
-	/**
-	 * Transfer security concerns cross layers In particular, from BP to APP
-	 * 
-	 * @param req_app_model
-	 * @param req_phy_model
-	 * @param scope
-	 * @throws ScriptException
-	 * @throws IOException
-	 */
-	public static void securityAppToPhyTransformation(RequirementGraph req_app_model, RequirementGraph req_phy_model, Integer scope) throws ScriptException, IOException {
-		// complete information for cross-layer links, e.g. support
-		// As the support info has been added at the beginning (I forgot here...)
-		// this step is sort of redundant, but I still keep it here to be safe...
-		crossLayerFacts(req_app_model, req_phy_model);
-
-		// process security mechanisms
-		crossLayerSecurityMechanism(req_app_model, req_phy_model, scope);
-
-		// process untreated security goals
-		crossLayerSecurityGoal(req_app_model, req_phy_model, scope);
-	}
-
-	/**
-	 * Complete information for cross-layer links, and output corresponding facts into files.
+	 * Transfer security concerns over layers 
 	 * 
 	 * @param up_req_model
 	 * @param down_req_model
+	 * @param scope
+	 * @throws ScriptException
+	 * @throws IOException
 	 */
-	private static void crossLayerFacts(RequirementGraph up_req_model, RequirementGraph down_req_model) {
-		// We assume all the cross-layer links are existing in the lower-layer
-		// and they should be already pre-processed when they are first imported.
-		String output = "";
-		for (Link rl : down_req_model.getLinks()) {
-			if (rl.getType().equals(InfoEnum.RequirementLinkType.SUPPORT.name())) {
-				RequirementLink support = (RequirementLink) rl;
+	public static void transferSecurityAcrossLayers(RequirementGraph up_req_model, RequirementGraph down_req_model, int scope) throws ScriptException, IOException {
+		// TODO: revise here
+		String expression_file1 = up_req_model.generateFormalExpressionToFile(scope);
+		String expression_file2 = down_req_model.generateFormalExpressionToFile(scope);
 
-				Element source = down_req_model.findElementById(support.source_id);
-				Element target = up_req_model.findElementById(support.des_id);
+		String refine_rule = InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/cross_layer.rule "
+				+ InfoEnum.current_directory + "/dlv/models/asset_model.dl " + expression_file1 + " " + expression_file2;
 
-				if (source != null) {
-					support.setSource(source);
-					if (target != null) {
-						support.setTarget(target);
-						// output += support.getFormalExpressions() + "\n";
-					} else {
-						CommandPanel.logger.severe("Target element is missing");
-					}
-				} else {
-					CommandPanel.logger.severe("Source element is missing");
+		Runtime rt = Runtime.getRuntime();
+		Process pr = rt.exec(refine_rule);
+
+		BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		String line = null;
+		
+		// a set of elements that are to be andrefined 
+		LinkedList<RequirementElement> refined_elems = new LinkedList<RequirementElement>();
+
+		while ((line = input.readLine()) != null) {
+			// line = input.readLine();
+			line = line.substring(1, line.length() - 1);
+			String[] result = line.split(", ");
+			for (String s : result) {
+				if(s.startsWith("support_sec_mechanism")){
+					// corresponding elements will be drawn within the method
+					processCrossLayerMechanism(up_req_model, down_req_model, s);
+				} else if(s.startsWith("and_refine_sec_goal_1")){
+					// corresponding elements will be drawn later
+					processCrossLayerSecGoal(up_req_model, down_req_model, s, InfoEnum.ASSET_TYPE_DATA, refined_elems);
+				} else if(s.startsWith("and_refine_sec_goal_2")){
+					// corresponding elements will be drawn later
+					processCrossLayerSecGoal(up_req_model, down_req_model, s, InfoEnum.ASSET_TYPE_OTHER, refined_elems);
+				} else{
+					
 				}
 			}
 		}
-		// after complete the information, the facts of support links can be correctly output
+		
+		// the and-refinement cases are drawn here, i.e., the later two cases in the above code
+		VisualizationFunctions.drawAndRefinement(refined_elems);
 	}
+	
+	
+	private static void processCrossLayerMechanism(RequirementGraph up_req_model, RequirementGraph down_req_model, String result) throws ScriptException {
+		// parse facts
+		result = result.replaceAll("support_sec_mechanism\\(", "");
+		result = result.replaceAll("\\)", "");
+		String[] sg = result.split(",");
+		
+		if(sg.length == 6){
+			// create new element
+			RequirementElement supported_mechanism = (RequirementElement) up_req_model.findElementByFormalName(sg[4]);
+			SecurityGoal refined_sec_goal = (SecurityGoal) up_req_model.findElementByFormalName(sg[5]);
+			// determine the current layer
+			String layer = null;
+			if(supported_mechanism.getLayer().equals(InfoEnum.Layer.BUSINESS.name())){
+				layer = InfoEnum.Layer.APPLICATION.name();
+			} else if(supported_mechanism.getLayer().equals(InfoEnum.Layer.APPLICATION.name())){
+				layer = InfoEnum.Layer.PHYSICAL.name();
+			} else {
+				CommandPanel.logger.severe("Layer processing error");
+			}
+			// find the actor element, which is an asset in the next layer down. Here is a special case 
+			Element asset = down_req_model.findElementById(sg[2]);
+			if(asset==null){
+				CommandPanel.logger.severe("Asset error");
+			}
+			// find the corresponding interval(goal/task) element according to the obtained id
+			Element re = down_req_model.findElementById(sg[3]);
+			SecurityGoal new_sg = null;
+			String new_sg_id,support_link_id;
+			if (re != null && layer !=null) {
+				new_sg = new SecurityGoal(sg[0], sg[1], sg[2], re, InfoEnum.RequirementElementType.SECURITY_GOAL.name(), layer);
+				// as the asset here is just the ID of application (actor) and hardware (actor), to be readable, we manually change the name of the security goal
+				new_sg.setName((new_sg.getImportance() + " " + new_sg.getSecurityAttribute() + " [" + asset.getName() + ", " + new_sg.getInterval().getName() + "]").replaceAll("\\_", " "));
+				// propagate the owner of security goal to its refinements.
+				new_sg.owner_text = refined_sec_goal.owner_text;
+				if (refined_sec_goal.owner != null) {
+					refined_sec_goal.owner.getOwnedElement().add(new_sg);
+					new_sg.owner = refined_sec_goal.owner;
+				}
+			} else {
+				CommandPanel.logger.severe("Security goal cannot be created: interval id-->" + sg[3]);
+			}
+			//first draw the support security goal
+			new_sg_id = AppleScript.drawRequirementElement(new_sg, supported_mechanism, "down");
+			new_sg.setId(new_sg_id);
+			// add mouse-over annotation
+			AppleScript.addUserData2("Model", new_sg.getLayer(), new_sg, new_sg.owner_text);
+			
+			// then draw the link to connect the two goals
+			RequirementLink support_link = new RequirementLink(InfoEnum.RequirementLinkType.SUPPORT.name(), new_sg, supported_mechanism); 
+			support_link_id = AppleScript.drawRequirementLink(support_link, InfoEnum.CROSS_LAYERS);
+			support_link.setId(support_link_id);
+			// add the newly generated elements and links
+			down_req_model.getElements().add(new_sg);
+			down_req_model.getLinks().add(support_link);
+		}
+		else{
+			CommandPanel.logger.severe("Parsing mechanism support has problems.");
+		}
+	}
+	
 
-	/**
-	 * Transferring security concerns from BP layer to APP layer, which focuses on chosen security mechanisms This transformation is done via fixed patterns, which do not require
-	 * further inferences.
-	 * 
-	 * @param up_req_model
-	 * @param down_req_model
-	 * @param scope
-	 * @throws ScriptException
-	 * @throws IOException
-	 */
-	private static void crossLayerSecurityMechanism(RequirementGraph up_req_model, RequirementGraph down_req_model, int scope) throws ScriptException, IOException {
+	private static void processCrossLayerSecGoal(RequirementGraph up_req_model, RequirementGraph down_req_model, String result, int asset_type, LinkedList<RequirementElement> refined_elems) throws ScriptException {
+		// parse facts
+		result = result.substring(result.indexOf("(") + 1, result.indexOf(")"));
+		String[] sg = result.split(",");
 
-		String layer_tag = "";
-		if (up_req_model.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
-			layer_tag = "application";
-		} else if (up_req_model.getLayer().equals(InfoEnum.Layer.APPLICATION.name())) {
-			layer_tag = "hardware";
+		// ensure the validity of the input
+		if (sg.length == 5) {
+			// create new element
+			SecurityGoal refined_sec_goal = (SecurityGoal) up_req_model.findElementByFormalName(sg[4]);
+			// determine the current layer
+			String layer = null;
+			if (refined_sec_goal.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
+				layer = InfoEnum.Layer.APPLICATION.name();
+			} else if (refined_sec_goal.getLayer().equals(InfoEnum.Layer.APPLICATION.name())) {
+				layer = InfoEnum.Layer.PHYSICAL.name();
+			} else {
+				CommandPanel.logger.severe("Layer processing error");
+			}
+			// for non-data asset, we will have additional processing operations
+			Element asset = null;
+			if (asset_type == InfoEnum.ASSET_TYPE_OTHER) {
+				// find the actor element, which is an asset in the next layer down. Here is a special case
+				asset = down_req_model.findElementById(sg[2]);
+				if (asset == null) {
+					CommandPanel.logger.severe("Asset error");
+				}
+			}
+			// find the corresponding interval(goal/task) element according to the obtained id
+			Element interval = down_req_model.findElementById(sg[3]);
+			SecurityGoal new_sg = null;
+			if (interval != null) {
+				new_sg = new SecurityGoal(sg[0], sg[1], sg[2], interval, InfoEnum.RequirementElementType.SECURITY_GOAL.name(), layer);
+				// propagate the owner of security goal to its refinements.
+				if (refined_sec_goal.owner != null) {
+					refined_sec_goal.owner.getOwnedElement().add(new_sg);
+					new_sg.owner = refined_sec_goal.owner;
+				}
+				else{
+					new_sg.owner_text = refined_sec_goal.owner_text;
+				}
+				// change asset representation if necessary
+				if (asset_type == InfoEnum.ASSET_TYPE_OTHER && asset != null) {
+					// as the asset here is just the ID of application (actor) and hardware (actor), to be readable, we manually change the name of the security goal
+					new_sg.setName((new_sg.getImportance() + " " + new_sg.getSecurityAttribute() + " [" + asset.getName() + ", " + new_sg.getInterval().getName() + "]")
+							.replaceAll("\\_", " "));
+				}
+			} else {
+				CommandPanel.logger.severe("Security goal cannot be created: interval id-->" + sg[3]);
+			}
+
+			// create new link
+			RequirementLink new_and_refine = new RequirementLink(InfoEnum.RequirementLinkType.AND_REFINE.name(), new_sg, refined_sec_goal);
+
+			refined_sec_goal.and_refine_links.add(new_and_refine);
+			if (refined_elems.indexOf(refined_sec_goal) == -1) {
+				refined_elems.add(refined_sec_goal);
+			}
+			// add the newly generated elements and links
+			down_req_model.getElements().add(new_sg);
+			down_req_model.getLinks().add(new_and_refine);
 		} else {
-			CommandPanel.logger.severe("Unexpected layer!");
-		}
-
-		for (Link rl : up_req_model.getLinks()) {
-			// logically processing
-			if (rl.getType().equals(InfoEnum.RequirementLinkType.HELP.name()) || rl.getType().equals(InfoEnum.RequirementLinkType.MAKE.name())) {
-				RequirementElement sm = (RequirementElement) rl.getSource();
-				RequirementElement sm_goal = new RequirementElement("support " + rl.getSource().getName(), InfoEnum.RequirementElementType.GOAL.name(), down_req_model.getLayer());
-				RequirementLink support_sm1 = new RequirementLink(InfoEnum.RequirementLinkType.SUPPORT.name(), sm_goal, sm);
-
-				// obtain lower layer goal id
-				String id = "";
-				id = AppleScript.drawRequirementElement(sm_goal, sm, "down");
-				sm_goal.setId(id);
-				
-				// add related security goals
-				SecurityGoal up_sg = (SecurityGoal) rl.getTarget();
-
-				SecurityGoal down_sg1 = null;
-				SecurityGoal down_sg2 = null;
-				// find the corresponding goal/task element according to the obtained id
-				Element re = down_req_model.findElementById(sm_goal.getId());
-				if (re != null) {
-					down_sg1 = new SecurityGoal(up_sg.getImportance(), layer_tag + " integrity", "corresponding " + layer_tag, re,
-							InfoEnum.RequirementElementType.SECURITY_GOAL.name(), down_req_model.getLayer());
-					if (up_sg.owner != null) {
-						up_sg.owner.getOwnedElement().add(down_sg1);
-						down_sg1.owner = up_sg.owner;
-					}
-				} else {
-					CommandPanel.logger.severe("Security goal cannot be created: interval id-->" + sm_goal.getId());
-				}
-				
-				// find the corresponding goal/task element according to the obtained id
-				re = down_req_model.findElementById(sm_goal.getId());
-				if (re != null) {
-					down_sg2 = new SecurityGoal(up_sg.getImportance(), layer_tag + " availability", "corresponding " + layer_tag, re,
-							InfoEnum.RequirementElementType.SECURITY_GOAL.name(), down_req_model.getLayer());
-					if (up_sg.owner != null) {
-						up_sg.owner.getOwnedElement().add(down_sg2);
-						down_sg2.owner = up_sg.owner;
-					}
-				} else {
-					CommandPanel.logger.severe("Security goal cannot be created: interval id-->" + sm_goal.getId());
-				}
-				
-				
-
-				down_req_model.getLinks().add(support_sm1);
-				// req_app_model.getElements().add(sm);
-				down_req_model.getElements().add(sm_goal);
-				down_req_model.getElements().add(down_sg1);
-				down_req_model.getElements().add(down_sg2);
-
-				// graphical processing
-				// set the new elements are put right below the security mechanisms
-				String position = "{" + sm.origin_x + "," + (sm.origin_y + 100) + "}";
-
-				
-				// draw new elements
-//				id = AppleScript.drawRequirementElement(sm_goal, sm, "down");
-//				sm_goal.setId(id);
-				id = AppleScript.drawRequirementElement(down_sg1, sm, "down");
-				down_sg1.setId(id);
-				id = AppleScript.drawRequirementElement(down_sg2, sm, "down");
-				down_sg2.setId(id);
-
-				// add mouse-over annotation
-				AppleScript.addUserData2(InfoEnum.REQ_TARGET_CANVAS, down_sg1.getLayer(), (SecurityGoal)down_sg1, down_sg1.owner.getName());
-				AppleScript.addUserData2(InfoEnum.REQ_TARGET_CANVAS, down_sg2.getLayer(), (SecurityGoal)down_sg2, down_sg2.owner.getName());
-
-				// draw new links
-				id = AppleScript.drawRequirementLink(support_sm1, InfoEnum.CROSS_LAYERS);
-				support_sm1.setId(id);
-			}
+			CommandPanel.logger.severe("Parsing mechanism support has problems.");
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Transfer untreated security goals to the next layer down
 	 * 
@@ -1414,7 +999,7 @@ public class Inference {
 		// sg.setId(id);
 		// }
 
-		drawAndRefinement(refined_elems);
+		VisualizationFunctions.drawAndRefinement(refined_elems);
 	}
 
 	/*
@@ -1462,5 +1047,6 @@ public class Inference {
 		writer.println(content);
 		writer.close();
 	}
+
 
 }

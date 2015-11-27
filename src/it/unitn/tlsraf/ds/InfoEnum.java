@@ -36,6 +36,10 @@ public class InfoEnum {
 	//Draw Link parameters
 	public static final int CROSS_LAYERS= 0;
 	public static final int SINGLE_LAYER= 1;
+
+	//Show asset parameters
+	public static final int ASSET_TYPE_DATA= 0;
+	public static final int ASSET_TYPE_OTHER= 1;
 	
 	//global variable for configuring the name of canvas of requirements model.
 	public static final String REQ_TARGET_CANVAS="Model";

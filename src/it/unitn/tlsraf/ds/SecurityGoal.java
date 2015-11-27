@@ -3,6 +3,7 @@ package it.unitn.tlsraf.ds;
 import it.unitn.tlsraf.func.CommandPanel;
 import it.unitn.tlsraf.func.Func;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,8 @@ public class SecurityGoal extends RequirementElement {
 	public SecurityGoal parent = null;
 	public RequirementLink parent_link = null;
 	
-	
+	// threats to this security goal. Record their id, search for the threat element when necessary. 
+	public LinkedList <String> threats = new LinkedList<String>();
 
 	public SecurityGoal() {
 		super();
@@ -105,10 +107,11 @@ public class SecurityGoal extends RequirementElement {
 	}
 
 	// avoid to use this function
-	public void resetName() {
-		this.setName(this.importance + " " + this.security_attribute + " [" + this.asset + ", " + this.interval.getName() + "]");
-	}
+//	public void resetName() {
+//		this.setName(this.importance + " " + this.security_attribute + " [" + this.asset + ", " + this.interval.getName() + "]");
+//	}
 
+	
 	/**
 	 * Extract initial information of a security goal via its text description To be more precise, we have changed this method to extract information from "user data"
 	 * 
@@ -161,12 +164,16 @@ public class SecurityGoal extends RequirementElement {
 				}
 				else{
 					// now we actually don't really need the interval element as part of the security goal, only the id is enough
-					CommandPanel.logger.info(("Information of security goal interval (ID:"+value+") is missing!") );
+//					CommandPanel.logger.info(("Information of security goal interval (ID:"+value+") is missing!") );
 					this.setInterval(null);
 					this.interval_id=value;
 				}
+			} else if (key.toLowerCase().contains("threat_ids")) {
+				String [] threat_ids = value.split(",");
+				for(String id: threat_ids){
+					this.threats.add(id);
+				}
 			} else {
-
 			}
 			// System.out.println(key+" "+value+" "+temp);
 		}
@@ -199,16 +206,22 @@ public class SecurityGoal extends RequirementElement {
 		String expression = this.getSingleFormalExpression() + "\n";
 
 		if (this.isCriticality() == true) {
-			expression += "is_critical(" + this.getFormalName() + ").\n";
+			expression += "critical(" + this.getFormalName() + ").\n";
 		}
 
 		expression += "sec_attribute(" + this.getSecurityAttribute() + ").\n";
 		expression += "asset(" + this.getAsset() + ").\n";
 		expression += "importance(" + this.getImportance() + ").\n";
-		expression += "interval(" + this.getInterval().getId() + ").\n";
-		expression += "has_properties(" + getFormalName() + "," + this.getImportance() + "," + this.getSecurityAttribute() + "," + this.getAsset() + "," + this.getInterval().getId()
+		// first check whether the interval is null
+		if(this.getInterval()!=null){
+			expression += "interval(" + this.getInterval().getId() + ").\n";
+			expression += "has_properties(" + getFormalName() + "," + this.getImportance() + "," + this.getSecurityAttribute() + "," + this.getAsset() + "," + this.getInterval().getId()
+					+ ").\n";
+		}
+		else{ // if interval element is missing, we just put a placeholder here
+		expression += "has_properties(" + getFormalName() + "," + this.getImportance() + "," + this.getSecurityAttribute() + "," + this.getAsset() + "," + "interval"
 				+ ").\n";
-
+		}
 		// also output the ownership of this security goal, which maybe redundant, but helpful in exhaustive security goals analysis.
 		if (this.owner != null) {
 			expression += "has(" + this.owner.getFormalName() + "," + this.getFormalName() + ").\n";
@@ -216,6 +229,13 @@ public class SecurityGoal extends RequirementElement {
 			expression += "has(" + owner_text + "," + this.getFormalName() + ").\n";
 		} else {
 //			expression += "Warning: the security goal " + this.getFormalName() + " doesn't have an owner!";
+		}
+		
+		// produce threat-related facts
+		for(String threat : this.threats){
+			if(!threat.equals("")){
+				expression += "threatened_by(" + this.getFormalName()+ "," + threat + ").\n";
+			}
 		}
 
 		expression = expression.replaceAll(" ", "_");
@@ -227,6 +247,18 @@ public class SecurityGoal extends RequirementElement {
 		System.out.println("ID:" + this.getId() + "\n" + "Name:" + this.getName() + "\n" + "Type:" + this.getType() + "\n" + "Layer:" + this.getLayer() + "\n" + "Remark:"
 				+ this.getRemark() + "\n" + "Criticality:" + this.isCriticality() + "\n" + "Importance:" + this.getImportance() + "\n" + "Security Attribute:"
 				+ this.getSecurityAttribute() + "\n" + "Asset:" + this.getAsset() + "\n" + "Interval:" + this.getInterval());
+	}
+
+	/**
+	 * This method is specifically used to show the name of the element that appears in graphviz
+	 * @return
+	 */
+	public String getNameForShow(){
+		String expression = this.getImportance() + "_" + this.getSecurityAttribute() + "_" + this.getAsset() + "_" + this.getInterval().getName();
+		expression = Func.prepareFormalExpression(expression);
+		return expression;
+		
+//		return this.getId();
 	}
 
 }

@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="lib/basex-xqj-1.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/xqj-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/xqj2-0.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.3.2.jar" sourcepath="/Users/litong30/research/Trento/Other files/common classes/commons-lang3-3.3.2-src/src">
@@ -10,5 +9,8 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/litong30/research/Trento/Other%20files/common%20classes/commons-lang3-3.3.2/commons-lang3-3.3.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/com.rapitasystems.jgraphviz_2.20.3.jar"/>
+	<classpathentry kind="lib" path="lib/BaseX831.jar"/>
+	<classpathentry kind="lib" path="lib/basex-xqj-1.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

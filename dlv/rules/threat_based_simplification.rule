@@ -26,21 +26,29 @@ against(TH, SP2) :- against(TH, SP1), isa(SP2,SP1).
 %%%% interval
 %% Auxiliary rules --- descendants identification
 is_descendent(R1, R2) :- and_refine(R1, R2).
-is_descendent(R1, R2) :- refine(R2, R1).
-is_descendent(R1, R2) :- operationalize(R2, R1).
-is_descendent(R1, R2) :- is_descendent(R1, R2), is_descendent(R2, R3).
+is_descendent(R1, R2) :- refine(R1, R2).
+is_descendent(R1, R2) :- operationalize(R1, R2).
+is_descendent(R1, R3) :- is_descendent(R1, R2), is_descendent(R2, R3).
 is_descendent(INT, all) :- interval(INT).
+% this is used in the lower-layer analysis
+is_descendent(R1, R2) :- support(R1, R2).
+% this is used for depedency analysis
+is_descendent(R2, R1) :- depend(R1, R2, _).
+
 %% Auxiliary rules --- interval coverage
-associated(INT1,INT2) :- is_descendent(INT1, INT2).
-associated(INT,INT) :- interval(INT).
-%associated(INT1,INT2) :- is_descendent(INT2, INT1).
+cover(INT2,INT1) :- is_descendent(INT1, INT2).
+
+interval(T) :- task(T).
+interval(G) :- goal(G).
+cover(INT,INT) :- interval(INT).
+%cover(INT1,INT3) :- cover(INT1,INT2), cover(INT2,INT3).
 
 
 %%%% asset
 is_descendent(A1, A2) :- part_of(A1, A2).
-is_descendent(A1, A3) :- is_descendent(A1, A2), is_descendent(A2, A3).
-associated(A1,A2) :- is_descendent(A1, A2).
-associated(A,A) :- interval(A).
+%is_descendent(A1, A3) :- is_descendent(A1, A2), is_descendent(A2, A3).
+%cover(A2,A1) :- is_descendent(A1, A2).
+%cover(A,A) :- interval(A).
 
 
 %Applicability rules (mainly focusing on the asset types)
@@ -57,11 +65,57 @@ is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, application_availabilit
 is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS, _), hardware(AS).
 is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_availability, AS, _), hardware(AS).
 
+% here we want to locate threats to security goals as detailed as possible
 % Threaten rules
-threatened(SG) :- sec_goal(SG), has_properties(SG, _, SP, AS1, INT1), anti_goal(TH, AS2, INT2), against(TH, SP), associated(INT1, INT2), associated(A1, A2).
-% threatened(SG) :- sec_goal(SG), has_properties(SG, _, SP, AS, INT), anti_goal(TH, AS, INT), against(TH, SP).
-
-
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, SP, AS1, INT1), threat(ID, TH, AS2, INT2), against(TH, SP), cover(INT2, INT1), cover(AS2, AS1).
 
 % criticality rules
-is_critical(SG) :- is_applicable(SG), threatened(SG).
+is_critical(SG,ID) :- is_applicable(SG), threatened_by(SG,ID).
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% this is specially designed for application and hardware threat analysis, as we are missing data flow information, we assume the lower-layer artifacts inherit the data asset from the upper-layer
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% this is specially designed for application and hardware threat analysis, as we are missing information, we assume all of them are vulnerable. So we define the following rules for "transferring threats".
+% these rules are actually, the ones we previously identified...
+% these rules are currently used to facilitate the analysis, will be further revised.
+%%%%%%%%%%%%%%%%%%%%
+
+% for security mechanism related security goal, still tricky, as we have to involve higher layer security goal which introduce more challegens...
+threatened_by(SG1,TID) :- sec_goal(SG1), has_properties(SG1, _, application_integrity, AS1, INT1), threatened_by(SG2,TID), cover(SG2, INT1), threat(TID, information_disclosure, AS2, _), application(AS1), data(AS2).
+
+
+
+% for security goal related security goal, application layer
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, application_integrity, AS1, INT1), threat(ID, information_disclosure, AS2, INT2), cover(INT2, INT1), application(AS1), data(AS2).
+%
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, application_integrity, AS1, INT1), threat(ID, tampering, AS2, INT2), cover(INT2, INT1), application(AS1), data(AS2).
+%
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, application_integrity, AS1, INT1), threat(ID, denial_of_service, AS2, INT2), cover(INT2, INT1), application(AS1), data(AS2).
+%
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, application_availability, AS1, INT1), threat(ID, denial_of_service, AS2, INT2), cover(INT2, INT1), application(AS1), data(AS2).
+
+% physical layer
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS1, INT1), threat(ID, information_disclosure, AS2, INT2), cover(INT2, INT1), hardware(AS1), data(AS2).
+%
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS1, INT1), threat(ID, tampering, AS2, INT2), cover(INT2, INT1), hardware(AS1), data(AS2).
+%
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS1, INT1), threat(ID, denial_of_service, AS2, INT2), cover(INT2, INT1), hardware(AS1), data(AS2).
+%
+threatened_by(SG,ID) :- sec_goal(SG), has_properties(SG, _, hardware_availability, AS1, INT1), threat(ID, denial_of_service, AS2, INT2), cover(INT2, INT1), hardware(AS1), data(AS2).
+
+
+
+
+
+
+
+
+
+

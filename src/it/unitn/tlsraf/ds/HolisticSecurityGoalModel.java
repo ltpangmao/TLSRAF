@@ -233,9 +233,8 @@ public class HolisticSecurityGoalModel {
 	 * @param elem
 	 */
 	private void reprocessRequirementElement(RequirementElement elem) {
-
 		// Process the middle refineum
-		if (elem.getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
+				if (elem.getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
 			elem.setRemark(InfoEnum.ElementRemark.REFINEUM.name());
 			// process refineum related "and_refine" links
 			if (elem.getOutLinks().size() != 1) {
@@ -338,6 +337,14 @@ public class HolisticSecurityGoalModel {
 	public Element findElementById(String id) {
 		for (Element e : this.elements) {
 			if (e != null && e.getId().equals(id))
+				return e;
+		}
+		return null;
+	}
+	
+	public Element findElementByFormalName(String fname) {
+		for (Element e : this.elements) {
+			if (e.getFormalName().equals(fname))
 				return e;
 		}
 		return null;

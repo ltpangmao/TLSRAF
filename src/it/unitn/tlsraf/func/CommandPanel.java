@@ -317,20 +317,20 @@ public class CommandPanel {
 							JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish one-step refinement!");
 						} else if (mode_choice.equals(InfoEnum.Commands.REF_ALL_EXHAUSTIVE.name())) {
 							if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_bus_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_bus_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_app_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_app_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_phy_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_phy_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_bus_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_bus_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_app_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_app_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
-								Inference.exhaustiveSecurityGoalRefineAnalysis(ms.req_phy_model, ms.actor_model,
+								Inference.exhaustiveSecurityGoalRefineAnalysis(ms, ms.req_phy_model, ms.actor_model,
 										Integer.valueOf(visualization_choice), Integer.valueOf(object_choice));
 							} else {
 								CommandPanel.logger.severe("Layer selection error!");
@@ -639,12 +639,12 @@ public class CommandPanel {
 				LinkedList<String> alternatives = null;
 				try {
 					if (layer_choice.equals(InfoEnum.Layer.ALL.name())) {
-						Inference.securityBusToAppTransformation(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
-						Inference.securityAppToPhyTransformation(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
+						Inference.transferSecurityAcrossLayers(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
+						Inference.transferSecurityAcrossLayers(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.BUSINESS.name())) {
-						Inference.securityBusToAppTransformation(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
+						Inference.transferSecurityAcrossLayers(ms.req_bus_model, ms.req_app_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.APPLICATION.name())) {
-						Inference.securityAppToPhyTransformation(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
+						Inference.transferSecurityAcrossLayers(ms.req_app_model, ms.req_phy_model, Integer.valueOf(object_choice));
 					} else if (layer_choice.equals(InfoEnum.Layer.PHYSICAL.name())) {
 					} else {
 						CommandPanel.logger.severe("Layer selection error!");

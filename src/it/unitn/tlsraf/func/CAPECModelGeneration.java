@@ -25,8 +25,8 @@ public class CAPECModelGeneration {
 		CAPECModelGeneration generation = new CAPECModelGeneration();
 //		generation.generatePatternHierarchy("All");
 		
-		generation.generatePatternHierarchy("248,22,390,507,184,401,441,416");
-//		generation.generatePatternHierarchy("272");
+//		generation.generatePatternHierarchy("248,22,390,507,184,401,441,416");
+		generation.generatePatternHierarchy("66");
 		
 //		generation.identifyPatternsWithPurpose();
 	}

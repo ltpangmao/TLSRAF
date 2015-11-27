@@ -5,11 +5,13 @@ import it.unitn.tlsraf.ds.Element;
 import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
 import it.unitn.tlsraf.ds.Link;
+import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.ds.RequirementGraph;
 import it.unitn.tlsraf.ds.RequirementLink;
 import it.unitn.tlsraf.ds.InfoEnum.Layer;
 import it.unitn.tlsraf.ds.InfoEnum.ModelCategory;
 import it.unitn.tlsraf.ds.InfoEnum.RequirementLinkType;
+import it.unitn.tlsraf.ds.Threat;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -31,6 +33,7 @@ public class ModelSet {
 	public ActorAssociationGraph actor_model;
 	public HolisticSecurityGoalModel hsgm;
 	public LinkedList<String> assets;
+	public LinkedList<Threat> threats;
 	
 	public LinkedList<Link> bus_app_support_links = new LinkedList<Link>();
 	public LinkedList<Link> app_phy_support_links = new LinkedList<Link>();
@@ -50,6 +53,7 @@ public class ModelSet {
 		actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
 		hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
 		assets = new LinkedList<String>(); 
+		threats = new LinkedList<Threat>();
 	}
 	
 	/**
@@ -79,6 +83,23 @@ public class ModelSet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * This method search all requirement elements in the "Model" canvas 
+	 * @param id
+	 * @return
+	 */
+	public RequirementElement findRequirementElementByID(String id){
+		RequirementElement re = null;
+		re = (RequirementElement) this.req_bus_model.findElementById(id);
+		if(re==null){
+			re = (RequirementElement) this.req_app_model.findElementById(id);
+			if(re==null){
+				re = (RequirementElement) this.req_phy_model.findElementById(id);
+			}
+		}
+		return re;
 	}
 	
 	

@@ -8,6 +8,7 @@ import it.unitn.tlsraf.ds.RequirementElement;
 import it.unitn.tlsraf.ds.RequirementGraph;
 import it.unitn.tlsraf.ds.RequirementLink;
 import it.unitn.tlsraf.ds.SecurityGoal;
+import it.unitn.tlsraf.ds.Threat;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -183,10 +184,13 @@ public class ReferenceModelInference {
 		// here we specifically assume all properties have been specified, the value of which is separated using ","
 		String formal_expressions = "";
 		List<String> assets = new LinkedList<String>();
-		List<String> threats = new LinkedList<String>();
+		List<String> threat_types = new LinkedList<String>();
 		List<String> intervals = new LinkedList<String>();
+		List<String> scenarios = new LinkedList<String>();
 		List<String> temp_set = new LinkedList<String>();
-
+		LinkedList<Threat> threats = new LinkedList<Threat>();
+		int id=1;
+		
 		List<String> elements = Arrays.asList(result.split("\n"));
 		for (String element : elements) {
 			if (element.startsWith("element")) {
@@ -209,9 +213,12 @@ public class ReferenceModelInference {
 							for (String asset : temp_set) {
 								String temp_a = Func.prepareFormalExpression(asset);
 								assets.add(temp_a);
-								// if the asset doesn't exist, pop-up warnings
-								if(!formalStringCheck(temp_a, ms.assets)){
-									CommandPanel.logger.severe(temp+ "\n Asset cannot be matched with the user data: " + asset);
+								// We check the asset only if we have import the assets info
+								if (ms.assets!=null && ms.assets.size() != 0) {
+									// if the asset doesn't exist, pop-up warnings
+									if (!formalStringCheck(temp_a, ms.assets)) {
+										CommandPanel.logger.severe(temp + "\n Asset cannot be matched with the user data: " + asset);
+									}
 								}
 							}
 							// additional check
@@ -222,7 +229,7 @@ public class ReferenceModelInference {
 							temp_set = Arrays.asList(value.split(","));
 							for (String threat : temp_set) {
 								String temp_t = Func.prepareFormalExpression(threat);
-								threats.add(temp_t);
+								threat_types.add(temp_t);
 								// if the threat doesn't exist, pop-up warnings
 								if(!formalStringCheck(temp_t, InfoEnum.threats)){
 									CommandPanel.logger.severe(temp+ "\n Asset cannot be matched with the user data: " + threat);
@@ -241,21 +248,23 @@ public class ReferenceModelInference {
 							if (intervals.size() < 1) {
 								// log
 							}
+						} else if (key.toLowerCase().contains("scenario")) {
+							scenarios.add(value);
 						}
 					}
-					// traverse all information set to produce related knowledge
-					for (String threat : threats) {
-						for (String asset : assets) {
-							for (String interval : intervals) {
-								formal_expressions += "anti_goal(" + threat + "," + asset + "," + interval + ").\n";
-							}
-						}
-					}
+					
+					Threat threat = new Threat(String.valueOf(id), factors.get(3), assets, threat_types,intervals,scenarios);
+					threats.add(threat);
+					id++;
+					// get formal expression for this threat 
+					formal_expressions += threat.generateFormalExpressionsToFile();
 				}
 			}
 		}
+		// import the set of threats to current model set. 
+		ms.threats = threats;
 		Func.writeFile("dlv/models/imported_model/threat_model.dl", formal_expressions, false);
-		CommandPanel.logger.info(formal_expressions);
+//		CommandPanel.logger.info(formal_expressions);
 	}
 
 	
@@ -332,7 +341,7 @@ public class ReferenceModelInference {
 		}
 
 		Func.writeFile("dlv/models/imported_model/asset_model.dl", formal_expressions, false);
-		CommandPanel.logger.info(formal_expressions);
+//		CommandPanel.logger.info(formal_expressions);
 	}
 	
 	/**
