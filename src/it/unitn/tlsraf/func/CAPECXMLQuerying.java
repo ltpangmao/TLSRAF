@@ -330,7 +330,9 @@ public AttackPattern getAttackInfoAndRelations(String id) {
 				+ "$sep," // children
 				+ "if(exists($ap/capec:Related_Attack_Patterns)) then data(string-join($ap//capec:Related_Attack_Pattern[capec:Relationship_Nature='ChildOf']/capec:Relationship_Target_ID, $subsep) ) else $em, "
 				+ "$sep," // purposes
-				+ "if(exists($ap/capec:Purposes)) then data(string-join($ap//capec:Purpose, $subsep) ) else $em "
+				+ "if(exists($ap/capec:Purposes)) then data(string-join($ap//capec:Purpose, $subsep) ) else $em, "
+				+ "$sep," // attack steps
+				+ "if(exists($ap/capec:Description/capec:Attack_Execution_Flow)) then data(string-join($ap//capec:Attack_Step_Title, $subsep) ) else $em "
 				+ ")";
 		
 		String result="";
@@ -345,7 +347,7 @@ public AttackPattern getAttackInfoAndRelations(String id) {
 		/* Process data  0) name, 1) severity, 2) likelihood, 3) weaknesses, 
 		 * 4) prerequisites, 5) context, 6) solutions, 7) requirements
 		 * 8) methods, 9) consequences, 10) description
-		 * 11) completeness, 12) abstraction, 13) parents 14) purposes
+		 * 11) completeness, 12) abstraction, 13) parents 14) purposes, 15) attack steps
 		 */
 		AttackPattern ap = new AttackPattern();
 		String[] attributes = result.split("\\$");
@@ -421,6 +423,10 @@ public AttackPattern getAttackInfoAndRelations(String id) {
 		temp = attributes[14].split("€");
 		for(String purpose: temp){
 			ap.purposes.add(purpose.trim());
+		}
+		temp = attributes[15].split("€");
+		for(String step: temp){
+			ap.steps.add(step.trim());
 		}
 		//
 //		System.out.println(ap.getPrintString());

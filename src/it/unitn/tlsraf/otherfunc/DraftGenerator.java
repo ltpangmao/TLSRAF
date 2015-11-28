@@ -180,7 +180,7 @@ public class DraftGenerator extends JFrame {
 		btnGenerateTree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CAPECModelGeneration model = new CAPECModelGeneration();
-				model.generatePatternHierarchy(txtPatternid.getText());
+				model.generatePatternHierarchyModel(txtPatternid.getText());
 				JOptionPane.showMessageDialog( getParent(), "Successfully generate graphs!");
 			}
 		});

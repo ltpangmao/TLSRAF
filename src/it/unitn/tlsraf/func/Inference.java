@@ -377,6 +377,7 @@ public class Inference {
 				}
 			}
 		}
+		input.close();
 	}
 
 	

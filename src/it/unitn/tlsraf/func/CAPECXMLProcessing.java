@@ -2,14 +2,17 @@ package it.unitn.tlsraf.func;
 
 import it.unitn.tlsraf.ds.AttackPattern;
 import it.unitn.tlsraf.ds.InfoEnum;
+import it.unitn.tlsraf.ds.AttackPattern.Threat;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,6 +54,15 @@ public class CAPECXMLProcessing {
 	LinkedList<String> physical_attacks = new LinkedList<String>(Arrays.asList(InfoEnum.AttackDomain.PHYSICAL.toString(), "390","507","547"));
 	LinkedList<String> hardware_attacks = new LinkedList<String>(Arrays.asList(InfoEnum.AttackDomain.HARDWARE.toString(), "169","401"));
 	
+	public static final Map<String, String> domain_target_mapping = new HashMap<String, String>();
+	static {
+		domain_target_mapping.put(InfoEnum.AttackDomain.SOCIAL.toString(), "people");
+		domain_target_mapping.put(InfoEnum.AttackDomain.SUPPLY.toString(), "all");
+		domain_target_mapping.put(InfoEnum.AttackDomain.COMMU.toString(), "all");
+		domain_target_mapping.put(InfoEnum.AttackDomain.SOFTWARE.toString(), "application");
+		domain_target_mapping.put(InfoEnum.AttackDomain.PHYSICAL.toString(), "hardware");
+		domain_target_mapping.put(InfoEnum.AttackDomain.HARDWARE.toString(), "hardware");
+	}
 	
 	// connection client
 	BaseXClient session = null;
@@ -84,8 +96,8 @@ public class CAPECXMLProcessing {
 	
 	
 	public static void main(String[] args) {
-//		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserver");//open server
-		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserverstop");// stop server
+		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserver");//open server
+//		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserverstop");// stop server
 		
 		try {
 //			CAPECXMLProcessing xmlQuery = new CAPECXMLProcessing();
@@ -150,18 +162,75 @@ public class CAPECXMLProcessing {
 	
 	
 	/**
+	 * Find the attack target for a given attack based on its attack domain
+	 * @param id
+	 * @return
+	 * @throws IOException
+	 */
+	public String findAttackDomainByID(String id){
+		String result = null;
+		
+		for(LinkedList<String>domain_list: all){
+			for(String attack_id: domain_list){
+				if(attack_id.equals(id)){
+					// assign the domain type
+					result = domain_list.getFirst();
+					// convert to target
+					return domain_target_mapping.get(result);
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Retrive all attacks from the data source, 
 	 * classify each of the attacks into a specific domain
 	 * @throws IOException
 	 */
-	private void calculateDomainForAllAttacks() throws IOException{
+	public void calculateDomainForAllAttacks(){
 		String all_attacks ="";
-		all_attacks = getAllAttacks();
+		try {
+			all_attacks = getAllAttacks();
+
+			// analyze each attack detected in the current setting
+			Set<String> matchedID = unify(all_attacks.split(" "));
+			for(String id : matchedID){
+				classifyAttack(id);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Load the previously generated attack domain files
+	 */
+	public void importAttackDomainFromFile(){
+		LinkedList<String> lines = new LinkedList<String>();
+		lines = Func.readFileByLine("capec/attack_domains.xml");
 		
-		// analyze each attack detected in the current setting
-		Set<String> matchedID = unify(all_attacks.split(" "));
-		for(String id : matchedID){
-			classifyAttack(id);
+		String pattern_id = "";
+		for(String line : lines){
+			if (line.contains("capec:Attack_Pattern")) {
+				pattern_id = line.substring(line.indexOf("id=\"") + 4, line.indexOf("\"/>"));
+				
+				if (line.contains(InfoEnum.AttackDomain.SOCIAL.toString())) {
+					social_attacks.add(pattern_id);
+				} else if (line.contains(InfoEnum.AttackDomain.SUPPLY.toString())) {
+					supply_attacks.add(pattern_id);
+				} else if (line.contains(InfoEnum.AttackDomain.COMMU.toString())) {
+					commu_attacks.add(pattern_id);
+				} else if (line.contains(InfoEnum.AttackDomain.SOFTWARE.toString())) {
+					software_attacks.add(pattern_id);
+				} else if (line.contains(InfoEnum.AttackDomain.HARDWARE.toString())) {
+					hardware_attacks.add(pattern_id);
+				} else if (line.contains(InfoEnum.AttackDomain.PHYSICAL.toString())) {
+					physical_attacks.add(pattern_id);
+				}
+			}
 		}
 	}
 	
@@ -170,7 +239,7 @@ public class CAPECXMLProcessing {
 	 * output the calculated domain information to an xml file, which can be quickly queried by functions
 	 * This function is designed for CAPEC document 
 	 */
-	private void outputAttackDomainInfo(){
+	public void outputAttackDomainInfo(){
 		try{
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -239,7 +308,8 @@ public class CAPECXMLProcessing {
 		// if they cannot be well classified, try to classify it by checking its parent
 		LinkedList<String> classify_result = new LinkedList<>();
 		if(classified){
-			System.out.println("has been classified in prelist");
+//			
+//			System.out.println("has been classified in prelist");
 		}
 		else{
 			classify_result = classifyByCheckingParent(id);
@@ -251,13 +321,14 @@ public class CAPECXMLProcessing {
 					for(LinkedList<String> domain_list: this.all){
 						if(domain_list.getFirst().equals(domain)){
 							domain_list.add(id);
-							System.out.println(id+" "+domain_list.getFirst());
+//							System.out.println(id+" "+domain_list.getFirst());
 						}
 					}
 				}
 			}
 			else{
-				System.out.println(id+" does not belong to any domain");
+//				
+//				System.out.println(id+" does not belong to any domain");
 			}
 		}
 	}

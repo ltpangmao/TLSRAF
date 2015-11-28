@@ -77,12 +77,7 @@ public class ModelSet {
 		support += getSupportLinkFormalExpression(this.bus_app_support_links);
 		support += getSupportLinkFormalExpression(this.app_phy_support_links);
 		
-		try {
-			Func.writeFile("dlv/models/support_links.dl", support, false);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Func.writeFile("dlv/models/support_links.dl", support, false);
 	}
 
 	/**
