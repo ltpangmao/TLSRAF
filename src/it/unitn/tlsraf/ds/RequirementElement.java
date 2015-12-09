@@ -200,7 +200,7 @@ public class RequirementElement implements Element {
 		case TASK:
 			expression = "task(" + this.getFormalName() + ").";
 			// generate corresponding asset information
-			if (this.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
+			if (this.getLayer()!=null && this.getLayer().equals(InfoEnum.Layer.BUSINESS.name())) {
 				expression += "\n"+"service(" + this.getFormalName() + ").";
 			}
 			break;
@@ -222,6 +222,10 @@ public class RequirementElement implements Element {
 			expression = "sec_mechanism(" + this.getFormalName() + ").";
 			break;
 		case ANTI_GOAL:
+			// remove "(S)"
+			expression = "anti_goal(" + this.getFormalName() + ").";
+			break;
+		case NEW_ANTI_GOAL:
 			// remove "(S)"
 			expression = "anti_goal(" + this.getFormalName() + ").";
 			break;

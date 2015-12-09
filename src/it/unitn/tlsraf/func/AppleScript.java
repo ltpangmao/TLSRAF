@@ -28,24 +28,23 @@ public class AppleScript {
 	/**
 	 * Draw a single requirement link object onto the canvas.
 	 * @param rl
-	 * @param layer_condition
+	 * @param cross_layer_condition
 	 * @return
 	 * @throws ScriptException
 	 */
-	public static String drawRequirementLink(RequirementLink rl, int layer_condition) throws ScriptException {
+	public static String drawRequirementLink(RequirementLink rl, int cross_layer_condition){
 		String canvas_layer="";
 		String target_layer="";
 		
-		if(layer_condition == InfoEnum.CROSS_LAYERS){
+		if(cross_layer_condition == InfoEnum.CROSS_LAYERS){
 			canvas_layer = "none";
 			target_layer = rl.getSource().getLayer();
-		} else if (layer_condition == InfoEnum.SINGLE_LAYER){
+		} else if (cross_layer_condition == InfoEnum.SINGLE_LAYER){
 			canvas_layer = rl.getSource().getLayer();
 			target_layer = rl.getSource().getLayer();
 		} else{
 			CommandPanel.logger.severe("Cross-layer option error!");;
 		}
-		
 		String target_id = rl.getTarget().getId();
 		String source_id = rl.getSource().getId();
 
@@ -196,8 +195,7 @@ public class AppleScript {
 	}
 
 
-	public static String drawRequirementElement(RequirementElement target, RequirementElement reference, String direction)
-			throws ScriptException {
+	public static String drawRequirementElement(RequirementElement target, RequirementElement reference, String direction) {
 		// customized parameters
 		String layer = target.getLayer();
 

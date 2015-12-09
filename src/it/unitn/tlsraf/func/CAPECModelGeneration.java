@@ -43,13 +43,16 @@ public class CAPECModelGeneration {
 		target_patterns+="100,46,47,44,45,8,9,24,42,67,10,14,69,";
 		target_patterns+="22,77,39,207,94,10,13,31,56,57,219,9,76,69,122,180,1,58,17,";
 		target_patterns+="115,237,114,90,14,21,62,102,61,60,31,196,59,";
-		target_patterns+="316,424,425,422,423,420,421,426,417,427,419,418,434,433,435,428,429,430,431,432,";
+		target_patterns+="416,424,425,422,423,420,421,426,417,427,419,418,434,433,435,428,429,430,431,432,";
 		target_patterns+="390,395,391,396,394,393,399,398,397,400,547,507,";
 		target_patterns+="438,520,521,516,517,518,519,511,537,439,523,524,522";
+		
+		LinkedList<String> ids = generation.createNonRepeatedList(target_patterns);
+		
 		// 111,
 //		generation.generateFormalPatternExpression(target_patterns);
 //		generation.generateAttackPatternModel("112,20,49,97,55,70,16");
-		generation.generateAttackPatternModel("438,520,521,516,517,518,519,511,537,439,523,524,522");
+//		generation.generateAttackPatternModel("438,520,521,516,517,518,519,511,537,439,523,524,522");
 	}
 	
 	/**
@@ -184,7 +187,7 @@ public class CAPECModelGeneration {
 				ids.add(temp_ids[i]);
 			}
 			else{
-//				System.out.println("Pattern "+temp_ids[i]+" is repeated!");
+				System.out.println("Pattern "+temp_ids[i]+" is repeated!");
 			}
 		}
 		return ids;

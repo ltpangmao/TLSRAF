@@ -1,10 +1,9 @@
 set target_canvas_name to "Model"
-set target_layer_name to "PHYSICAL"
+set target_layer_name to "none"
 set target_size to {180,110}
 set target_name to "Hexagon"
-set target_text to "(S)
-cabling security"
-set target_origin to {25167.0,5502.55}
+set target_text to "physical destruction of device or component"
+set target_origin to {850.319980993867,1863.19996282458}
 set corner_ridius to 0
 set stroke_pattern to 0
 set target_thickness to 1

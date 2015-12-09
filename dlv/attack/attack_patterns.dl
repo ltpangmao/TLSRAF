@@ -1,5 +1,6 @@
 has_name(112,brute_force).
 impose_threat(112,information_disclosure).
+impose_threat(112,defeated_security_mechanism).
 impose_threat(112,elevation_of_privilege).
 impose_threat(112,spoofing).
 child_of(112,223).
@@ -9,6 +10,7 @@ target(112,application).
 
 has_name(20,encryption_brute_forcing).
 impose_threat(20,information_disclosure).
+impose_threat(20,defeated_security_mechanism).
 child_of(20,112).
 target(20,application).
 
@@ -17,6 +19,7 @@ target(20,application).
 has_name(49,password_brute_forcing).
 impose_threat(49,elevation_of_privilege).
 impose_threat(49,spoofing).
+impose_threat(49,defeated_security_mechanism).
 child_of(49,112).
 target(49,application).
 
@@ -27,6 +30,7 @@ impose_threat(97,information_disclosure).
 impose_threat(97,tampering).
 impose_threat(97,elevation_of_privilege).
 impose_threat(97,spoofing).
+impose_threat(97,defeated_security_mechanism).
 child_of(97,20).
 child_of(97,281).
 target(97,application).
@@ -36,14 +40,16 @@ target(97,application).
 has_name(55,rainbow_table_password_cracking).
 impose_threat(55,elevation_of_privilege).
 impose_threat(55,spoofing).
+impose_threat(55,defeated_security_mechanism).
 child_of(55,49).
 target(55,application).
 
 
 
-has_name(70,try_common(default)_usernames_and_passwords).
+has_name(70,try_common_usernames_and_passwords).
 impose_threat(70,elevation_of_privilege).
 impose_threat(70,spoofing).
+impose_threat(70,defeated_security_mechanism).
 child_of(70,49).
 target(70,application).
 
@@ -52,26 +58,27 @@ target(70,application).
 has_name(16,dictionarybased_password_attack).
 impose_threat(16,elevation_of_privilege).
 impose_threat(16,spoofing).
+impose_threat(16,defeated_security_mechanism).
 child_of(16,49).
 target(16,application).
 
 
 
 has_name(184,software_integrity_attacks).
-impose_threat(184,empty).
+impose_threat(184,tampering).
 child_of(184,210).
-target(184,null).
+target(184,application).
 
 
 
 has_name(185,malicious_software_download).
-impose_threat(185,empty).
+impose_threat(185,tampering).
 child_of(185,184).
-target(185,null).
+target(185,application).
 
 
 
-has_name(111,json_hijacking_(aka_javascript_hijacking)).
+has_name(111,json_hijacking_aka_javascript_hijacking).
 impose_threat(111,information_disclosure).
 child_of(111,184).
 child_of(111,116).
@@ -85,35 +92,35 @@ impose_threat(207,tampering).
 impose_threat(207,information_disclosure).
 impose_threat(207,elevation_of_privilege).
 impose_threat(207,spoofing).
-impose_threat(207,defeated_mechanism).
+impose_threat(207,defeated_security_mechanism).
 child_of(207,22).
 child_of(207,184).
-target(207,null).
+target(207,application).
 
 
 
 has_name(186,malicious_software_update).
-impose_threat(186,empty).
+impose_threat(186,tampering).
 child_of(186,185).
-target(186,null).
+target(186,application).
 
 
 
-has_name(56,removing/shortcircuiting_guard_logic).
+has_name(56,removing_shortcircuiting_guard_logic).
 impose_threat(56,elevation_of_privilege).
-impose_threat(56,defeated_mechanism).
+impose_threat(56,defeated_security_mechanism).
 impose_threat(56,information_disclosure).
 impose_threat(56,tampering).
 child_of(56,207).
-target(56,null).
+target(56,application).
 
 
 
 has_name(187,malicious_automated_software_update).
-impose_threat(187,empty).
+impose_threat(187,tampering).
 child_of(187,186).
 child_of(187,105).
-target(187,all).
+target(187,application).
 
 
 
@@ -242,7 +249,7 @@ target(9,application).
 has_name(24,filter_failure_through_buffer_overflow).
 impose_threat(24,tampering).
 impose_threat(24,elevation_of_privilege).
-impose_threat(24,defeated_mechanism).
+impose_threat(24,defeated_security_mechanism).
 impose_threat(24,denial_of_service).
 child_of(24,100).
 target(24,application).
@@ -259,7 +266,7 @@ target(42,application).
 
 
 
-has_name(67,string_format_overflow_in_syslog()).
+has_name(67,string_format_overflow_in_syslog).
 impose_threat(67,elevation_of_privilege).
 impose_threat(67,denial_of_service).
 impose_threat(67,spoofing).
@@ -305,12 +312,12 @@ target(69,application).
 
 
 
-has_name(22,exploiting_trust_in_client_(aka_make_the_client_invisible)).
+has_name(22,exploiting_trust_in_client_aka_make_the_client_invisible).
 impose_threat(22,elevation_of_privilege).
 impose_threat(22,spoofing).
 impose_threat(22,information_disclosure).
 child_of(22,232).
-target(22,null).
+target(22,application).
 
 
 
@@ -321,7 +328,7 @@ impose_threat(77,information_disclosure).
 impose_threat(77,spoofing).
 child_of(77,22).
 child_of(77,265).
-target(77,null).
+target(77,application).
 
 
 
@@ -331,7 +338,7 @@ impose_threat(39,elevation_of_privilege).
 impose_threat(39,spoofing).
 child_of(39,22).
 child_of(39,223).
-target(39,null).
+target(39,application).
 
 
 
@@ -341,22 +348,22 @@ impose_threat(94,elevation_of_privilege).
 impose_threat(94,spoofing).
 impose_threat(94,information_disclosure).
 child_of(94,22).
-target(94,null).
+target(94,all).
 
 
 
 has_name(13,subverting_environment_variable_values).
 impose_threat(13,elevation_of_privilege).
-impose_threat(13,defeated_mechanism).
+impose_threat(13,defeated_security_mechanism).
 impose_threat(13,tampering).
 impose_threat(13,information_disclosure).
 child_of(13,77).
 child_of(13,264).
-target(13,null).
+target(13,application).
 
 
 
-has_name(31,accessing/intercepting/modifying_http_cookies).
+has_name(31,accessing_intercepting_modifying_http_cookies).
 impose_threat(31,information_disclosure).
 impose_threat(31,tampering).
 impose_threat(31,elevation_of_privilege).
@@ -366,7 +373,7 @@ child_of(31,21).
 child_of(31,255).
 child_of(31,117).
 child_of(31,262).
-target(31,all).
+target(31,application).
 
 
 
@@ -374,7 +381,7 @@ has_name(57,utilizing_rests_trust_in_the_system_resource_to_register_man_in_the_
 impose_threat(57,elevation_of_privilege).
 impose_threat(57,spoofing).
 child_of(57,94).
-target(57,null).
+target(57,application).
 
 
 
@@ -383,10 +390,10 @@ impose_threat(219,tampering).
 impose_threat(219,information_disclosure).
 impose_threat(219,elevation_of_privilege).
 impose_threat(219,spoofing).
-impose_threat(219,defeated_mechanism).
+impose_threat(219,defeated_security_mechanism).
 child_of(219,94).
 child_of(219,377).
-target(219,null).
+target(219,application).
 
 
 
@@ -397,14 +404,15 @@ impose_threat(76,tampering).
 child_of(76,13).
 child_of(76,137).
 child_of(76,171).
-target(76,null).
+target(76,application).
 
 
 
 has_name(122,privilege_abuse).
 impose_threat(122,empty).
+impose_threat(122,defeated_security_mechanism).
 child_of(122,232).
-target(122,null).
+target(122,all).
 
 
 
@@ -413,18 +421,19 @@ impose_threat(180,tampering).
 impose_threat(180,information_disclosure).
 impose_threat(180,elevation_of_privilege).
 impose_threat(180,spoofing).
-impose_threat(180,defeated_mechanism).
+impose_threat(180,defeated_security_mechanism).
 impose_threat(180,denial_of_service).
 child_of(180,122).
-target(180,null).
+target(180,all).
 
 
 
 has_name(1,accessing_functionality_not_properly_constrained_by_acls).
 impose_threat(1,elevation_of_privilege).
 impose_threat(1,spoofing).
+impose_threat(1,defeated_security_mechanism).
 child_of(1,122).
-target(1,null).
+target(1,application).
 
 
 
@@ -434,11 +443,11 @@ impose_threat(58,elevation_of_privilege).
 impose_threat(58,spoofing).
 child_of(58,1).
 child_of(58,233).
-target(58,null).
+target(58,application).
 
 
 
-has_name(17,accessing,_modifying_or_executing_executable_files).
+has_name(17,accessing_modifying_or_executing_executable_files).
 impose_threat(17,elevation_of_privilege).
 impose_threat(17,tampering).
 impose_threat(17,information_disclosure).
@@ -446,12 +455,13 @@ impose_threat(17,spoofing).
 child_of(17,1).
 child_of(17,233).
 child_of(17,165).
-target(17,null).
+target(17,application).
 
 
 
 has_name(115,authentication_bypass).
-impose_threat(115,empty).
+impose_threat(115,spoofing).
+impose_threat(115,defeated_security_mechanism).
 child_of(115,225).
 target(115,application).
 
@@ -459,7 +469,7 @@ target(115,application).
 
 has_name(237,calling_signed_code_from_another_language_within_a_sandbox_allow_this).
 impose_threat(237,elevation_of_privilege).
-impose_threat(237,defeated_mechanism).
+impose_threat(237,defeated_security_mechanism).
 impose_threat(237,spoofing).
 child_of(237,68).
 child_of(237,115).
@@ -468,7 +478,8 @@ target(237,application).
 
 
 has_name(114,authentication_abuse).
-impose_threat(114,empty).
+impose_threat(114,spoofing).
+impose_threat(114,defeated_security_mechanism).
 child_of(114,225).
 target(114,application).
 
@@ -477,7 +488,7 @@ target(114,application).
 has_name(90,reflection_attack_in_authentication_protocol).
 impose_threat(90,elevation_of_privilege).
 impose_threat(90,spoofing).
-impose_threat(90,defeated_mechanism).
+impose_threat(90,defeated_security_mechanism).
 impose_threat(90,information_disclosure).
 child_of(90,220).
 child_of(90,204).
@@ -486,23 +497,23 @@ target(90,all).
 
 
 
-has_name(21,exploitation_of_session_variables,_resource_ids_and_other_trusted_credentials).
+has_name(21,exploitation_of_trusted_credentials).
 impose_threat(21,elevation_of_privilege).
 impose_threat(21,spoofing).
 impose_threat(21,information_disclosure).
 impose_threat(21,tampering).
 child_of(21,225).
-target(21,null).
+target(21,application).
 
 
 
-has_name(62,cross_site_request_forgery_(aka_session_riding)).
+has_name(62,cross_site_request_forgery_aka_session_riding).
 impose_threat(62,elevation_of_privilege).
 impose_threat(62,spoofing).
 impose_threat(62,information_disclosure).
 impose_threat(62,tampering).
 child_of(62,21).
-target(62,null).
+target(62,application).
 
 
 
@@ -513,7 +524,7 @@ impose_threat(102,tampering).
 impose_threat(102,information_disclosure).
 impose_threat(102,denial_of_service).
 child_of(102,21).
-target(102,null).
+target(102,application).
 
 
 
@@ -521,15 +532,15 @@ has_name(61,session_fixation).
 impose_threat(61,elevation_of_privilege).
 impose_threat(61,spoofing).
 child_of(61,21).
-target(61,null).
+target(61,application).
 
 
 
-has_name(60,reusing_session_ids_(aka_session_replay)).
+has_name(60,reusing_session_ids_aka_session_replay).
 impose_threat(60,elevation_of_privilege).
 impose_threat(60,spoofing).
 child_of(60,21).
-target(60,null).
+target(60,application).
 
 
 
@@ -538,9 +549,9 @@ impose_threat(196,tampering).
 impose_threat(196,information_disclosure).
 impose_threat(196,elevation_of_privilege).
 impose_threat(196,spoofing).
-impose_threat(196,defeated_mechanism).
+impose_threat(196,defeated_security_mechanism).
 child_of(196,21).
-target(196,null).
+target(196,application).
 
 
 
@@ -548,320 +559,471 @@ has_name(59,session_credential_falsification_through_prediction).
 impose_threat(59,elevation_of_privilege).
 impose_threat(59,spoofing).
 child_of(59,196).
-target(59,null).
+target(59,application).
 
 
 
-has_name(316,icmp_fingerprinting_probes).
-impose_threat(316,depend).
-impose_threat(316,elevation_of_privilege).
-impose_threat(316,defeated_mechanism).
-impose_threat(316,repudiation).
-child_of(316,312).
-target(316,application).
+has_name(416,target_influence_via_social_engineering).
+impose_threat(416,information_of_disclosure).
+impose_threat(416,elevation_of_privilege).
+impose_threat(416,defeated_security_mechanism).
+impose_threat(416,repudiation).
+impose_threat(416,spoofing).
+impose_threat(416,denial_of_service).
+impose_threat(416,tampering).
+target(416,people).
 
 
 
 has_name(424,target_influence_via_perception_of_consensus_or_social_proof).
-impose_threat(424,empty).
+impose_threat(424,information_of_disclosure).
+impose_threat(424,elevation_of_privilege).
+impose_threat(424,defeated_security_mechanism).
+impose_threat(424,repudiation).
+impose_threat(424,spoofing).
+impose_threat(424,denial_of_service).
+impose_threat(424,tampering).
 child_of(424,416).
 target(424,people).
 
 
 
 has_name(425,target_influence_via_framing).
-impose_threat(425,empty).
+impose_threat(425,information_of_disclosure).
+impose_threat(425,elevation_of_privilege).
+impose_threat(425,defeated_security_mechanism).
+impose_threat(425,repudiation).
+impose_threat(425,spoofing).
+impose_threat(425,denial_of_service).
+impose_threat(425,tampering).
 child_of(425,416).
 target(425,people).
 
 
 
 has_name(422,target_influence_via_perception_of_commitment_and_consistency).
-impose_threat(422,empty).
+impose_threat(422,information_of_disclosure).
+impose_threat(422,elevation_of_privilege).
+impose_threat(422,defeated_security_mechanism).
+impose_threat(422,repudiation).
+impose_threat(422,spoofing).
+impose_threat(422,denial_of_service).
+impose_threat(422,tampering).
 child_of(422,416).
 target(422,people).
 
 
 
 has_name(423,target_influence_via_perception_of_liking).
-impose_threat(423,empty).
+impose_threat(423,information_of_disclosure).
+impose_threat(423,elevation_of_privilege).
+impose_threat(423,defeated_security_mechanism).
+impose_threat(423,repudiation).
+impose_threat(423,spoofing).
+impose_threat(423,denial_of_service).
+impose_threat(423,tampering).
 child_of(423,416).
 target(423,people).
 
 
 
 has_name(420,target_influence_via_perception_of_scarcity).
-impose_threat(420,empty).
+impose_threat(420,information_of_disclosure).
+impose_threat(420,elevation_of_privilege).
+impose_threat(420,defeated_security_mechanism).
+impose_threat(420,repudiation).
+impose_threat(420,spoofing).
+impose_threat(420,denial_of_service).
+impose_threat(420,tampering).
 child_of(420,416).
 target(420,people).
 
 
 
 has_name(421,target_influence_via_perception_of_authority).
-impose_threat(421,empty).
+impose_threat(421,information_of_disclosure).
+impose_threat(421,elevation_of_privilege).
+impose_threat(421,defeated_security_mechanism).
+impose_threat(421,repudiation).
+impose_threat(421,spoofing).
+impose_threat(421,denial_of_service).
+impose_threat(421,tampering).
 child_of(421,416).
 target(421,people).
 
 
 
 has_name(426,target_influence_via_manipulation_of_incentives).
-impose_threat(426,empty).
+impose_threat(426,information_of_disclosure).
+impose_threat(426,elevation_of_privilege).
+impose_threat(426,defeated_security_mechanism).
+impose_threat(426,repudiation).
+impose_threat(426,spoofing).
+impose_threat(426,denial_of_service).
+impose_threat(426,tampering).
 child_of(426,416).
 target(426,people).
 
 
 
 has_name(417,target_influence_via_perception_of_reciprocation).
-impose_threat(417,empty).
+impose_threat(417,information_of_disclosure).
+impose_threat(417,elevation_of_privilege).
+impose_threat(417,defeated_security_mechanism).
+impose_threat(417,repudiation).
+impose_threat(417,spoofing).
+impose_threat(417,denial_of_service).
+impose_threat(417,tampering).
 child_of(417,416).
 target(417,people).
 
 
 
 has_name(427,target_influence_via_psychological_principles).
-impose_threat(427,empty).
+impose_threat(427,information_of_disclosure).
+impose_threat(427,elevation_of_privilege).
+impose_threat(427,defeated_security_mechanism).
+impose_threat(427,repudiation).
+impose_threat(427,spoofing).
+impose_threat(427,denial_of_service).
+impose_threat(427,tampering).
 child_of(427,416).
 target(427,people).
 
 
 
 has_name(419,target_influence_via_perception_of_concession).
-impose_threat(419,empty).
+impose_threat(419,information_of_disclosure).
+impose_threat(419,elevation_of_privilege).
+impose_threat(419,defeated_security_mechanism).
+impose_threat(419,repudiation).
+impose_threat(419,spoofing).
+impose_threat(419,denial_of_service).
+impose_threat(419,tampering).
 child_of(419,417).
 target(419,people).
 
 
 
 has_name(418,target_influence_via_perception_of_obligation).
-impose_threat(418,empty).
+impose_threat(418,information_of_disclosure).
+impose_threat(418,elevation_of_privilege).
+impose_threat(418,defeated_security_mechanism).
+impose_threat(418,repudiation).
+impose_threat(418,spoofing).
+impose_threat(418,denial_of_service).
+impose_threat(418,tampering).
 child_of(418,417).
 target(418,people).
 
 
 
 has_name(434,target_influence_via_interview_and_interrogation).
-impose_threat(434,empty).
+impose_threat(434,information_of_disclosure).
+impose_threat(434,elevation_of_privilege).
+impose_threat(434,defeated_security_mechanism).
+impose_threat(434,repudiation).
+impose_threat(434,spoofing).
+impose_threat(434,denial_of_service).
+impose_threat(434,tampering).
 child_of(434,427).
 target(434,people).
 
 
 
 has_name(433,target_influence_via_the_human_buffer_overflow).
-impose_threat(433,empty).
+impose_threat(433,information_of_disclosure).
+impose_threat(433,elevation_of_privilege).
+impose_threat(433,defeated_security_mechanism).
+impose_threat(433,repudiation).
+impose_threat(433,spoofing).
+impose_threat(433,denial_of_service).
+impose_threat(433,tampering).
 child_of(433,427).
 target(433,people).
 
 
 
 has_name(435,target_influence_via_instant_rapport).
-impose_threat(435,empty).
+impose_threat(435,information_of_disclosure).
+impose_threat(435,elevation_of_privilege).
+impose_threat(435,defeated_security_mechanism).
+impose_threat(435,repudiation).
+impose_threat(435,spoofing).
+impose_threat(435,denial_of_service).
+impose_threat(435,tampering).
 child_of(435,427).
 target(435,people).
 
 
 
 has_name(428,target_influence_via_modes_of_thinking).
-impose_threat(428,empty).
+impose_threat(428,information_of_disclosure).
+impose_threat(428,elevation_of_privilege).
+impose_threat(428,defeated_security_mechanism).
+impose_threat(428,repudiation).
+impose_threat(428,spoofing).
+impose_threat(428,denial_of_service).
+impose_threat(428,tampering).
 child_of(428,427).
 target(428,people).
 
 
 
 has_name(429,target_influence_via_eye_cues).
-impose_threat(429,empty).
+impose_threat(429,information_of_disclosure).
+impose_threat(429,elevation_of_privilege).
+impose_threat(429,defeated_security_mechanism).
+impose_threat(429,repudiation).
+impose_threat(429,spoofing).
+impose_threat(429,denial_of_service).
+impose_threat(429,tampering).
 child_of(429,427).
 target(429,people).
 
 
 
 has_name(430,target_influence_via_microexpressions).
-impose_threat(430,empty).
+impose_threat(430,information_of_disclosure).
+impose_threat(430,elevation_of_privilege).
+impose_threat(430,defeated_security_mechanism).
+impose_threat(430,repudiation).
+impose_threat(430,spoofing).
+impose_threat(430,denial_of_service).
+impose_threat(430,tampering).
 child_of(430,427).
 target(430,people).
 
 
 
-has_name(431,target_influence_via_neurolinguistic_programming_(nlp)).
-impose_threat(431,empty).
+has_name(431,target_influence_via_neurolinguistic_programming_nlp).
+impose_threat(431,information_of_disclosure).
+impose_threat(431,elevation_of_privilege).
+impose_threat(431,defeated_security_mechanism).
+impose_threat(431,repudiation).
+impose_threat(431,spoofing).
+impose_threat(431,denial_of_service).
+impose_threat(431,tampering).
 child_of(431,430).
 target(431,people).
 
 
 
 has_name(432,target_influence_via_voice_in_nlp).
-impose_threat(432,empty).
+impose_threat(432,information_of_disclosure).
+impose_threat(432,elevation_of_privilege).
+impose_threat(432,defeated_security_mechanism).
+impose_threat(432,repudiation).
+impose_threat(432,spoofing).
+impose_threat(432,denial_of_service).
+impose_threat(432,tampering).
 child_of(432,431).
 target(432,people).
 
 
 
+
 has_name(390,bypassing_physical_security).
-impose_threat(390,empty).
+impose_threat(390,defeated_security_mechanism).
 target(390,hardware).
 
 
 
 has_name(395,bypassing_electronic_locks_and_access_controls).
-impose_threat(395,empty).
+impose_threat(395,defeated_security_mechanism).
 child_of(395,390).
 target(395,hardware).
 
 
 
 has_name(391,bypassing_physical_locks).
-impose_threat(391,empty).
+impose_threat(391,defeated_security_mechanism).
 child_of(391,390).
 target(391,hardware).
 
 
 
 has_name(396,bypassing_card_or_badgebased_systems).
-impose_threat(396,empty).
+impose_threat(396,defeated_security_mechanism).
 child_of(396,395).
 target(396,hardware).
 
 
 
 has_name(394,using_a_snap_gun_lock_to_force_a_lock).
-impose_threat(394,empty).
+impose_threat(394,defeated_security_mechanism).
 child_of(394,391).
 target(394,hardware).
 
 
 
 has_name(393,lock_picking).
-impose_threat(393,empty).
+impose_threat(393,defeated_security_mechanism).
 child_of(393,391).
 target(393,hardware).
 
 
 
 has_name(399,cloning_rfid_cards_or_chips).
-impose_threat(399,empty).
+impose_threat(399,defeated_security_mechanism).
 child_of(399,396).
 target(399,hardware).
 
 
 
 has_name(398,magnetic_strip_card_brute_force_attacks).
-impose_threat(398,empty).
+impose_threat(398,defeated_security_mechanism).
 child_of(398,396).
 target(398,hardware).
 
 
 
 has_name(397,cloning_magnetic_strip_cards).
-impose_threat(397,empty).
+impose_threat(397,defeated_security_mechanism).
 child_of(397,396).
 target(397,hardware).
 
 
 
 has_name(400,rfid_chip_deactivation_or_destruction).
-impose_threat(400,empty).
+impose_threat(400,defeated_security_mechanism).
 child_of(400,396).
 target(400,hardware).
 
 
 
 has_name(547,physical_destruction_of_device_or_component).
-impose_threat(547,empty).
+impose_threat(547,elevation_of_privilege).
+impose_threat(547,tampering).
+impose_threat(547,defeated_security_mechanism).
+impose_threat(547,denial_of_service).
 target(547,hardware).
 
 
 
 has_name(507,physical_theft).
-impose_threat(507,empty).
+impose_threat(507,elevation_of_privilege).
+impose_threat(507,information_disclosure).
 target(507,hardware).
 
 
 
 has_name(438,integrity_modification_during_manufacture).
-impose_threat(438,empty).
-target(438,all).
+impose_threat(438,tampering).
+impose_threat(438,defeated_security_mechanism).
+target(438,hardware).
+target(438,application).
 
 
 
 has_name(520,counterfeit_hardware_component_inserted_during_product_assembly).
-impose_threat(520,empty).
+impose_threat(520,tampering).
+impose_threat(520,defeated_security_mechanism).
 child_of(520,438).
-target(520,all).
+target(520,hardware).
 
 
 
 has_name(521,hardware_design_specifications_are_altered).
-impose_threat(521,empty).
+impose_threat(521,tampering).
+impose_threat(521,defeated_security_mechanism).
 child_of(521,438).
-target(521,all).
+target(521,hardware).
+
+
 
 
 
 has_name(516,hardware_component_substitution_during_baselining).
-impose_threat(516,empty).
+impose_threat(516,tampering).
+impose_threat(516,defeated_security_mechanism).
 child_of(516,438).
-target(516,all).
+target(516,hardware).
+
+
 
 
 
 has_name(517,documentation_alteration_to_circumvent_dialdown).
-impose_threat(517,empty).
+impose_threat(517,tampering).
+impose_threat(517,defeated_security_mechanism).
 child_of(517,438).
-target(517,all).
+target(517,hardware).
+target(517,application).
+
 
 
 
 has_name(518,documentation_alteration_to_produce_underperforming_systems).
-impose_threat(518,empty).
+impose_threat(518,tampering).
+impose_threat(518,defeated_security_mechanism).
 child_of(518,438).
-target(518,all).
+target(518,application).
+
 
 
 
 has_name(519,documentation_alteration_to_cause_errors_in_system_design).
-impose_threat(519,empty).
+impose_threat(519,tampering).
+impose_threat(519,defeated_security_mechanism).
 child_of(519,438).
-target(519,all).
+target(519,application).
+
 
 
 
 has_name(511,infiltration_of_software_development_environment).
-impose_threat(511,empty).
+impose_threat(511,tampering).
+impose_threat(511,defeated_security_mechanism).
 child_of(511,438).
-target(511,all).
+target(511,application).
+
 
 
 
 has_name(537,infiltration_of_hardware_development_environment).
-impose_threat(537,empty).
+impose_threat(537,tampering).
+impose_threat(537,defeated_security_mechanism).
 child_of(537,438).
-target(537,all).
+target(537,hardware).
+
 
 
 
 has_name(439,integrity_modification_during_distribution).
-impose_threat(439,empty).
-target(439,all).
+impose_threat(439,tampering).
+impose_threat(439,defeated_security_mechanism).
+target(439,hardware).
+target(439,application).
+
 
 
 
 has_name(523,malicious_software_implanted).
-impose_threat(523,empty).
+impose_threat(523,tampering).
+impose_threat(523,defeated_security_mechanism).
 child_of(523,439).
-target(523,all).
+target(523,application).
+
 
 
 
 has_name(524,rogue_integration_procedures).
-impose_threat(524,empty).
+impose_threat(524,tampering).
+impose_threat(524,defeated_security_mechanism).
 child_of(524,439).
-target(524,all).
+target(524,hardware).
+target(524,application).
+
 
 
 
 has_name(522,malicious_hardware_component_replacement).
-impose_threat(522,empty).
+impose_threat(522,tampering).
+impose_threat(522,defeated_security_mechanism).
 child_of(522,439).
-target(522,all).
+target(522,hardware).
+
 
 
 

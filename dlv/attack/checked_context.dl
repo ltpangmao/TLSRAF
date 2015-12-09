@@ -1,0 +1,11 @@
+other_context(physical_access_control,can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+
+
+other_context(physical_access_control,can_either_be_physically_accessed_or_supplied_by_malicious_hardware).
+
+
+
+other_context(physical_access_control,use_email_or_removable_media_from_systems_running_the_ide).
+
+
+

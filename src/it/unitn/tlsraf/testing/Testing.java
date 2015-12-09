@@ -142,6 +142,8 @@ public class Testing {
 			// inference
 		 refine_rule= InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/find_alternative.rule " // rules
 					+ hsgm_file; // model files
+		 
+		 refine_rule = "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/dlv -silent -nofacts /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/operationalization.rule /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/attack_pattern_contexts.rule /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/attack_patterns.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/checked_context.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/attack_model.dl"; 
 
 
 		Runtime rt = Runtime.getRuntime();

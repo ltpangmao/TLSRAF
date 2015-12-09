@@ -9,27 +9,31 @@
 
 package it.unitn.tlsraf.ds;
 
+import it.unitn.tlsraf.func.AppleScript;
 import it.unitn.tlsraf.func.CommandPanel;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HolisticSecurityGoalModel {
+import javax.script.ScriptException;
+
+public class AttackModel {
 	private LinkedList<Element> elements = new LinkedList<Element>();
 	private LinkedList<Link> links = new LinkedList<Link>();
 	private String type;
 
-	public HolisticSecurityGoalModel() {
+	public AttackModel() {
 		super();
 		type = InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name();
 	}
 
-	public HolisticSecurityGoalModel(String type) {
+	public AttackModel(String type) {
 		super();
 		this.type = type;
 	}
@@ -59,7 +63,7 @@ public class HolisticSecurityGoalModel {
 	}
 
 	public void importGraphInfo(String result) throws IOException {
-		if (this.getType() == InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name()) {
+		if (this.getType() == InfoEnum.ModelCategory.ATTACK_MODEL.name()) {
 			List<String> elements = Arrays.asList(result.split("\n"));
 			// first processing, which simply imports all information from the text file
 			for (String element : elements) {
@@ -67,7 +71,7 @@ public class HolisticSecurityGoalModel {
 					List<String> factors = Arrays.asList(element.split(";"));
 					if (this.findElementById(factors.get(1)) == null) {
 						// avoid adding redundant elements
-						RequirementElement elem = parseSecurityElementInfo(factors);
+						RequirementElement elem = parseAttackElementInfo(factors);
 						this.getElements().add(elem);
 					}
 				}
@@ -77,7 +81,7 @@ public class HolisticSecurityGoalModel {
 					List<String> factors = Arrays.asList(element.split(";"));
 					if (this.findLinkById(factors.get(1)) == null) {
 						// avoid adding redundant links
-						RequirementLink link = parseSecurityGoalLinkInfo(factors);
+						RequirementLink link = parseAttackModelLinkInfo(factors);
 						this.getLinks().add(link);
 					}
 					// if (link != null) link.printInfo();
@@ -98,79 +102,53 @@ public class HolisticSecurityGoalModel {
 	 * @param factors
 	 * @return
 	 */
-	private RequirementElement parseSecurityElementInfo(List<String> factors) {
+	private RequirementElement parseAttackElementInfo(List<String> factors) {
 		/*
 		 * this part is exclusively for requirement elements 0)notation,element; 1)id,51670; 2)shape,Hexagon; 3)name,Calculate price; 4)Layer, Layer 1 by default; 5)thickness,;
 		 * 6)double stroke; 7)size: 117.945899963379 43.817626953125; 8)no fill; 9)0.0 corner radius 10) stroke pattern: 0 11) origin: 87.234039306641 1084.06665039062 12) owner:
-		 * xx 13) Canvas, Actor association
+		 * xx 13) Canvas, Actor association; 14) user data
 		 */
 
 		RequirementElement new_elem = new RequirementElement();
-		if (!factors.get(13).equals("HSGM")) {
-			CommandPanel.logger.fine("Canvas HSGM is supposed to be processed");
-		}
+		// no additional constraints
+//		if (!factors.get(13).equals("HSGM")) {
+//			CommandPanel.logger.fine("Canvas HSGM is supposed to be processed");
+//		}
 
-		// security goals
+		// anti goals
 		// we only capture the overall information here
-		if (factors.get(3).contains("(S)") & factors.get(2).equals("Cloud")) {
-			new_elem = new SecurityGoal();
+		if (factors.get(2).equals("Circle") && !factors.get(3).equals("empty")) {
+			new_elem = new NewAntiGoal();
 			new_elem.setId(factors.get(1));
-			new_elem.setType(InfoEnum.RequirementElementType.SECURITY_GOAL.name());
-
+			new_elem.setType(InfoEnum.RequirementElementType.NEW_ANTI_GOAL.name());
+			// obtain the content of the element
 			String sg_name = factors.get(3);
-
-			// remove"(S)" at the first beginning
-			sg_name = sg_name.replaceAll("\\(S\\)", "");
-
 			new_elem.setName(sg_name.trim());
-			// This may be useful in elaborated analysis
-			new_elem.setLayer(factors.get(4));
-			// get value for security-specific attributes
-			// if (Float.valueOf(factors.get(5)) > 1) {
-			// comma is used as separator... 5,0
-			if (factors.get(5).startsWith("5")) {
-				((SecurityGoal) new_elem).setCriticality(true);
-			} else {
-				((SecurityGoal) new_elem).setCriticality(false);
-			}
-			// This part should not be used in holistic solution generation
-			// // this value can be useful in the following analysis
-			// new_elem.owner_text = factors.get(12);
-			// ((SecurityGoal) new_elem).extractInfoFromName();
+			((NewAntiGoal)new_elem).extractInfoFromName();
 		} else if (checkCircle(factors.get(7))) {
-			new_elem = new Actor();
-			new_elem.setId(factors.get(1));
-			new_elem.setName(factors.get(3));
-			new_elem.setLayer(factors.get(4));
-			new_elem.setType(InfoEnum.RequirementElementType.ACTOR.name());
+			// process actors
 		}
 		// all others
 		else {
 			new_elem = new RequirementElement();
 			new_elem.setId(factors.get(1));
-			if (factors.get(3).startsWith("(S)") & factors.get(2).equals("Hexagon")) {
-				new_elem.setType(InfoEnum.RequirementElementType.SECURITY_MECHANISM.name());
+			if (factors.get(2).equals("Hexagon")) {
+				new_elem.setType(InfoEnum.RequirementElementType.TASK.name());
+			} else if (factors.get(2).equals("Rectangle")) {
+				new_elem.setType(InfoEnum.RequirementElementType.DOMAIN_ASSUMPTION.name());
 			} else if (factors.get(3).equals("empty") & factors.get(2).equals("Circle") & factors.get(10).equals("0")) {
 				new_elem.setType(InfoEnum.RequirementElementType.MIDDLE_POINT.name());
-			} else if (factors.get(3).equals("empty") & factors.get(2).equals("Circle") & factors.get(10).equals("1")) {
-				new_elem.setType(InfoEnum.RequirementElementType.ACTOR_BOUNDARY.name());
-				new_elem.setRemark(InfoEnum.ElementRemark.BOUNDARY.name());
-			} else if (factors.get(2).equals("AndGate") || (factors.get(2).equals("Rectangle") & factors.get(9).equals("0.0"))) {// Why rectangle?
-				new_elem.setType(InfoEnum.RequirementElementType.LABEL.name());
 			} else {
-				new_elem.setType(InfoEnum.req_elem_type_map.get(factors.get(2)));
+//				new_elem.setType(InfoEnum.req_elem_type_map.get(factors.get(2)));
 			}
-
-			if (factors.get(3).startsWith("(S)")) {
-				String sm_name = factors.get(3);
-				// remove"(S)" at the first beginning
-				sm_name = sm_name.replaceAll("\\(S\\)", "");
-				new_elem.setName(sm_name.trim());
-			} else {
-				new_elem.setName(factors.get(3));
-			}
-			new_elem.setLayer(factors.get(4));
+			new_elem.setName(factors.get(3));
 		}
+		
+		// layout info
+		String[] temp2 = factors.get(11).split(" ");
+		new_elem.origin_x = Double.parseDouble(temp2[0].replace(",","."));
+		new_elem.origin_y = Double.parseDouble(temp2[1].replace(",","."));
+		
 		return new_elem;
 	}
 
@@ -181,7 +159,7 @@ public class HolisticSecurityGoalModel {
 	 * @param factors
 	 * @return
 	 */
-	private RequirementLink parseSecurityGoalLinkInfo(List<String> factors) {
+	private RequirementLink parseAttackModelLinkInfo(List<String> factors) {
 		// obtain the elements of the link.
 		Element source = findElementById(factors.get(4));
 		Element target = findElementById(factors.get(5));
@@ -201,9 +179,9 @@ public class HolisticSecurityGoalModel {
 		source.getOutLinks().add(new_link);
 		target.getInLinks().add(new_link);
 
-		// identify the type of the link. Here we roughly have them as either "refine" or "and-refine" for simplification, regarding the intended analysis.
+		// identify the type of the link. Here we roughly have them as either "refine" or "and-refine" for simplification, facilitating the intended analysis.
 		// refine
-		if ((factors.get(2).equals("SharpArrow") || factors.get(2).equals("StickArrow"))
+		if ((factors.get(2).equals("SharpArrow") || factors.get(2).equals("StickArrow") || factors.get(2).equals("Arrow"))
 				& !new_link.getSource().getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
 			new_link.setType(InfoEnum.RequirementLinkType.REFINE.name());
 			// the target of this link should update the "refine_links" information as well
@@ -234,7 +212,7 @@ public class HolisticSecurityGoalModel {
 	 */
 	private void reprocessRequirementElement(RequirementElement elem) {
 		// Process the middle refineum
-				if (elem.getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
+		if (elem.getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
 			elem.setRemark(InfoEnum.ElementRemark.REFINEUM.name());
 			// process refineum related "and_refine" links
 			if (elem.getOutLinks().size() != 1) {
@@ -253,64 +231,84 @@ public class HolisticSecurityGoalModel {
 	}
 
 	// TODO: can be further abstracted to a parent class, the same for the following methods.
-	public String generateFormalExpression() {
+	public String generateFormalExpression(int scope) {
 		String result = "";
-		for (Element e : this.elements) {
-			RequirementElement re = (RequirementElement) e;
-			if (re.getFormalExpressions() != "") {
-				// we here only use the id to represent elements, rather than the full description
-				if (re.getType().equals(InfoEnum.RequirementElementType.SECURITY_GOAL.name())) {
-					result += "sec_goal(" + re.getId() + ").\n";					
-				} 
-				else if (re.getType().equals(InfoEnum.RequirementElementType.SECURITY_MECHANISM.name())){
-					result += "sec_mechanism(" + re.getId() + ").\n";
+		if (scope == InfoEnum.ALL_MODELS) {
+			for (Element e : this.elements) {
+				RequirementElement re = (RequirementElement) e;
+				if (re.getFormalExpressions() != "") {
+					result += re.getFormalExpressions()+"\n";
 				}
-				else if (re.getType().equals(InfoEnum.RequirementElementType.DOMAIN_ASSUMPTION.name())){
-					result += "d_assumption(" + re.getId() + ").\n";
-				}
-				else if (re.getType().equals(InfoEnum.RequirementElementType.GOAL.name())){
-					result += "goal(" + re.getId() + ").\n";
-				}
-				else if (re.getType().equals(InfoEnum.RequirementElementType.TASK.name())){
-					result += "task(" + re.getId() + ").\n";
-				}
-				else {
-					// don't consider other types of elements in this analysis
-					result += "";
-				}
-			}
 
-			// Here for all non-leaf nodes, each of them should have either "and-refine" or "refine" links
-			// the formalization of links (especially, the "refine" links) should be dynamically generated according to our needs
-			// customized refine formalism, we enumerate "refine" relations up to 5 alternatives.
-			if (re.refine_links.size() > 0) {
-				String content ="";
-				for(int i=0; i<re.refine_links.size(); i++){
-					content += re.refine_links.get(i).getSource().getId() + ",";
-					// if this is the last one, then add the refined element
-					if(i==re.refine_links.size()-1){
-						content += re.getId();
-					} 
-				}	
-				result += "refine_"+re.refine_links.size()+"("+content+").\n";				
-			}
-			// normal and-refine formalism
-			else if (re.and_refine_links.size() > 0) {
-				// traverse all and-refinements
-				for (RequirementLink rl : re.and_refine_links) {
-					result += "and_refine(" + rl.getSource().getId() + "," + re.getId() + ").\n";
-//					result += rl.getFormalExpressions() + "\n";
+				// Treat "refine" link in a special way. 
+				// the formalization of links (especially, the "refine" links) should be dynamically generated according to our needs
+				if (re.refine_links!=null && re.refine_links.size() > 0) {
+					String content = "";
+					for (int i = 0; i < re.refine_links.size(); i++) {
+						content += re.refine_links.get(i).getSource().getId() + ",";
+						// if this is the last one, then add the refined element
+						if (i == re.refine_links.size() - 1) {
+							content += re.getId();
+						}
+					}
+					result += "refine_" + re.refine_links.size() + "(" + content + ").\n";
 				}
 			}
-			else {
-				// do nothing for all other links, i.e., only concern refinement in this case.
+			for (Link l: this.links){
+				// generate formal predicates for all "and-refine" links 
+				if(l.getType().equals(InfoEnum.RequirementLinkType.AND_REFINE.name())){
+					// normal and-refine formalism
+					result += l.getFormalExpressions()+"\n";
+				}
+				// generate formal predicates for all "refine" links as "syntactic sugar" 
+				else if(l.getType().equals(InfoEnum.RequirementLinkType.REFINE.name())){
+					result += l.getFormalExpressions()+"\n";
+				}
 			}
+		} else if (scope == InfoEnum.SELECTED_MODELS) {
+			// obtain selected elements' id
+			ArrayList<Long> selected_elements = null;
+			try {
+				// here the returned value won't be null
+				selected_elements = AppleScript.getSelectedGraph();
+				RequirementElement selected_element = null;
+				for(Long id :selected_elements){
+					selected_element = (RequirementElement)findElementById(Long.toString(id));
+					// we here process "only" the selected elements, and its refine links 
+					if(selected_element!=null){
+						result += selected_element.getFormalExpressions();
+						// further process related "refine" links
+						if (selected_element.refine_links.size() > 0) {
+							String content ="";
+							for(int i=0; i<selected_element.refine_links.size(); i++){
+								content += selected_element.refine_links.get(i).getSource().getId() + ",";
+								// if this is the last one, then add the refined element
+								if(i==selected_element.refine_links.size()-1){
+									content += selected_element.getId();
+								} 
+							}	
+							result += "refine_"+selected_element.refine_links.size()+"("+content+").\n";
+						}
+					}
+				}
+				// process all "and-refine" links even though they may not be used during the inference.
+				for (Link l: this.links){
+					// generate formal predicates for all "and-refine" links 
+					if(l.getType().equals(InfoEnum.RequirementLinkType.AND_REFINE.name())){
+						// normal and-refine formalism
+						result += l.getFormalExpressions()+"\n";
+					}
+					// generate formal predicates for all "refine" links as "syntactic sugar" 
+					else if(l.getType().equals(InfoEnum.RequirementLinkType.REFINE.name())){
+						result += l.getFormalExpressions()+"\n";
+					}
+				}
+			} catch (ScriptException e1) {
+				e1.printStackTrace();
+			}
+		} else{
+			// should be errors
 		}
-
-		// for (Link l : this.links) {
-		// if (l.getFormalExpressions() != "")
-		// result += l.getFormalExpressions() + "\n";
-		// }
 
 		result = result.toLowerCase();
 		return result;

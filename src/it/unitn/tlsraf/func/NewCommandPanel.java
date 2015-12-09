@@ -104,7 +104,7 @@ public class NewCommandPanel{
 	private void initialize() {
 		frmMuserControlPanel = new JFrame();
 		frmMuserControlPanel.setTitle("MUSER Control Panel");
-		frmMuserControlPanel.setBounds(100, 100, 1065, 668);
+		frmMuserControlPanel.setBounds(100, 100, 503, 749);//1065
 		frmMuserControlPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMuserControlPanel.getContentPane().setLayout(null);
 		
@@ -112,11 +112,11 @@ public class NewCommandPanel{
 		importSource.setName("Import Source");
 		importSource.addItem("Selected elements");
 		importSource.addItem("From files");
-		importSource.setBounds(27, 56, 169, 27);
+		importSource.setBounds(22, 23, 169, 27);
 		frmMuserControlPanel.getContentPane().add(importSource);
 		
 		JLabel lblImportSource = new JLabel("Import Source");
-		lblImportSource.setBounds(29, 36, 95, 16);
+		lblImportSource.setBounds(27, 7, 95, 16);
 		frmMuserControlPanel.getContentPane().add(lblImportSource);
 		
 		final JComboBox<String> modelType = new JComboBox<String>();
@@ -125,13 +125,14 @@ public class NewCommandPanel{
 		modelType.addItem("Resource schema");
 		modelType.addItem("Dataflow diagram");
 		modelType.addItem("Threat model");
-		modelType.addItem("Trust model");
+//		modelType.addItem("Trust model");
 		modelType.addItem("Holistic security goal model");
-		modelType.setBounds(198, 56, 169, 27);
+		modelType.addItem("Attack model");
+		modelType.setBounds(193, 23, 169, 27);
 		frmMuserControlPanel.getContentPane().add(modelType);
 		
 		JLabel lblModelType = new JLabel("Model Type");
-		lblModelType.setBounds(205, 36, 95, 16);
+		lblModelType.setBounds(193, 7, 95, 16);
 		frmMuserControlPanel.getContentPane().add(lblModelType);
 		
 		final JTextArea alternative_list = new JTextArea();
@@ -143,7 +144,7 @@ public class NewCommandPanel{
 		
 		JScrollPane scrollPane = new JScrollPane(alternative_list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(27, 293, 982, 335);
+		scrollPane.setBounds(27, 500, 450, 200);
 		frmMuserControlPanel.getContentPane().add(scrollPane);
 		
 		
@@ -167,30 +168,28 @@ public class NewCommandPanel{
 				try {
 					if (model.equals(InfoEnum.ModelCategory.REQUIREMENT.name())) {
 						Inference.importReqModel(ms, canvas);
-						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing requirement models!");
-					} else if (model.equals(InfoEnum.ModelCategory.ACTOR.name())) {
-						Inference.importActorModel(ms.actor_model, canvas);
-						// TODO: customize the size of the dialog
-						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing trust models!");
 					} else if (model.equals(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name())) {
 						HSGMInference.importHolisticSecurityGoalModel(ms.hsgm, canvas);
-						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing holistic security goal models!");
 					} else if (model.equals(InfoEnum.ModelCategory.DATA_FLOW.name())) {
 //						ReferenceModelInference.importDataFlowModel(canvas);
 						ReferenceModelInference.importDataFlowModelWithID(ms, canvas);
-						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing data flow diagram!");
 					} else if (model.equals(InfoEnum.ModelCategory.THREAT_MODEL.name())) {
 						ReferenceModelInference.importThreatModel(ms, canvas);;
-						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing threat model!");
 					} else if (model.equals(InfoEnum.ModelCategory.RESOURCE_SCHEMA.name())) {
 						ReferenceModelInference.importResourceSchema(ms.assets, canvas);;
-						// TODO: customize the size of the dialog
 						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing resource schema!");
+					} else if (model.equals(InfoEnum.ModelCategory.ATTACK_MODEL.name())) {
+						AttackModelInference.importAttackModel(ms.attack_model, canvas);
+						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing attack models!");
 					}
+//					else if (model.equals(InfoEnum.ModelCategory.ACTOR.name())) {
+//						Inference.importActorModel(ms.actor_model, canvas);
+//						JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish importing trust models!");
+//					}
 					  else {
 						logger.warning("Command error!");
 					}
@@ -201,7 +200,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnImport.setBounds(27, 84, 86, 39);
+		btnImport.setBounds(22, 62, 86, 39);
 		frmMuserControlPanel.getContentPane().add(btnImport);
 		
 		JButton btnDelete = new JButton("Delete");
@@ -219,24 +218,24 @@ public class NewCommandPanel{
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Delete all models!");
 			}
 		});
-		btnDelete.setBounds(125, 84, 86, 39);
+		btnDelete.setBounds(120, 62, 86, 39);
 		frmMuserControlPanel.getContentPane().add(btnDelete);
 		
 		JLabel lblAnalysisType = new JLabel("Analysis Type");
-		lblAnalysisType.setBounds(27, 177, 97, 16);
+		lblAnalysisType.setBounds(22, 113, 97, 16);
 		frmMuserControlPanel.getContentPane().add(lblAnalysisType);
 		
 		final JComboBox<String> analysis_type = new JComboBox<String>();
 		analysis_type.setName("Analysis Type");
 		analysis_type.addItem("Security Goal");
 		analysis_type.addItem("Anti-Goal");
-		analysis_type.setBounds(20, 194, 115, 27);
+		analysis_type.setBounds(22, 141, 115, 27);
 		frmMuserControlPanel.getContentPane().add(analysis_type);
 		
 
 		
 		JLabel lblLayer = new JLabel("Layer");
-		lblLayer.setBounds(157, 177, 61, 16);
+		lblLayer.setBounds(149, 113, 61, 16);
 		frmMuserControlPanel.getContentPane().add(lblLayer);
 		
 		final JComboBox<String> layer = new JComboBox<String>();
@@ -246,7 +245,7 @@ public class NewCommandPanel{
 		layer.addItem("Business");
 		layer.addItem("Application");
 		layer.addItem("Physical");
-		layer.setBounds(157, 194, 112, 27);
+		layer.setBounds(149, 141, 112, 27);
 		frmMuserControlPanel.getContentPane().add(layer);
 		
 		JButton btnPrint = new JButton("Print");
@@ -268,7 +267,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnPrint.setBounds(223, 84, 86, 39);
+		btnPrint.setBounds(214, 62, 86, 39);
 		frmMuserControlPanel.getContentPane().add(btnPrint);
 		
 		
@@ -292,7 +291,7 @@ public class NewCommandPanel{
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Finish writing support links to a file!");
 			}
 		});
-		btnSavetofile.setBounds(321, 84, 86, 39);
+		btnSavetofile.setBounds(312, 62, 86, 39);
 		frmMuserControlPanel.getContentPane().add(btnSavetofile);
 		
 		
@@ -300,23 +299,23 @@ public class NewCommandPanel{
 		object.setName("Object");
 		object.addItem("Selected models");
 		object.addItem("All models");
-		object.setBounds(294, 194, 117, 27);
+		object.setBounds(273, 141, 117, 27);
 		frmMuserControlPanel.getContentPane().add(object);
 //		object.setSelectedItem("Selected models");
 		
 		JLabel lblObject = new JLabel("Object");
-		lblObject.setBounds(294, 177, 61, 16);
+		lblObject.setBounds(281, 113, 61, 16);
 		frmMuserControlPanel.getContentPane().add(lblObject);
 		
 		final JComboBox<String> refinementMode = new JComboBox<String>();
 		refinementMode.setName("Refinement Mode");
 		refinementMode.addItem("One-step");
 		refinementMode.addItem("Exhaustive");
-		refinementMode.setBounds(569, 78, 125, 27);
+		refinementMode.setBounds(240, 243, 110, 28);
 		frmMuserControlPanel.getContentPane().add(refinementMode);
 		
 		JLabel lblRefinementMode = new JLabel("Refinement Mode");
-		lblRefinementMode.setBounds(579, 56, 125, 16);
+		lblRefinementMode.setBounds(240, 225, 125, 16);
 		frmMuserControlPanel.getContentPane().add(lblRefinementMode);
 		
 		final JComboBox<String> refinementDimension = new JComboBox<String>();
@@ -328,36 +327,38 @@ public class NewCommandPanel{
 		refinementDimension.addItem("Asset(anti)");
 		refinementDimension.addItem("Target(anti)");
 		refinementDimension.addItem("Protection(anti)");
-		refinementDimension.setBounds(706, 78, 140, 27);
+		refinementDimension.setBounds(120, 243, 110, 28);
 		frmMuserControlPanel.getContentPane().add(refinementDimension);
 		
-		JLabel lblRefinementDimension = new JLabel("Refinement Dimension");
-		lblRefinementDimension.setBounds(716, 56, 154, 16);
+		JLabel lblRefinementDimension = new JLabel("Dimension");
+		lblRefinementDimension.setBounds(128, 225, 78, 16);
 		frmMuserControlPanel.getContentPane().add(lblRefinementDimension);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(27, 135, 384, 12);
+		separator.setBounds(22, 98, 442, 12);
 		frmMuserControlPanel.getContentPane().add(separator);
 		
 		final JComboBox<String> visualization = new JComboBox<String>();
 		visualization.setName("Visualization");
 		visualization.addItem("OmniGraffle");
 		visualization.addItem("Graphviz");
-		visualization.setBounds(867, 78, 142, 27);
+		visualization.setBounds(360, 243, 110, 28);
 		frmMuserControlPanel.getContentPane().add(visualization);
 		
 		JLabel lblVisualization = new JLabel("Visualization");
-		lblVisualization.setBounds(874, 56, 95, 16);
+		lblVisualization.setBounds(377, 225, 95, 16);
 		frmMuserControlPanel.getContentPane().add(lblVisualization);
 		
 		JLabel lblImportModel = new JLabel("Import Model");
+		lblImportModel.setVisible(false);
 		lblImportModel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblImportModel.setBounds(27, 6, 97, 16);
+		lblImportModel.setBounds(377, 6, 97, 16);
 		frmMuserControlPanel.getContentPane().add(lblImportModel);
 		
 		JLabel lblAnalyzeModel = new JLabel("Analyze Model");
+		lblAnalyzeModel.setVisible(false);
 		lblAnalyzeModel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblAnalyzeModel.setBounds(27, 149, 125, 16);
+		lblAnalyzeModel.setBounds(374, 26, 125, 16);
 		frmMuserControlPanel.getContentPane().add(lblAnalyzeModel);
 	
 		
@@ -436,7 +437,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnStep_1.setBounds(439, 50, 100, 55);
+		btnStep_1.setBounds(22, 215, 95, 55);
 		frmMuserControlPanel.getContentPane().add(btnStep_1);
 		
 		JButton btnStep_2 = new JButton("<html>Step 2:<br/>Simplify</html>");
@@ -463,7 +464,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnStep_2.setBounds(439, 121, 125, 55);
+		btnStep_2.setBounds(22, 275, 95, 55);
 		frmMuserControlPanel.getContentPane().add(btnStep_2);
 		
 		JButton btnStep_3 = new JButton("<html>Step 3:<br/>Operationalize</html>");
@@ -504,7 +505,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnStep_3.setBounds(439, 188, 125, 55);
+		btnStep_3.setBounds(22, 335, 95, 55);
 		frmMuserControlPanel.getContentPane().add(btnStep_3);
 		
 		
@@ -580,7 +581,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnStep_41.setBounds(583, 121, 163, 55);
+		btnStep_41.setBounds(125, 275, 163, 55);
 		btnStep_41.setMargin(new Insets(0, 0, 0, 0));
 		frmMuserControlPanel.getContentPane().add(btnStep_41);
 		
@@ -659,7 +660,7 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnStep_42.setBounds(583, 188, 163, 55);
+		btnStep_42.setBounds(125, 335, 163, 55);
 		btnStep_42.setMargin(new Insets(0, 0, 0, 0));
 		frmMuserControlPanel.getContentPane().add(btnStep_42);
 
@@ -687,11 +688,11 @@ public class NewCommandPanel{
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Transfer security concerns to the application layer!");
 			}
 		});
-		btnStep_5.setBounds(758, 121, 211, 55);
+		btnStep_5.setBounds(300, 275, 161, 55);
 		btnStep_5.setMargin(new Insets(0, 0, 0, 0));
 		frmMuserControlPanel.getContentPane().add(btnStep_5);
 				
-		JButton btnStepGenerate = new JButton("<html>Step 6: Generate holistic security solutions</html>");
+		JButton btnStepGenerate = new JButton("<html>Step 6: Generate security solutions</html>");
 		btnStepGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// merge the alternative calculation method into the
@@ -721,10 +722,11 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnStepGenerate.setBounds(758, 188, 211, 55);
+		btnStepGenerate.setBounds(301, 335, 163, 55);
 		frmMuserControlPanel.getContentPane().add(btnStepGenerate);
 		
 		JButton btnShowThreatScenarios = new JButton("Show threat scenarios");
+		btnShowThreatScenarios.setVisible(false);
 		btnShowThreatScenarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String threat_scenarios = SupportingFunctions.getThreatScenarios(ms);
@@ -736,10 +738,11 @@ public class NewCommandPanel{
 				}
 			}
 		});
-		btnShowThreatScenarios.setBounds(439, 6, 163, 46);
+		btnShowThreatScenarios.setBounds(398, 54, 66, 46);
 		frmMuserControlPanel.getContentPane().add(btnShowThreatScenarios);
 		
 		JButton btnGenerateSupportElements = new JButton("Generate Support Elements");
+		btnGenerateSupportElements.setVisible(false);
 		btnGenerateSupportElements.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// this analysis has to target a specific layer, otherwise we should pop-up an alert to let users select layer
@@ -756,10 +759,11 @@ public class NewCommandPanel{
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Support link has been generated!");
 			}
 		});
-		btnGenerateSupportElements.setBounds(614, 6, 183, 46);
+		btnGenerateSupportElements.setBounds(402, 167, 61, 46);
 		frmMuserControlPanel.getContentPane().add(btnGenerateSupportElements);
 		
 		JButton btnCritical = new JButton("Tag criticality");
+		btnCritical.setVisible(false);
 		btnCritical.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean result = SupportingFunctions.criticalityTagging(ms);
@@ -769,8 +773,103 @@ public class NewCommandPanel{
 			}
 			
 		});
-		btnCritical.setBounds(809, 6, 130, 46);
+		btnCritical.setBounds(402, 113, 61, 46);
 		frmMuserControlPanel.getContentPane().add(btnCritical);
+		
+		JButton btnGenerateAttacks = new JButton("<html>3) Generate alternatives</html>");
+		btnGenerateAttacks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// merge the alternative calculation method into the
+				LinkedList<String> alternatives = null;
+				try {
+						alternatives = AttackModelInference.generateAttackPlans(ms.attack_model);
+						String result = "";
+						alternative_list.removeAll();
+						// for the large set of inference result, we only show the first 100 elements
+						if(alternatives.size()>200){
+							for(int i=0; i<200; i++){
+								result += alternatives.get(i)+"\n";
+							}
+						}
+						else{
+							for (String s : alternatives) {
+								result += s+"\n";
+							}
+						}
+						result += "There are "+ alternatives.size() +" alternative attacks in total.";
+						alternative_list.setText(result);
+					JOptionPane.showMessageDialog(frmMuserControlPanel, "Generate all alternative attacks!");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ScriptException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnGenerateAttacks.setBounds(339, 428, 125, 60);
+		frmMuserControlPanel.getContentPane().add(btnGenerateAttacks);
+		
+		JButton btnOperationalize = new JButton("<html>1) Identify relevant patterns</html>");
+		btnOperationalize.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String object_choice = getCommand(object);
+				try {
+					AttackModelInference.identifyRelevantPattern(ms.attack_model,Integer.valueOf(object_choice));
+					JOptionPane.showMessageDialog(frmMuserControlPanel, "Identify relevant attack patterns!");
+				} catch (NumberFormatException | IOException | ScriptException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnOperationalize.setBounds(27, 428, 154, 60);
+		frmMuserControlPanel.getContentPane().add(btnOperationalize);
+		
+		JButton btnApplicability = new JButton("<html>2) Check pattern applicability</html>");
+		btnApplicability.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String object_choice = getCommand(object);
+				try {
+					LinkedList<String> questions = AttackModelInference.identifyApplicablePattern(ms.attack_model,Integer.valueOf(object_choice));
+					String new_facts = "";
+					for(String question: questions){
+						String[] question_contents = question.split("\\$");
+						int result = JOptionPane.showConfirmDialog(frmMuserControlPanel, question_contents[0]);
+						// add new datalog predicates according to the reply
+						if(result == JOptionPane.YES_OPTION){
+							new_facts += question_contents[1]+".\n";
+						} else if(result == JOptionPane.NO_OPTION){
+							new_facts += "no_"+question_contents[1]+".\n";
+						} else{
+							
+						}
+					}
+					// Incrementally write the new facts to file. The file will be manually deleted when necessary
+					String attack_file = InfoEnum.current_directory + "/dlv/attack/checked_context.dl";
+					Inference.writeFile(attack_file, new_facts, true);
+					JOptionPane.showMessageDialog(frmMuserControlPanel, "Identify applicable attack patterns!");
+				} catch (NumberFormatException | IOException | ScriptException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnApplicability.setBounds(182, 428, 154, 60);
+		frmMuserControlPanel.getContentPane().add(btnApplicability);
+		
+		JLabel lblSecurityRequirementsAnalysis = new JLabel("Security Requirements Analysis");
+		lblSecurityRequirementsAnalysis.setBounds(22, 198, 211, 16);
+		frmMuserControlPanel.getContentPane().add(lblSecurityRequirementsAnalysis);
+		
+		JLabel lblHolisticAttackAnalysis = new JLabel("Holistic Attack Analysis");
+		lblHolisticAttackAnalysis.setBounds(26, 411, 192, 16);
+		frmMuserControlPanel.getContentPane().add(lblHolisticAttackAnalysis);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(22, 180, 442, 10);
+		frmMuserControlPanel.getContentPane().add(separator_1);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(22, 404, 442, 12);
+		frmMuserControlPanel.getContentPane().add(separator_2);
 		
 		
 		
@@ -798,8 +897,6 @@ public class NewCommandPanel{
 		else if (input_box.getName().equals("Model Type")) {
 			if (input_box.getSelectedItem().equals("Requirements model")) {
 				return InfoEnum.ModelCategory.REQUIREMENT.name();
-			} else if (input_box.getSelectedItem().equals("Trust model")) {
-				return InfoEnum.ModelCategory.ACTOR.name();
 			} else if (input_box.getSelectedItem().equals("Holistic security goal model")){
 				return InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name();
 			} else if (input_box.getSelectedItem().equals("Threat model")){
@@ -808,7 +905,12 @@ public class NewCommandPanel{
 				return InfoEnum.ModelCategory.DATA_FLOW.name();
 			} else if (input_box.getSelectedItem().equals("Resource schema")){
 				return InfoEnum.ModelCategory.RESOURCE_SCHEMA.name();
+			} else if (input_box.getSelectedItem().equals("Attack model")) {
+				return InfoEnum.ModelCategory.ATTACK_MODEL.name();
 			}
+//			else if (input_box.getSelectedItem().equals("Trust model")) {
+//				return InfoEnum.ModelCategory.ACTOR.name();
+//			} 
 			
 		}
 		// analysis type commands

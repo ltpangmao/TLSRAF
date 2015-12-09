@@ -1,6 +1,7 @@
 package it.unitn.tlsraf.func;
 
 import it.unitn.tlsraf.ds.ActorAssociationGraph;
+import it.unitn.tlsraf.ds.AttackModel;
 import it.unitn.tlsraf.ds.Element;
 import it.unitn.tlsraf.ds.HolisticSecurityGoalModel;
 import it.unitn.tlsraf.ds.InfoEnum;
@@ -32,6 +33,7 @@ public class ModelSet {
 	
 	public ActorAssociationGraph actor_model;
 	public HolisticSecurityGoalModel hsgm;
+	public AttackModel attack_model;
 	public LinkedList<String> assets;
 	public LinkedList<Threat> threats;
 	
@@ -52,6 +54,7 @@ public class ModelSet {
 		
 		actor_model = new ActorAssociationGraph(InfoEnum.ModelCategory.ACTOR.name());
 		hsgm = new HolisticSecurityGoalModel(InfoEnum.ModelCategory.HOLISTIC_SECURITY_GOAL_MODEL.name());
+		attack_model = new AttackModel(InfoEnum.ModelCategory.ATTACK_MODEL.name());
 		assets = new LinkedList<String>(); 
 		threats = new LinkedList<Threat>();
 	}

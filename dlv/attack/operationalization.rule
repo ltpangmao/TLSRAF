@@ -1,0 +1,66 @@
+%%%%%%%%%%%%%%%%%%%
+% Auxiliary rules
+%%%%%%%%%%%%%%%%%%%
+%has_threat(G,TH) :- anti_goal_properties(G,TH,AS,TA,INT).
+%has_asset(G,AS) :- anti_goal_properties(G,TH,AS,TA,INT).
+has_target(G,TA) :- anti_goal_properties(G,TH,AS,TA,INT).
+%has_interval(G,INT) :- anti_goal_properties(G,TH,AS,TA,INT).
+
+% leaf goal identification
+non_leaf(G):- and_refine(_,G).
+non_leaf(G):- refine(_,G).
+
+
+% leaf goal identification
+non_leaf_anti_goal(G0):- and_refine(G1,G0), anti_goal(G1).
+non_leaf_anti_goal(G0):- refine(G1,G0), anti_goal(G1).
+
+
+
+% decendant rules
+descendant_of(GT1,GT0) :- refine(GT1,GT0).
+descendant_of(GT1,GT0) :- and_refine(GT1,GT0).
+descendant_of(GT2,GT0) :- descendant_of(GT2,GT1), descendant_of(GT1,GT0).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% Identify relevant patterns
+%%%%%%%%%%%%%%%%%%%
+
+relevant_to_with_name(AP,NA,GID) :- anti_goal_properties(GID, TH, _, TA1, _), impose_threat(AP,TH), target(AP,TA2), isa(TA1,TA2), has_name(AP,NA).
+
+
+%%%%%%%%%%%%%%%%%%%
+% Manually prepared facts, which will be produced by the three-layer model
+%%%%%%%%%%%%%%%%%%%
+% application
+isa(firewall,application).
+isa(input_guard,application).
+isa(authorization,application).
+isa(energy_management_application, application).
+isa(encryption,application).
+isa(smart_meter_firmware,application).
+isa(password_based_authorization,application).
+
+
+% hardware
+isa(physical_access_control,hardware).
+isa(physical_lock,hardware).
+isa(smart_meter_device,hardware).
+isa(energy_supplier_server,hardware).
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% Identify applicable patterns
+% customize the facts based on existing context rules: "applicable_to(45, AG) :- relevant_to(45, AG)"
+%%%%%%%%%%%%%%%%%%%
+
+% produce context rule input
+relevant_to(AP,GID) :- relevant_to_with_name(AP,NA,GID), selected_pattern_name(NA,TID), descendant_of(TID,GID), not non_leaf_anti_goal(GID).
+
+% process context rule output
+applicable_task_id(TID) :- applicable_to(AP,GID), relevant_to_with_name(AP,NA,GID), selected_pattern_name(NA,TID).
+%, descendant_of(TID,GID), not non_leaf_anti_goal(GID).

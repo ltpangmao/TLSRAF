@@ -1,0 +1,944 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Attack Pattern Context %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%
+% CAPEC-112 Brute Force
+%%%%%%%%%%
+applicable_to(112,AG) :- relevant_to(20,AG).
+
+
+%%%%%%%%%%
+% CAPEC-20 Encryption Brute Forcing
+%%%%%%%%%%
+applicable_to(20,AG) :- relevant_to(20,AG), has_target(AG,TA), protected_by(TA, encryption).
+
+
+
+%%%%%%%%%%
+% CAPEC-97 Cryptanalysis
+%%%%%%%%%%
+applicable_to(97,AG) :- relevant_to(97,AG), has_target(AG,TA), use_technique(TA, cryptographic_algorithm).
+
+
+
+%%%%%%%%%%
+% CAPEC-49 Password Brute Forcing
+%%%%%%%%%%
+applicable_to(49,AG) :- relevant_to(49,AG), has_target(AG,TA), protected_by(TA, password_based_authentication), use_detailed_technique(TA, password_throttling_mechanism).
+%%%%
+% question uncheckable context
+%%%%
+question(use_detailed_technique, TA, password_throttling_mechanism) :- relevant_to(49, AG), has_target(AG,TA), not use_detailed_technique(TA, password_throttling_mechanism), not no_use_detailed_technique(TA, password_throttling_mechanism).
+%%% new generated facts can be generated based on the answer to the question
+% use_detailed_technique(TA, password_throttling_mechanism) :- question(use_technique, TA, password_throttling_mechanism), yes
+% no_use_detailed_technique(TA, password_throttling_mechanism) :- question(use_technique, TA, password_throttling_mechanism), no
+
+
+
+%%%%%%%%%%
+% CAPEC-55 Rainbow Table Password Cracking
+%%%%%%%%%%
+applicable_to(55,AG) :- relevant_to(55,AG), has_target(AG,TA), protected_by(TA, password_based_authentication), use_detailed_technique(TA, salt).
+%%%%
+% question uncheckable context
+%%%%
+question(use_detailed_technique, TA, salt) :- relevant_to(49, AG), has_target(AG,TA), not use_detailed_technique(TA, salt), not no_use_detailed_technique(TA, salt).
+
+
+
+%%%%%%%%%%
+% CAPEC-16 Dictionary-based Password Attack
+%%%%%%%%%%
+applicable_to(16,AG) :- relevant_to(16,AG), has_target(AG,TA), protected_by(TA, password_based_authentication), no_use_detailed_technique(TA, sound_password_policy), no_use_detailed_technique(TA, password_throttling_mechanism).
+%%
+% question uncheckable context
+%%
+question(use_detailed_technique, TA, password_throttling_mechanism) :- relevant_to(16, AG), has_target(AG,TA), not use_detailed_technique(TA, password_throttling_mechanism), not no_use_detailed_technique(TA, password_throttling_mechanism).
+question(use_detailed_technique, TA, sound_password_policy) :- relevant_to(16, AG), has_target(AG,TA), not use_detailed_technique(TA, sound_password_policy), not no_use_detailed_technique(TA, sound_password_policy).
+
+
+
+
+%%%%%%%%%%
+% CAPEC-70 Try Common(default) Usernames and Passwords
+%%%%%%%%%%
+applicable_to(70,AG) :- relevant_to(70,AG), has_target(AG,TA), protected_by(TA, password_based_authentication).
+
+
+
+%%%%%%%%%%
+% CAPEC-184 Software Integrity Attacks
+%%%%%%%%%%
+applicable_to(184,AG) :- relevant_to(184,AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-185 Malicious Software Download
+%%%%%%%%%%
+applicable_to(185,AG) :- relevant_to(185,AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-186 Malicious Software Update
+%%%%%%%%%%
+applicable_to(186,AG) :- relevant_to(186,AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-187 Malicious Automated Software Update
+%%%%%%%%%%
+applicable_to(187,AG) :- relevant_to(187,AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-207 Removing Important Functionality from the Client
+%%%%%%%%%%
+applicable_to(207,AG) :- relevant_to(207,AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-56 Removing/short-circuiting 'guard logic'
+%%%%%%%%%%
+applicable_to(56,AG) :- relevant_to(56,AG), has_target(AG,TA), use_paradigm(TA, client_server).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(56, AG), has_target(AG,TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+
+
+
+%%%%%%%%%%
+% CAPEC-66 SQL Injection
+%%%%%%%%%%
+applicable_to(66,AG) :- relevant_to(66,AG), has_target(AG,TA), use_technique(TA, sql_query).
+
+
+
+%%%%%%%%%%
+% CAPEC-7 Blind SQL Injection
+%%%%%%%%%%
+applicable_to(7,AG) :- relevant_to(7,AG), has_target(AG,TA), use_technique(TA, sql_query).
+
+
+
+%%%%%%%%%%
+% CAPEC-110 SQL Injection through SOAP Parameter Tampering
+%%%%%%%%%%
+applicable_to(110,AG) :- relevant_to(110,AG), has_target(AG,TA), use_technique(TA,soap), use_paradigm(TA,soa).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm,TA,soa) :- relevant_to(110,AG), has_target(AG,TA), not use_paradigm(TA,soa), not no_use_paradigm(TA,soa).
+
+
+
+%%%%%%%%%%
+% CAPEC-109 SQL Injection through SOAP Parameter Tampering
+%%%%%%%%%%
+applicable_to(109, AG) :- relevant_to(109, AG), has_target(AG, TA), use_technique(TA, soap), accept_user_data(TA), use_paradigm(TA, client_server), use_detailed_technique(TA, data_access_layer_by_orm_tool).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(109, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+question(use_detailed_technique, TA, data_access_layer_by_orm_tool) :- relevant_to(109, AG), has_target(AG, TA), not use_detailed_technique(TA, data_access_layer_by_orm_tool), not no_use_detailed_technique(TA, data_access_layer_by_orm_tool).
+
+
+
+%%%%%%%%%%
+% CAPEC-108 Command Line Execution through SQL Injection
+%%%%%%%%%%
+applicable_to(108, AG) :- relevant_to(108, AG), has_target(AG, TA), trust(TA, data_in_the_database).
+%%%%
+% question uncheckable context
+%%%%
+question(trust, TA, data_in_the_database) :- relevant_to(108, AG), has_target(AG, TA), not trust(TA, data_in_the_database), not no_trust(TA, data_in_the_database).
+
+
+
+%%%%%%%%%%
+% CAPEC-69 Target Programs with Elevated Privileges
+%%%%%%%%%%
+applicable_to(69, AG) :- relevant_to(69, AG), has_target(AG, TA), use_data_from(TA, _), technical_context(TA, run_with_elevated_OS_privileges), technical_context(TA, give_away_information_about_itself).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, run_with_elevated_OS_privileges) :- relevant_to(69, AG), has_target(AG, TA), not technical_context(TA, run_with_elevated_OS_privileges), not no_technical_context(TA, run_with_elevated_OS_privileges).
+question(technical_context, TA, give_away_information_about_itself) :- relevant_to(69, AG), has_target(AG, TA), not technical_context(TA, give_away_information_about_itself), not no_technical_context(TA, give_away_information_about_itself).
+
+
+
+%%%%%%%%%%
+% CAPEC-14 Client-side Injection-induced Buffer Overflow
+%%%%%%%%%%
+applicable_to(14, AG) :- relevant_to(14, AG), has_target(AG, TA), use_paradigm(TA, client_server).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(14, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+
+
+
+%%%%%%%%%%
+% CAPEC-42 MIME Conversion
+%%%%%%%%%%
+applicable_to(42, AG) :- relevant_to(42, AG), has_target(AG, TA), technical_context(TA, use_a_mail_server).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, use_a_mail_server) :- relevant_to(42, AG), has_target(AG, TA), not technical_context(TA, use_a_mail_server), not no_technical_context(TA, use_a_mail_server).
+
+
+
+%%%%%%%%%%
+% CAPEC-10 Buffer Overflow via Environment Variables
+%%%%%%%%%%
+applicable_to(10, AG) :- relevant_to(10, AG), has_target(AG, TA), use_detailed_technique(TA, environment_variables).
+%%%%
+% question uncheckable context
+%%%%
+question(use_detailed_technique, TA, environment_variables) :- relevant_to(10, AG), has_target(AG, TA), not use_detailed_technique(TA, environment_variables), not no_use_detailed_technique(TA, environment_variables).
+
+
+
+%%%%%%%%%%
+% CAPEC-24 Filter Failure through Buffer Overflow
+%%%%%%%%%%
+applicable_to(24, AG) :- relevant_to(24, AG), has_target(AG, TA), use_language(TA, c_or_c_plus_plus).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus) :- relevant_to(24, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus), not no_use_language(TA, c_or_c_plus_plus).
+
+
+
+%%%%%%%%%%
+% CAPEC-67 String Format Overflow in syslog()
+%%%%%%%%%%
+applicable_to(67, AG) :- relevant_to(67, AG), has_target(AG, TA), accept_user_data(TA), use_language(TA, c_or_c_plus_plus).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus) :- relevant_to(67, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus), not no_use_language(TA, c_or_c_plus_plus).
+
+
+
+%%%%%%%%%%
+% CAPEC-9 String Format Overflow in syslog()
+%%%%%%%%%%
+applicable_to(9, AG) :- relevant_to(9, AG), has_target(AG, TA), technical_context(TA, expose_a_command_line_utility_to_users).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, expose_a_command_line_utility_to_users) :- relevant_to(9, AG), has_target(AG, TA), not technical_context(TA, expose_a_command_line_utility_to_users), not no_technical_context(TA, expose_a_command_line_utility_to_users).
+
+
+
+%%%%%%%%%%
+% CAPEC-8 Buffer Overflow in an API Call
+%%%%%%%%%%
+applicable_to(8, AG) :- relevant_to(8, AG), has_target(AG, TA), technical_context(TA, expose_an_api_to_users).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, expose_an_api_to_users) :- relevant_to(8, AG), has_target(AG, TA), not technical_context(TA, expose_an_api_to_users), not no_technical_context(TA, expose_an_api_to_users).
+
+
+
+%%%%%%%%%%
+% CAPEC-45 Buffer Overflow via Symbolic Links
+%%%%%%%%%%
+applicable_to(45, AG) :- relevant_to(45, AG), has_target(AG, TA), use_language(TA, c_or_c_plus_plus).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus) :- relevant_to(45, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus), not no_use_language(TA, c_or_c_plus_plus).
+
+
+
+%%%%%%%%%%
+% CAPEC-44 Overflow Binary Resource File
+%%%%%%%%%%
+applicable_to(44, AG) :- relevant_to(44, AG), has_target(AG, TA), use_language(TA, c_or_c_plus_plus), technical_context(TA, processes_binary_resource_files).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus) :- relevant_to(44, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus), not no_use_language(TA, c_or_c_plus_plus).
+question(technical_context, TA, processes_binary_resource_files) :- relevant_to(44, AG), has_target(AG, TA), not technical_context(TA, processes_binary_resource_files), not no_technical_context(TA, processes_binary_resource_files).
+
+
+
+%%%%%%%%%%
+% CAPEC-46 Overflow Variables and Tags
+%%%%%%%%%%
+applicable_to(46, AG) :- relevant_to(46, AG), has_target(AG, TA), accept_user_input(TA), use_language(TA, c_or_c_plus_plus).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus) :- relevant_to(46, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus), not no_use_language(TA, c_or_c_plus_plus).
+
+
+
+%%%%%%%%%%
+% CAPEC-47 Buffer Overflow via Parameter Expansion
+%%%%%%%%%%
+applicable_to(47, AG) :- relevant_to(47, AG), has_target(AG, TA), accept_user_input(TA), use_language(TA, c_or_c_plus_plus).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus) :- relevant_to(47, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus), not no_use_language(TA, c_or_c_plus_plus).
+
+
+
+%%%%%%%%%%
+% CAPEC-100 Overflow Buffers
+%%%%%%%%%%
+applicable_to(100, AG) :- relevant_to(100, AG), has_target(AG, TA), technical_context(TA, perform_buffer_operation), use_language(TA, c_or_c_plus_plus_or_ajax_or_perl_or_php_or_vb_or_ruby).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, c_or_c_plus_plus_or_ajax_or_perl_or_php_or_vb_or_ruby) :- relevant_to(100, AG), has_target(AG, TA), not use_language(TA, c_or_c_plus_plus_or_ajax_or_perl_or_php_or_vb_or_ruby), not no_use_language(TA, c_or_c_plus_plus_or_ajax_or_perl_or_php_or_vb_or_ruby).
+%
+question(technical_context, TA, perform_buffer_operation) :- relevant_to(100, AG), has_target(AG, TA), not technical_context(TA, perform_buffer_operation), not no_technical_context(TA, perform_buffer_operation).
+
+
+
+%%%%%%%%%%
+% CAPEC-22 Exploiting Trust in Client (aka Make the Client Invisible)
+%%%%%%%%%%
+applicable_to(22, AG) :- relevant_to(22, AG), has_target(AG, TA), accept_user_input(TA), use_paradigm(TA, client_server_or_ntier).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server_or_ntier) :- relevant_to(22, AG), has_target(AG, TA), not use_paradigm(TA, client_server_or_ntier), not no_use_paradigm(TA, client_server_or_ntier).
+
+
+
+%%%%%%%%%%
+% CAPEC-77 Manipulating User-Controlled Variables
+%%%%%%%%%%
+applicable_to(77, AG) :- relevant_to(77, AG), has_target(AG, TA), accept_user_input(TA), technical_context(TA, a_variable_is_exposed_to_client).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, a_variable_is_exposed_to_client) :- relevant_to(77, AG), has_target(AG, TA), not technical_context(TA, a_variable_is_exposed_to_client), not no_technical_context(TA, a_variable_is_exposed_to_client).
+
+
+
+%%%%%%%%%%
+% CAPEC-39 Manipulating Opaque Client-based Data Tokens
+%%%%%%%%%%
+applicable_to(39, AG) :- relevant_to(39, AG), has_target(AG, TA), accept_user_input(TA).
+
+
+
+%%%%%%%%%%
+% CAPEC-94 Man in the Middle Attack
+%%%%%%%%%%
+applicable_to(94, AG) :- relevant_to(94, AG), has_target(AG, TA), communicate(TA, _), not protected_by(TA, encryption).
+
+
+
+%%%%%%%%%%
+% CAPEC-13 Subverting Environment Variable Values
+%%%%%%%%%%
+applicable_to(13, AG) :- relevant_to(13, AG), has_target(AG, TA), accept_user_data(TA), technical_context(TA, an_environment_variable_is_accessible_to_the_user).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, an_environment_variable_is_accessible_to_the_user) :- relevant_to(13, AG), has_target(AG, TA), not technical_context(TA, an_environment_variable_is_accessible_to_the_user), not no_technical_context(TA, an_environment_variable_is_accessible_to_the_user).
+
+
+
+
+%%%%%%%%%%
+% CAPEC-31 Accessing/Intercepting/Modifying HTTP Cookies
+%%%%%%%%%%
+applicable_to(31, AG) :- relevant_to(31, AG), has_target(AG, TA), use_paradigm(TA, client_server_or_ntier), technical_context(TA, a_http_daemon_that_relies_on_cookies).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server_or_ntier) :- relevant_to(31, AG), has_target(AG, TA), not use_paradigm(TA, client_server_or_ntier), not no_use_paradigm(TA, client_server_or_ntier).
+%
+question(technical_context, TA, a_http_daemon_that_relies_on_cookies) :- relevant_to(31, AG), has_target(AG, TA), not technical_context(TA, a_http_daemon_that_relies_on_cookies), not no_technical_context(TA, a_http_daemon_that_relies_on_cookies).
+
+
+
+%%%%%%%%%%
+% CAPEC-57 Utilizing REST's Trust in the System Resource to Register Man in the Middle
+%%%%%%%%%%
+applicable_to(57, AG) :- relevant_to(57, AG), has_target(AG, TA), use_paradigm(TA, soa).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, soa) :- relevant_to(57, AG), has_target(AG, TA), not use_paradigm(TA, soa), not no_use_paradigm(TA, soa).
+
+
+
+%%%%%%%%%%
+% CAPEC-219 XML Routing Detour Attacks
+%%%%%%%%%%
+applicable_to(219, AG) :- relevant_to(219, AG), has_target(AG, TA), use_paradigm(TA, client_server), technical_context(TA, have_multiple_stages_processing_of_XML_content).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(219, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+%
+question(technical_context, TA, have_multiple_stages_processing_of_XML_content) :- relevant_to(219, AG), has_target(AG, TA), not technical_context(TA, have_multiple_stages_processing_of_XML_content), not no_technical_context(TA, have_multiple_stages_processing_of_XML_content).
+
+
+
+%%%%%%%%%%
+% CAPEC-76 Manipulating Input to File System Calls
+%%%%%%%%%%
+applicable_to(76, AG) :- relevant_to(76, AG), has_target(AG, TA), accept_user_data(TA), technical_context(TA, user_controlled_variables_is_applied_directly_to_the_filesystem).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, user_controlled_variables_is_applied_directly_to_the_filesystem) :- relevant_to(76, AG), has_target(AG, TA), not technical_context(TA, user_controlled_variables_is_applied_directly_to_the_filesystem), not no_technical_context(TA, user_controlled_variables_is_applied_directly_to_the_filesystem).
+
+
+
+%%%%%%%%%%
+% CAPEC-122 Privilege Abuse
+%%%%%%%%%%
+applicable_to(122, AG) :- relevant_to(122, AG), has_target(AG, TA), protected_by(TA, access_control).
+
+
+
+%%%%%%%%%%
+% CAPEC-180 Exploiting Incorrectly Configured Access Control Security Levels
+%%%%%%%%%%
+applicable_to(180, AG) :- relevant_to(180, AG), has_target(AG, TA), protected_by(TA, access_control).
+
+
+
+%%%%%%%%%%
+% CAPEC-1 Accessing Functionality Not Properly Constrained by ACLs
+%%%%%%%%%%
+applicable_to(1, AG) :- relevant_to(1, AG), has_target(AG, TA), use_technique(TA, acl).
+
+
+
+%%%%%%%%%%
+% CAPEC-58 Restful Privilege Elevation
+%%%%%%%%%%
+applicable_to(58, AG) :- relevant_to(58, AG), has_target(AG, TA), use_paradigm(TA, soa).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, soa) :- relevant_to(58, AG), has_target(AG, TA), not use_paradigm(TA, soa), not no_use_paradigm(TA, soa).
+
+
+
+%%%%%%%%%%
+% CAPEC-17 Accessing, Modifying or Executing Executable Files
+%%%%%%%%%%
+applicable_to(17, AG) :- relevant_to(17, AG), has_target(AG, TA), technical_context(TA, user_can_directly_access_executable_files_or_upload_files_to_execute).
+%%%%
+% question uncheckable context
+%%%%
+question(technical_context, TA, user_can_directly_access_executable_files_or_upload_files_to_execute) :- relevant_to(17, AG), has_target(AG, TA), not technical_context(TA, user_can_directly_access_executable_files_or_upload_files_to_execute), not no_technical_context(TA, user_can_directly_access_executable_files_or_upload_files_to_execute).
+
+
+
+%%%%%%%%%%
+% CAPEC-115 Authentication Bypass
+%%%%%%%%%%
+applicable_to(115, AG) :- relevant_to(115, AG), has_target(AG, TA), protected_by(TA, authentication).
+
+
+
+%%%%%%%%%%
+% CAPEC-237 Calling Signed Code From Another Language Within A Sandbox Allow This
+%%%%%%%%%%
+applicable_to(237, AG) :- relevant_to(237, AG), has_target(AG, TA), use_language(TA, java_or_asp_net_or_c_sharp_or_jsp), technical_context(TA, deployed_code_signed_by_its_authoring_vendor).
+%%%%
+% question uncheckable context
+%%%%
+question(use_language, TA, java_or_asp_net_or_c_sharp_or_jsp) :- relevant_to(237, AG), has_target(AG, TA), not use_language(TA, java_or_asp_net_or_c_sharp_or_jsp), not no_use_language(TA, java_or_asp_net_or_c_sharp_or_jsp).
+%
+question(technical_context, TA, deployed_code_signed_by_its_authoring_vendor) :- relevant_to(237, AG), has_target(AG, TA), not technical_context(TA, deployed_code_signed_by_its_authoring_vendor), not no_technical_context(TA, deployed_code_signed_by_its_authoring_vendor).
+
+
+
+%%%%%%%%%%
+% CAPEC-114 Authentication Abuse
+%%%%%%%%%%
+applicable_to(114, AG) :- relevant_to(114, AG), has_target(AG, TA), protected_by(TA, authentication).
+
+
+
+%%%%%%%%%%
+% CAPEC-90 Reflection Attack in Authentication Protocol
+%%%%%%%%%%
+applicable_to(90, AG) :- relevant_to(90, AG), has_target(AG, TA), use_paradigm(TA, client_server_or_soa).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server_or_soa) :- relevant_to(90, AG), has_target(AG, TA), not use_paradigm(TA, client_server_or_soa), not no_use_paradigm(TA, client_server_or_soa).
+%
+
+
+
+%%%%%%%%%%
+% CAPEC-21 Exploitation of Session Variables, Resource IDs and other Trusted Credentials
+%%%%%%%%%%
+applicable_to(21, AG) :- relevant_to(21, AG), has_target(AG, TA), use_paradigm(TA, client_server_or_soa_or_ntier).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server_or_soa_or_ntier) :- relevant_to(21, AG), has_target(AG, TA), not use_paradigm(TA, client_server_or_soa_or_ntier), not no_use_paradigm(TA, client_server_or_soa_or_ntier).
+
+
+
+%%%%%%%%%%
+% CAPEC-62 Cross Site Request Forgery (aka Session Riding)
+%%%%%%%%%%
+applicable_to(62, AG) :- relevant_to(62, AG), has_target(AG, TA), use_paradigm(TA, client_server), use_framework(TA, j2ee_or_dot_net).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(62, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+%
+question(use_framework, TA, j2ee_or_dot_net) :- relevant_to(62, AG), has_target(AG, TA), not use_framework(TA, j2ee_or_dot_net), not no_use_framework(TA, j2ee_or_dot_net).
+
+
+
+%%%%%%%%%%
+% CAPEC-102 Session Sidejacking
+%%%%%%%%%%
+applicable_to(102, AG) :- relevant_to(102, AG), has_target(AG, TA), not protected_by(TA, secure_communication_mechanism), use_paradigm(TA, client_server), use_language(TA, ajax), technical_context(TA, has_an_active_session_with_a_target_system).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(102, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+%
+question(technical_context, TA, has_an_active_session_with_a_target_system) :- relevant_to(102, AG), has_target(AG, TA), not technical_context(TA, has_an_active_session_with_a_target_system), not no_technical_context(TA, has_an_active_session_with_a_target_system).
+
+
+ 
+%%%%%%%%%%
+% CAPEC-61 Session Fixation
+%%%%%%%%%%
+applicable_to(61, AG) :- relevant_to(61, AG), has_target(AG, TA), use_paradigm(TA, client_server), use_framework(TA, j2ee_or_dot_net), technical_context(TA, use_session_identifiers_that_remain_unchanged_when_the_privilege_levels_change), technical_context(TA, use_permissive_session_management_mechanism_that_accepts_random_user_generated_session_identifiers).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(61, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+%
+question(use_framework, TA, j2ee_or_dot_net) :- relevant_to(61, AG), has_target(AG, TA), not use_framework(TA, j2ee_or_dot_net), not no_use_framework(TA, j2ee_or_dot_net).
+%
+question(technical_context, TA, use_session_identifiers_that_remain_unchanged_when_the_privilege_levels_change) :- relevant_to(61, AG), has_target(AG, TA), not technical_context(TA, use_session_identifiers_that_remain_unchanged_when_the_privilege_levels_change), not no_technical_context(TA, use_session_identifiers_that_remain_unchanged_when_the_privilege_levels_change).
+%
+question(technical_context, TA, use_permissive_session_management_mechanism_that_accepts_random_user_generated_session_identifiers) :- relevant_to(61, AG), has_target(AG, TA), not technical_context(TA, use_permissive_session_management_mechanism_that_accepts_random_user_generated_session_identifiers), not no_technical_context(TA, use_permissive_session_management_mechanism_that_accepts_random_user_generated_session_identifiers).
+
+
+
+%%%%%%%%%%
+% CAPEC-60 Reusing Session IDs (aka Session Replay)
+%%%%%%%%%%
+applicable_to(60, AG) :- relevant_to(60, AG), has_target(AG, TA), use_paradigm(TA, client_server), use_framework(TA, j2ee_or_dot_net), technical_context(TA, use_session_id_to_track_users), technical_context(TA, use_session_id_to_control_access_to_resources).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(60, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+%
+question(use_framework, TA, j2ee_or_dot_net) :- relevant_to(60, AG), has_target(AG, TA), not use_framework(TA, j2ee_or_dot_net), not no_use_framework(TA, j2ee_or_dot_net).
+%
+question(technical_context, TA, use_session_id_to_track_users) :- relevant_to(60, AG), has_target(AG, TA), not technical_context(TA, use_session_id_to_track_users), not no_technical_context(TA, use_session_id_to_track_users).
+%
+question(technical_context, TA, use_session_id_to_control_access_to_resources) :- relevant_to(60, AG), has_target(AG, TA), not technical_context(TA, use_session_id_to_control_access_to_resources), not no_technical_context(TA, use_session_id_to_control_access_to_resources).
+
+
+
+%%%%%%%%%%
+% CAPEC-196 Session Credential Falsification through Forging
+%%%%%%%%%%
+applicable_to(196, AG) :- relevant_to(196, AG), has_target(AG, TA), use_paradigm(TA, client_server_or_soa), technical_context(TA, use_session_credentials_to_identify_legitimate_users).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server_or_soa) :- relevant_to(196, AG), has_target(AG, TA), not use_paradigm(TA, client_server_or_soa), not no_use_paradigm(TA, client_server_or_soa).
+%
+question(technical_context, TA, use_session_credentials_to_identify_legitimate_users) :- relevant_to(196, AG), has_target(AG, TA), not technical_context(TA, use_session_credentials_to_identify_legitimate_users), not no_technical_context(TA, use_session_credentials_to_identify_legitimate_users).
+
+
+
+%%%%%%%%%%
+% CAPEC-59 Session Credential Falsification through Prediction
+%%%%%%%%%%
+applicable_to(59, AG) :- relevant_to(59, AG), has_target(AG, TA), use_paradigm(TA, client_server), use_framework(TA, j2ee_or_dot_net), technical_context(TA, use_session_id_to_track_users), technical_context(TA, use_session_id_to_control_access_to_resources), technical_context(TA, use_session_ids_that_are_predictable).
+%%%%
+% question uncheckable context
+%%%%
+question(use_paradigm, TA, client_server) :- relevant_to(59, AG), has_target(AG, TA), not use_paradigm(TA, client_server), not no_use_paradigm(TA, client_server).
+%
+question(use_framework, TA, j2ee_or_dot_net) :- relevant_to(59, AG), has_target(AG, TA), not use_framework(TA, j2ee_or_dot_net), not no_use_framework(TA, j2ee_or_dot_net).
+%
+question(technical_context, TA, use_session_id_to_track_users) :- relevant_to(59, AG), has_target(AG, TA), not technical_context(TA, use_session_id_to_track_users), not no_technical_context(TA, use_session_id_to_track_users).
+%
+question(technical_context, TA, use_session_id_to_control_access_to_resources) :- relevant_to(59, AG), has_target(AG, TA), not technical_context(TA, use_session_id_to_control_access_to_resources), not no_technical_context(TA, use_session_id_to_control_access_to_resources).
+%
+question(technical_context, TA, use_session_ids_that_are_predictable) :- relevant_to(59, AG), has_target(AG, TA), not technical_context(TA, use_session_ids_that_are_predictable), not no_technical_context(TA, use_session_ids_that_are_predictable).
+
+
+
+%%%%%%%%%%
+% CAPEC-433 Target Influence via The Human Buffer Overflow
+%%%%%%%%%%
+applicable_to(433, AG) :- relevant_to(433, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-434 Target Influence via Interview and Interrogation
+%%%%%%%%%%
+applicable_to(434, AG) :- relevant_to(434, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-427 Target Influence via The Human Buffer Overflow
+%%%%%%%%%%
+applicable_to(427, AG) :- relevant_to(427, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-418 Target Influence via Perception of Obligation
+%%%%%%%%%%
+applicable_to(418, AG) :- relevant_to(418, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-419 Target Influence via Perception of Concession
+%%%%%%%%%%
+applicable_to(419, AG) :- relevant_to(419, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-431 Target Influence via Neuro-Linguistic Programming(NLP)
+%%%%%%%%%%
+applicable_to(431, AG) :- relevant_to(431, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-429 Target Influence via Eye Cues
+%%%%%%%%%%
+applicable_to(429, AG) :- relevant_to(429, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-432 Target Influence via Voice in NLP
+%%%%%%%%%%
+applicable_to(432, AG) :- relevant_to(432, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-430 Target Influence via Micro-expressions
+%%%%%%%%%%
+applicable_to(430, AG) :- relevant_to(430, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-428 Target Influence via Modes of Thinking
+%%%%%%%%%%
+applicable_to(428, AG) :- relevant_to(428, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-435 Target Influence via Instant Rapport
+%%%%%%%%%%
+applicable_to(435, AG) :- relevant_to(435, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-420 Target Influence via Perception of Scarcity
+%%%%%%%%%%
+applicable_to(420, AG) :- relevant_to(420, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-423 Target Influence via Perception of Linking
+%%%%%%%%%%
+applicable_to(423, AG) :- relevant_to(423, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-417 Target Influence via Perception of Reciprocation
+%%%%%%%%%%
+applicable_to(417, AG) :- relevant_to(417, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-426 Target Influence via Manipulation of Incentives
+%%%%%%%%%%
+applicable_to(426, AG) :- relevant_to(426, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-421 Target Influence via Perception of Authority
+%%%%%%%%%%
+applicable_to(421, AG) :- relevant_to(421, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-422 Target Influence via Perception of Commitment and Consistency
+%%%%%%%%%%
+applicable_to(422, AG) :- relevant_to(422, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-424 Target Influence via Perception of Consensus or Social Proof
+%%%%%%%%%%
+applicable_to(424, AG) :- relevant_to(424, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-425 Target Influence via Framing
+%%%%%%%%%%
+applicable_to(425, AG) :- relevant_to(425, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-416 Target Influence via Social Engineering
+%%%%%%%%%%
+applicable_to(416, AG) :- relevant_to(416, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-507 Physical Theft
+%%%%%%%%%%
+applicable_to(507, AG) :- relevant_to(507, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-547 Physical Destruction of Device or Component
+%%%%%%%%%%
+applicable_to(547, AG) :- relevant_to(547, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-399 Cloning RFID Cards or Chips
+%%%%%%%%%%
+applicable_to(399, AG) :- relevant_to(399, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-397 Cloning Magnetic Strip Cards
+%%%%%%%%%%
+applicable_to(397, AG) :- relevant_to(397, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-398 Magnetic Strip Card Brute Force Attacks
+%%%%%%%%%%
+applicable_to(398, AG) :- relevant_to(398, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-394 Using a Snap Gun Lock to Force a Lock
+%%%%%%%%%%
+applicable_to(394, AG) :- relevant_to(394, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-396 Bypassing Card or Badge-Based Systems
+%%%%%%%%%%
+applicable_to(396, AG) :- relevant_to(396, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-391 Bypassing Physical Locks
+%%%%%%%%%%
+applicable_to(391, AG) :- relevant_to(391, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-395 Bypassing Electronic Locks and Access Controls
+%%%%%%%%%%
+applicable_to(395, AG) :- relevant_to(395, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-390 Bypassing Physical Security
+%%%%%%%%%%
+applicable_to(390, AG) :- relevant_to(390, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-400 RFID Chip Deactivation or Destruction
+%%%%%%%%%%
+applicable_to(400, AG) :- relevant_to(400, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-393 Lock Picking
+%%%%%%%%%%
+applicable_to(393, AG) :- relevant_to(393, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-392 Lock Bumping
+%%%%%%%%%%
+applicable_to(392, AG) :- relevant_to(392, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-439 Integrity Modification During Distribution
+%%%%%%%%%%
+applicable_to(439, AG) :- relevant_to(439, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-438 Integrity Modification During Manufacture
+%%%%%%%%%%
+applicable_to(438, AG) :- relevant_to(438, AG).
+
+
+
+
+%%%%%%%%%%
+% CAPEC-522 Malicious Hardware Component Replacement
+%%%%%%%%%%
+applicable_to(522, AG) :- relevant_to(522, AG), has_target(AG, TA), other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location) :- relevant_to(522, AG), has_target(AG, TA), not other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location), not no_other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+
+
+
+%%%%%%%%%%
+% CAPEC-524 Rogue Integration Procedures
+%%%%%%%%%%
+applicable_to(524, AG) :- relevant_to(524, AG), has_target(AG, TA), other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location) :- relevant_to(524, AG), has_target(AG, TA), not other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location), not no_other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+
+
+
+%%%%%%%%%%
+% CAPEC-523 Malicious Software Implanted
+%%%%%%%%%%
+applicable_to(523, AG) :- relevant_to(523, AG), has_target(AG, TA), other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location) :- relevant_to(523, AG), has_target(AG, TA), not other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location), not no_other_context(TA, can_be_physically_accessed_after_it_has_left_the_manufacturer_but_before_it_is_deployed_at_the_victim_location).
+
+
+
+%%%%%%%%%%
+% CAPEC-537 Infiltration of Hardware Development Environment
+%%%%%%%%%%
+applicable_to(537, AG) :- relevant_to(537, AG), has_target(AG, TA), other_context(TA, use_email_or_removable_media_from_systems_running_the_ide).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, use_email_or_removable_media_from_systems_running_the_ide) :- relevant_to(537, AG), has_target(AG, TA), not other_context(TA, use_email_or_removable_media_from_systems_running_the_ide), not no_other_context(TA, use_email_or_removable_media_from_systems_running_the_ide).
+
+
+
+%%%%%%%%%%
+% CAPEC-511 Infiltration of Hardware Development Environment
+%%%%%%%%%%
+applicable_to(511, AG) :- relevant_to(511, AG), has_target(AG, TA), other_context(TA, use_email_or_removable_media_from_systems_running_the_ide).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, use_email_or_removable_media_from_systems_running_the_ide) :- relevant_to(511, AG), has_target(AG, TA), not other_context(TA, use_email_or_removable_media_from_systems_running_the_ide), not no_other_context(TA, use_email_or_removable_media_from_systems_running_the_ide).
+
+
+
+%%%%%%%%%%
+% CAPEC-519 Documentation Alteration to Cause Errors in System Design
+%%%%%%%%%%
+applicable_to(519, AG) :- relevant_to(519, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-517 Documentation Alteration to Circumvent Dial-down
+%%%%%%%%%%
+applicable_to(517, AG) :- relevant_to(517, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-518 Documentation Alteration to Produce Under-performing Systems
+%%%%%%%%%%
+applicable_to(518, AG) :- relevant_to(518, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-520 Counterfeit Hardware Component Inserted During Product Assembly
+%%%%%%%%%%
+applicable_to(520, AG) :- relevant_to(520, AG), has_target(AG, TA), other_context(TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware) :- relevant_to(520, AG), has_target(AG, TA), not other_context(TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware), not no_other_context(TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware).
+
+
+
+%%%%%%%%%%
+% CAPEC-521 Hardware Design Specifications Are Altered
+%%%%%%%%%%
+applicable_to(521, AG) :- relevant_to(521, AG).
+
+
+
+%%%%%%%%%%
+% CAPEC-516 Hardware Component Substitution During Baselining
+%%%%%%%%%%
+applicable_to(516, AG) :- relevant_to(516, AG), has_target(AG, TA), other_context(TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware).
+%%%%
+% question uncheckable context
+%%%%
+question(other_context, TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware) :- relevant_to(516, AG), has_target(AG, TA), not other_context(TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware), not no_other_context(TA, can_either_be_physically_accessed_or_supplied_by_malicious_hardware).
+
+
+
+
+

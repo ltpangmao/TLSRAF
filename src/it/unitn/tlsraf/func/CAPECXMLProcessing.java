@@ -96,8 +96,8 @@ public class CAPECXMLProcessing {
 	
 	
 	public static void main(String[] args) {
-		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserver");//open server
-//		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserverstop");// stop server
+//		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserver");//open server
+		CAPECXMLProcessing.executeCMD("/Users/tongli/basex/bin/basexserverstop");// stop server
 		
 		try {
 //			CAPECXMLProcessing xmlQuery = new CAPECXMLProcessing();
