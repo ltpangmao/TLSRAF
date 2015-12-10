@@ -699,6 +699,9 @@ public class NewCommandPanel{
 				LinkedList<String> alternatives = null;
 				try {
 						alternatives = HSGMInference.generateHolisticSecuritySolutions(ms.hsgm);
+						// first pop the number of solutions
+						String total_solution_number = alternatives.pop();
+						String top_number = alternatives.pop();
 						String result = "";
 						alternative_list.removeAll();
 						// for the large set of inference result, we only show the first 100 elements
@@ -712,7 +715,7 @@ public class NewCommandPanel{
 								result += s+"\n";
 							}
 						}
-						result += "There are "+ alternatives.size() +" holistic security solutions in total.";
+						result += "Here are the top "+ top_number +"(out of "+total_solution_number+") holistic security solutions.";
 						alternative_list.setText(result);
 					JOptionPane.showMessageDialog(frmMuserControlPanel, "Generate all holistic security solutions!");
 				} catch (IOException e1) {

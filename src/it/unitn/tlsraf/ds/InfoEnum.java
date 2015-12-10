@@ -231,5 +231,36 @@ public class InfoEnum {
 	public static String current_directory = System.getProperty("user.dir");
 //	public static String current_directory = "/Users/litong30/research/Trento/Working stuff/Case study/revised smart grid";
 	public static String drawing_method_file = System.getProperty("user.dir")+"/applescript/drawing_methods.applescript";
-		
+
+	
+	
+	
+	// determine type of scanned shape
+	public static final Map<String, String> security_mechanism_cost = new HashMap<String, String>();
+	static {
+		// business layer
+		security_mechanism_cost.put("alternative_service", "1101");
+		security_mechanism_cost.put("client_checking", "1202");
+		security_mechanism_cost.put("separation_of_duty", "2103");
+		security_mechanism_cost.put("certification_authority", "1204");
+		security_mechanism_cost.put("supervision_relation", "2105");
+		security_mechanism_cost.put("access_control", "1406");
+		security_mechanism_cost.put("auditing", "1507");
+		// application layer
+		security_mechanism_cost.put("input_guard", "6008");
+		security_mechanism_cost.put("firewall", "4009");
+		security_mechanism_cost.put("server_sandbox", "2100");
+		security_mechanism_cost.put("replicated_system", "1201");
+		security_mechanism_cost.put("load_balancer", "3002");
+		security_mechanism_cost.put("limited_view", "2003");
+		security_mechanism_cost.put("full_view_with_errors", "2104");
+		security_mechanism_cost.put("secure_access_layer", "1205");
+		security_mechanism_cost.put("secure_pipe", "3006");
+		security_mechanism_cost.put("storage_encryption", "2007");
+		// physical layer
+		security_mechanism_cost.put("equipment_siting_and_protection", "3008");
+		security_mechanism_cost.put("supporting_utility", "2009");
+		security_mechanism_cost.put("physical_entry_control", "2100");
+		security_mechanism_cost.put("cabling_security", "1201");
+	}
 }

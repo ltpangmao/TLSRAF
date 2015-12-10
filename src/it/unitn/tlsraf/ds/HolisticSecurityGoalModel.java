@@ -292,7 +292,12 @@ public class HolisticSecurityGoalModel {
 						content += re.getId();
 					} 
 				}	
-				result += "refine_"+re.refine_links.size()+"("+content+").\n";				
+				result += "refine_"+re.refine_links.size()+"("+content+").\n";
+				
+				// also have the normal refine predicates, i.e., refine(G2,G1), for additional processing
+//				for (RequirementLink rl : re.refine_links) {
+//					result += "refine(" + rl.getSource().getId() + "," + re.getId() + ").\n";
+//				}
 			}
 			// normal and-refine formalism
 			else if (re.and_refine_links.size() > 0) {
