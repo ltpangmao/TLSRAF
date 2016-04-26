@@ -1,0 +1,89 @@
+%%%%%%%%%%%%%%%%%%%
+% Auxiliary rules
+%%%%%%%%%%%%%%%%%%%
+% Generate specific formal predicates for anti-goals
+has_threat(G,TH) :- anti_goal_properties(G,TH,AS,TA,INT).
+has_asset(G,AS) :- anti_goal_properties(G,TH,AS,TA,INT).
+has_target(G,TA) :- anti_goal_properties(G,TH,AS,TA,INT).
+has_interval(G,INT) :- anti_goal_properties(G,TH,AS,TA,INT).
+
+% leaf goal identification
+non_leaf(G):- and_refine(_,G).
+non_leaf(G):- refine_1(_,G).
+non_leaf(G):- refine_2(_,_,G).
+non_leaf(G):- refine_3(_,_,_,G).
+non_leaf(G):- refine_4(_,_,_,_,G).
+non_leaf(G):- refine_5(_,_,_,_,_,G).
+non_leaf(G):- refine_6(_,_,_,_,_,_,G).
+non_leaf(G):- refine_7(_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_8(_,_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_9(_,_,_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_10(_,_,_,_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_11(_,_,_,_,_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_12(_,_,_,_,_,_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_13(_,_,_,_,_,_,_,_,_,_,_,_,_,G).
+non_leaf(G):- refine_14(_,_,_,_,_,_,_,_,_,_,_,_,_,_,G).
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% Alternative exploration rules
+%%%%%%%%%%%%%%%%%%%
+% each type of refinement is assigned with a particular inference rule, in order to clearly identify alterntives
+
+% or-refine: enumerate up to 5 branches
+satisfied(G2) :- refine_1(G2,G1), satisfied(G1).
+satisfied(G2) v satisfied(G3) :- refine_2(G3,G2,G1), satisfied(G1).
+satisfied(G2) v satisfied(G3) v satisfied(G4):- refine_3(G4,G3,G2,G1), satisfied(G1).
+satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5):- refine_4(G5,G4,G3,G2,G1), satisfied(G1).
+satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6):- refine_5(G6,G5,G4,G3,G2,G1), satisfied(G1).
+satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7):- refine_6(G7,G6,G5,G4,G3,G2,G1), satisfied(G1).
+satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8):- refine_7(G8,G7,G6,G5,G4,G3,G2,G1), satisfied(G1).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8):- refine_8(G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8) v satisfied(G9) :- refine_9(G9,G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8) v satisfied(G9) v satisfied(G10) :- refine_10(G10,G9,G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8) v satisfied(G9) v satisfied(G10) v satisfied(G11) :- refine_11(G11,G10,G9,G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8) v satisfied(G9) v satisfied(G10) v satisfied(G11) v satisfied(G12) :- refine_12(G12,G11,G10,G9,G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8) v satisfied(G9) v satisfied(G10) v satisfied(G11) v satisfied(G12) v satisfied(G13) :- refine_13(G13,G12,G11,G10,G9,G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+satisfied(G1) v satisfied(G2) v satisfied(G3) v satisfied(G4) v satisfied(G5) v satisfied(G6) v satisfied(G7) v satisfied(G8) v satisfied(G9) v satisfied(G10) v satisfied(G11) v satisfied(G12) v satisfied(G13) v satisfied(G14) :- refine_14(G14,G13,G12,G11,G10,G9,G8,G7,G6,G5,G4,G3,G2,G1,G0), satisfied(G0).
+
+
+% and-refine: in this analysis, "and" actually doesn't matter the alternatives, so we don't need to distinguish them.
+satisfied(G2) :- and_refine(G2,G1),satisfied(G1).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% Result identification rules
+%%%%%%%%%%%%%%%%%%%
+% including leaf anti-goals, which help us to determine whether an alternative is valid in the Java program
+result(GT,TA) :- satisfied(GT), not non_leaf(GT), has_target(GT,TA).
+
+% if a leaf goal cannot be operationalized, the corresponding alternative is invalid.
+unachievable(G) :- satisfied(G), not non_leaf(G), anti_goal(G).
+
+%%%%
+% Since task does not have the "Target" attribute, we dynamically identify the target of tasks by propagating such information from anti-goals
+%%%%
+% first propagate the target from the leaf anti-goal to task. We have to avoid propagating such information among anti-goals
+has_target(T,TA) :- anti_goal(G), has_target(G,TA), task(T), refine(T,G).
+has_target(T,TA) :- anti_goal(G), has_target(G,TA), task(T), and_refine(T,G).
+% then propagate the target among tasks
+has_target(T2,TA) :- task(T1), has_target(T1,TA), task(T2), refine(T2,T1).
+has_target(T2,TA) :- task(T1), has_target(T1,TA), task(T2), and_refine(T2,T1).
+
+
+
+
+
+

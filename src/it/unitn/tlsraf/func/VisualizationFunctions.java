@@ -161,6 +161,7 @@ public class VisualizationFunctions {
 			identifyCriticalSecurityGoal(ms, req_model, actor_model);
 			// identify best refinement path
 			identifyBestRefinePath(req_model);
+			
 			// visualize security goals according to the type of visualization
 			if (type == InfoEnum.GRAPHVIZ) {
 				// visualize security goals in Graphviz
@@ -348,10 +349,25 @@ public class VisualizationFunctions {
 					SecurityGoal critical_sec_goal = (SecurityGoal) req_model.findExhaustiveSecurityGoalByFormalName(sg_id);
 					
 					if (critical_sec_goal != null) {
+						critical_sec_goal.applicability=true;
 						critical_sec_goal.setCriticality(true);
 						critical_sec_goal.threats.add(threat_id);
 					} else {
 						CommandPanel.logger.severe("critical secuirty goal error! "+ sg_id+ "  "+ s);
+					}
+				}
+				// highlight the critical one
+				else if (s.startsWith("is_applicable")) {
+					// parse facts
+					s = s.replaceAll("is\\_applicable\\(", "");
+					s = s.replaceAll("\\)", "");
+
+					SecurityGoal applicable_sec_goal = (SecurityGoal) req_model.findExhaustiveSecurityGoalByFormalName(s);
+					
+					if (applicable_sec_goal != null) {
+						applicable_sec_goal.applicability=true;
+					} else {
+						CommandPanel.logger.severe("critical secuirty goal error! "+ s);
 					}
 				}
 			}
@@ -373,8 +389,11 @@ public class VisualizationFunctions {
 
 			if (sg.isCriticality()) {
 				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id, "5", "Red", "Simple");
-			} else if (sg.isNon_deterministic()) {
-			} else if (visualization != InfoEnum.INITIAL_VIEW && sg.getRemark().equals(InfoEnum.ElementRemark.BESTPATH.name())) {
+			} 
+			else if (sg.applicability==true) {
+				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id, "3", "Green", "All");
+			} 
+			else if (visualization != InfoEnum.INITIAL_VIEW && sg.getRemark().equals(InfoEnum.ElementRemark.BESTPATH.name())) {
 				// only process under particular view.
 				AppleScript.changeAttributeOfElement(InfoEnum.esg_canvas_mapping.get(req_model.getLayer()), "none", element_id, "5", "Blue", "Simple");
 			}

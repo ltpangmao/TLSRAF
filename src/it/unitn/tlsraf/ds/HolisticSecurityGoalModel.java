@@ -203,7 +203,7 @@ public class HolisticSecurityGoalModel {
 
 		// identify the type of the link. Here we roughly have them as either "refine" or "and-refine" for simplification, regarding the intended analysis.
 		// refine
-		if ((factors.get(2).equals("SharpArrow") || factors.get(2).equals("StickArrow"))
+		if ((factors.get(2).equals("SharpArrow") || factors.get(2).equals("StickArrow") || factors.get(2).equals("Arrow"))
 				& !new_link.getSource().getType().equals(InfoEnum.RequirementElementType.MIDDLE_POINT.name())) {
 			new_link.setType(InfoEnum.RequirementLinkType.REFINE.name());
 			// the target of this link should update the "refine_links" information as well

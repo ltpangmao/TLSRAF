@@ -33,6 +33,9 @@ public class SecurityGoal extends RequirementElement {
 	// threats to this security goal. Record their id, search for the threat element when necessary. 
 	public LinkedList <String> threats = new LinkedList<String>();
 
+	// accommodate the applicability analysis
+	public boolean applicability = false; // assign a default value 
+	
 	public SecurityGoal() {
 		super();
 		this.setType(InfoEnum.RequirementElementType.SECURITY_GOAL.name());
@@ -150,6 +153,8 @@ public class SecurityGoal extends RequirementElement {
 			String key = temp.substring(0, separator).trim().toLowerCase();
 			// this value here don't need to be formalized
 			String value = temp.substring(separator + 2).replace("\"}", "").trim();
+			// in case, there is "_" in the expression, we first replace it with blank space
+			value.replaceAll("\\_", " ");
 			// if this is an input annotation
 			if (key.toLowerCase().contains("importance")) {
 				this.setImportance(value);

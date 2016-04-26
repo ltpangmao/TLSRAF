@@ -414,12 +414,11 @@ public class CommandPanel {
 				}
 			}
 		});
-		btnStep_2.setBounds(10, 319, 100, 55);
+		btnStep_2.setBounds(13, 331, 100, 55);
 		frmMuserControlPanel.getContentPane().add(btnStep_2);
 
 		//add scroll to text 
 		final JTextArea alternative_list = new JTextArea();
-		alternative_list.setEditable(false);
 //		scrollPane.setColumnHeaderView(alternative_list);
 		
 		final JScrollPane scrollPane = new JScrollPane(alternative_list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -468,13 +467,14 @@ public class CommandPanel {
 				}
 			}
 		});
-		btnStep_3.setBounds(10, 382, 125, 55);
+		btnStep_3.setBounds(10, 412, 125, 55);
 		frmMuserControlPanel.getContentPane().add(btnStep_3);
 		
 		
 		
-		JButton btnStep_41 = new JButton("<html>Step 4.1: Check primary context</html>");
-		btnStep_41.addActionListener(new ActionListener() {
+		JButton btnStep = new JButton("<html>Step 4.1: Check primary context</html>");
+		btnStep.setVisible(false);
+		btnStep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String layer_choice = getCommand(layer);
 				String object_choice = getCommand(object);
@@ -546,11 +546,12 @@ public class CommandPanel {
 				}
 			}
 		});
-		btnStep_41.setBounds(10, 445, 145, 55);
-		btnStep_41.setMargin(new Insets(0, 0, 0, 0));
-		frmMuserControlPanel.getContentPane().add(btnStep_41);
+		btnStep.setBounds(278, 127, 145, 55);
+		btnStep.setMargin(new Insets(0, 0, 0, 0));
+		frmMuserControlPanel.getContentPane().add(btnStep);
 		
 		JButton btnStep_42 = new JButton("<html>Step 4.2: Check secondary cont..</html>");
+		btnStep_42.setVisible(false);
 		btnStep_42.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String layer_choice = getCommand(layer);
@@ -627,11 +628,11 @@ public class CommandPanel {
 				}
 			}
 		});
-		btnStep_42.setBounds(10, 515, 145, 55);
+		btnStep_42.setBounds(187, 127, 145, 55);
 		btnStep_42.setMargin(new Insets(0, 0, 0, 0));
 		frmMuserControlPanel.getContentPane().add(btnStep_42);
 	
-		JButton btnStep_5 = new JButton("<html>Step 5: Transfer security concern</html>");
+		JButton btnStep_5 = new JButton("<html>Step 4: Transfer security concern</html>");
 		btnStep_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String layer_choice = getCommand(layer);
@@ -656,9 +657,18 @@ public class CommandPanel {
 				JOptionPane.showMessageDialog(frmMuserControlPanel, "Transfer security concerns to the application layer!");
 			}
 		});
-		btnStep_5.setBounds(10, 575, 145, 55);
+		btnStep_5.setBounds(10, 493, 145, 55);
 		btnStep_5.setMargin(new Insets(0, 0, 0, 0));
 		frmMuserControlPanel.getContentPane().add(btnStep_5);
+		
+		JButton btnStepGenerate = new JButton("<html> Step 5: Generate Holistic Solution </html>");
+		btnStepGenerate.setMargin(new Insets(0, 0, 0, 0));
+		btnStepGenerate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnStepGenerate.setBounds(7, 570, 148, 55);
+		frmMuserControlPanel.getContentPane().add(btnStepGenerate);
 		
 		
 	}

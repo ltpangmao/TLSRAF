@@ -1,9 +1,10 @@
 set target_canvas_name to "Model"
-set target_layer_name to "none"
-set target_size to {180,110}
-set target_name to "Hexagon"
-set target_text to "physical destruction of device or component"
-set target_origin to {850.319980993867,1863.19996282458}
+set target_layer_name to "APPLICATION"
+set target_size to {204,134}
+set target_name to "Cloud"
+set target_text to "(S)
+high security [Home Energy Management System, Support execute adjustment policy]"
+set target_origin to {5108.23989029229,2226.65817040401}
 set corner_ridius to 0
 set stroke_pattern to 0
 set target_thickness to 1

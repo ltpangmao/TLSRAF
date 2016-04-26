@@ -35,6 +35,7 @@ is_descendent(R1, R2) :- support(R1, R2).
 % this is used for depedency analysis
 is_descendent(R2, R1) :- depend(R1, R2, _).
 
+
 %% Auxiliary rules --- interval coverage
 cover(INT2,INT1) :- is_descendent(INT1, INT2).
 
@@ -44,20 +45,34 @@ cover(INT,INT) :- interval(INT).
 %cover(INT1,INT3) :- cover(INT1,INT2), cover(INT2,INT3).
 
 
+
 %%%% asset
 is_descendent(A1, A2) :- part_of(A1, A2).
+cover(A,A) :- asset(A).
 %is_descendent(A1, A3) :- is_descendent(A1, A2), is_descendent(A2, A3).
-%cover(A2,A1) :- is_descendent(A1, A2).
-%cover(A,A) :- interval(A).
+
 
 
 %Applicability rules (mainly focusing on the asset types)
-is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS, INT), data(AS), has_input(INT,AS).
-is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS, INT), data(AS), has_input(INT,AS).
-is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS, INT), data(AS), has_input(INT,AS).
-is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS, INT), data(AS), has_output(INT,AS).
-is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS, INT), data(AS), has_output(INT,AS).
-is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS, INT), data(AS), has_output(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS, INT), data(AS), has_input(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS, INT), data(AS), has_input(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS, INT), data(AS), has_input(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS, INT), data(AS), has_output(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS, INT), data(AS), has_output(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS, INT), data(AS), has_output(INT,AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_integrity, AS, _), service(AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_availability, AS, _), service(AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, application_integrity, AS, _), application(AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, application_availability, AS, _), application(AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_integrity, AS, _), hardware(AS).
+%is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, hardware_availability, AS, _), hardware(AS).
+
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS1, INT), data(AS2), has_input(INT,AS2), cover(AS2, AS1).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS1, INT), data(AS2), has_input(INT,AS2), cover(AS2, AS1).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS1, INT), data(AS2), has_input(INT,AS2), cover(AS2, AS1).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_confidentiality, AS1, INT), data(AS2), has_output(INT,AS2), cover(AS2, AS1).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_integrity, AS1, INT), data(AS2), has_output(INT,AS2), cover(AS2, AS1).
+is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, data_availability, AS1, INT), data(AS2), has_output(INT,AS2), cover(AS2, AS1).
 is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_integrity, AS, _), service(AS).
 is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, service_availability, AS, _), service(AS).
 is_applicable(SG) :- sec_goal(SG), has_properties(SG, _, application_integrity, AS, _), application(AS).

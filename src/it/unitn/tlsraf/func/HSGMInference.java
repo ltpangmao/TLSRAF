@@ -17,7 +17,7 @@ import net.xqj.basex.bin.al;
 
 public class HSGMInference {
 	
-	private static int top = 5;
+	private static int top = 100;
 
 	/**
 	 * Import a constructed holistic security goal model, in order to analyze all holistic security solutions
@@ -37,7 +37,7 @@ public class HSGMInference {
 		holistic_security_model.importGraphInfo(result);
 
 		// writeFile("dlv/models/holistic_security_goal_model.dl", holistic_security_model.generateFormalExpression(), false);
-		// CommandPanel.logger.info(holistic_security_model.generateFormalExpression());
+//		 CommandPanel.logger.info(holistic_security_model.generateFormalExpression());
 	}
 
 	/**
@@ -107,7 +107,17 @@ public class HSGMInference {
 			Alternative alter = new Alternative();
 			alter.alternative_elements=one_alternative;
 			alter.cost=cost;
-			all_alters.add(alter);
+			
+			// we here check redundancy based on costs 
+			boolean existance = false;
+			for(Alternative temp: all_alters){
+				if(temp.cost == alter.cost){
+					existance = true;
+				}
+			}
+			if(!existance){
+				all_alters.add(alter);
+			}
 	
 			// obtain top X solutions
 			// Note that we filter repeated alternatives based on their total cost, which may mis-classify some different ones as the same, but definitely will create different alternatives. 

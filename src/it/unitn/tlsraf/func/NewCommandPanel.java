@@ -274,12 +274,11 @@ public class NewCommandPanel{
 		JButton btnSavetofile = new JButton("SaveToFile");
 		btnSavetofile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
 				try {
 					ms.req_bus_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);					
 					ms.req_app_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);
 					ms.req_phy_model.generateFormalExpressionToFile(InfoEnum.ALL_MODELS);
-					ms.writeSupportLinksToFile();
+					//ms.writeSupportLinksToFile(); // support links have been properly processed
 
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block

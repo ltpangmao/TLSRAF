@@ -278,6 +278,10 @@ public class RequirementGraph {
 			// else if (factors.get(2).equals("Rectangle") && factors.get(9).equals("0.0")) {
 			// new_elem.setType(InfoEnum.RequirementElementType.LABEL.name());
 			// }
+			// resources --
+			else if (factors.get(2).equals("Rectangle")&&factors.get(9).equals("0.0")) {
+				new_elem.setType(InfoEnum.RequirementElementType.RESOURCE.name());
+			}
 			// all others should be able to mapped to current mappings.
 			else {
 				new_elem.setType(InfoEnum.req_elem_type_map.get(factors.get(2)));
@@ -355,7 +359,7 @@ public class RequirementGraph {
 			new_link.setType(InfoEnum.RequirementLinkType.AND_REFINE.name());
 		} else if (factors.get(2).equals("SharpArrow") && factors.get(7).equals("1")) {
 			new_link.setType(InfoEnum.RequirementLinkType.SUPPORT.name());
-		} else if (factors.get(2).equals("StickArrow") && factors.get(7).equals("0") && factors.get(6).equals("NoLabel")) {
+		} else if ((factors.get(2).equals("StickArrow") || factors.get(2).equals("Arrow")) && factors.get(7).equals("0") && factors.get(6).equals("NoLabel")) {
 			new_link.setType(InfoEnum.RequirementLinkType.OPERATIONALIZE.name());
 		} else if (factors.get(2).equals("NoHead") && factors.get(7).equals("0")
 				&& (factors.get(6).equals("T1") || factors.get(6).equals("T2") || factors.get(6).equals("T3") || factors.get(6).equals("T4") || factors.get(6).equals("T5"))) {

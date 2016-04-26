@@ -158,7 +158,7 @@ public class InfoEnum {
 	 */
 	public enum RequirementElementType {
 		ACTOR, GOAL, TASK, SOFTGOAL, DOMAIN_ASSUMPTION, QUALITY_CONSTRAINT, 
-		SECURITY_GOAL, SECURITY_MECHANISM, ACTOR_BOUNDARY, MIDDLE_POINT, LABEL // syntax
+		SECURITY_GOAL, SECURITY_MECHANISM, ACTOR_BOUNDARY, MIDDLE_POINT, LABEL, RESOURCE // syntax
 		, ANTI_GOAL, NEW_ANTI_GOAL
 	}
 
@@ -239,28 +239,28 @@ public class InfoEnum {
 	public static final Map<String, String> security_mechanism_cost = new HashMap<String, String>();
 	static {
 		// business layer
-		security_mechanism_cost.put("alternative_service", "1101");
-		security_mechanism_cost.put("client_checking", "1202");
-		security_mechanism_cost.put("separation_of_duty", "2103");
-		security_mechanism_cost.put("certification_authority", "1204");
-		security_mechanism_cost.put("supervision_relation", "2105");
-		security_mechanism_cost.put("access_control", "1406");
-		security_mechanism_cost.put("auditing", "1507");
+		security_mechanism_cost.put("alternative_service", "1151");
+		security_mechanism_cost.put("client_checking", "1222");
+		security_mechanism_cost.put("separation_of_duty", "2173");
+		security_mechanism_cost.put("certification_authority", "1234");
+		security_mechanism_cost.put("supervision_relation", "2165");
+		security_mechanism_cost.put("access_control", "1486");
+		security_mechanism_cost.put("auditing", "1597");
 		// application layer
-		security_mechanism_cost.put("input_guard", "6008");
-		security_mechanism_cost.put("firewall", "4009");
-		security_mechanism_cost.put("server_sandbox", "2100");
+		security_mechanism_cost.put("input_guard", "6028");
+		security_mechanism_cost.put("firewall", "4049");
+		security_mechanism_cost.put("server_sandbox", "2160");
 		security_mechanism_cost.put("replicated_system", "1201");
-		security_mechanism_cost.put("load_balancer", "3002");
-		security_mechanism_cost.put("limited_view", "2003");
-		security_mechanism_cost.put("full_view_with_errors", "2104");
-		security_mechanism_cost.put("secure_access_layer", "1205");
-		security_mechanism_cost.put("secure_pipe", "3006");
-		security_mechanism_cost.put("storage_encryption", "2007");
+		security_mechanism_cost.put("load_balancer", "3042");
+		security_mechanism_cost.put("limited_view", "2083");
+		security_mechanism_cost.put("full_view_with_errors", "2184");
+		security_mechanism_cost.put("secure_access_layer", "1265");
+		security_mechanism_cost.put("secure_pipe", "3076");
+		security_mechanism_cost.put("storage_encryption", "2047");
 		// physical layer
-		security_mechanism_cost.put("equipment_siting_and_protection", "3008");
-		security_mechanism_cost.put("supporting_utility", "2009");
-		security_mechanism_cost.put("physical_entry_control", "2100");
-		security_mechanism_cost.put("cabling_security", "1201");
+		security_mechanism_cost.put("equipment_siting_and_protection", "3038");
+		security_mechanism_cost.put("supporting_utility", "2059");
+		security_mechanism_cost.put("physical_entry_control", "5400");
+		security_mechanism_cost.put("cabling_security", "1251");
 	}
 }

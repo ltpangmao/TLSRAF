@@ -143,9 +143,16 @@ public class Testing {
 		 refine_rule= InfoEnum.current_directory + "/dlv/dlv -silent -nofacts " + InfoEnum.current_directory + "/dlv/rules/find_alternative.rule " // rules
 					+ hsgm_file; // model files
 		 
-		 refine_rule = "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/dlv -silent -nofacts /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/operationalization.rule /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/attack_pattern_contexts.rule /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/attack_patterns.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/checked_context.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/attack/attack_model.dl"; 
+//		 -nofacts
+		 refine_rule = "/Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/dlv -silent  /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/rules/threat_based_simplification.rule /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/data_flow_model.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/threat_model.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/asset_model.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/ex_req_business_model.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/ex_req_application_model.dl /Users/tongli/OneDrive/reseach/Workspace/TLSRAF/dlv/models/ex_req_physical_model.dl "; 
 
 
+		 
+		 
+		 
+		 
+		 
+		 
 		Runtime rt = Runtime.getRuntime();
 		Process pr = rt.exec(refine_rule);
 

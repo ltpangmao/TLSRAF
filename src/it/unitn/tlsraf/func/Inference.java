@@ -155,6 +155,8 @@ public class Inference {
 					// parse facts
 					s = s.replaceAll("and_refined_sec_goal\\(", "");
 					s = s.replaceAll("\\)", "");
+					//process parameters to remove "_"
+					s = s.replaceAll("\\_", " ");
 					String[] sg = s.split(",");
 					// create new element`
 //					SecurityGoal refined_goal = (SecurityGoal) req_model.findElementByFormalName(sg[4]);
@@ -249,6 +251,7 @@ public class Inference {
 
 		// this is used to store all the security goals that are to be highlighted
 		LinkedList<SecurityGoal> highlight_sgs = new LinkedList<SecurityGoal>();
+		LinkedList<SecurityGoal> highlight_ap_sgs = new LinkedList<SecurityGoal>();
 		
 		while ((line = input.readLine()) != null) {
 			// line = input.readLine();
@@ -283,6 +286,24 @@ public class Inference {
 						CommandPanel.logger.severe("Simplification error: cannot find the security goal element");
 					}
 				}
+				// highlight the critical one
+				if (s.startsWith("is_applicable")) {
+					// parse facts
+					s = s.replaceAll("is\\_applicable\\(", "");
+					s = s.replaceAll("\\)", "");
+
+					SecurityGoal applicable_sec_goal = (SecurityGoal) req_model.findElementByFormalName(s);
+					
+					if (applicable_sec_goal != null) {
+						applicable_sec_goal.applicability=true;
+						// add the critical security goal to the highlight queue
+						if(!highlight_ap_sgs.contains(applicable_sec_goal)){
+							highlight_ap_sgs.add(applicable_sec_goal);
+						}
+					} else {
+						CommandPanel.logger.severe("Simplification error: cannot find the security goal element");
+					}
+				}
 				
 				// show the not determined one. not used anymore
 //				else if (s.startsWith("non_deterministic")) {
@@ -297,10 +318,18 @@ public class Inference {
 			}
 		}
 		
-		for(SecurityGoal critical_sec_goal: highlight_sgs){
+		
+		// highlight applicable security goals
+		for (SecurityGoal applicable_sec_goal : highlight_ap_sgs) {
+			AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, applicable_sec_goal.getLayer(), applicable_sec_goal.getId(), "2", "none", "none");
+		}
+		
+		// highlight critical security goals
+		for (SecurityGoal critical_sec_goal : highlight_sgs) {
 			AppleScript.changeAttributeOfElement(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal.getId(), "5", "none", "none");
 			AppleScript.addUserData2(InfoEnum.REQ_TARGET_CANVAS, critical_sec_goal.getLayer(), critical_sec_goal, critical_sec_goal.owner_text);
 		}
+		
 	}
 
 	/**
@@ -423,8 +452,11 @@ public class Inference {
 					// parse facts
 					s = s.replaceAll("ex_and_refined_sec_goal\\(", "");
 					s = s.replaceAll("\\)", "");
+					//process parameters to remove "_"
+					s = s.replaceAll("\\_", " ");
+					// split parameters
 					String[] sg = s.split(",");
-
+					
 					// create two security goals, and the and-refinement relation between them.
 					SecurityGoal new_sg = req_model.findExhausiveSecurityGoalByAttributes(sg[0], sg[1], sg[2], sg[3]);
 					SecurityGoal refined_sg = req_model.findExhausiveSecurityGoalByAttributes(sg[4], sg[5], sg[6], sg[7]);

@@ -144,7 +144,7 @@ public class RequirementElement implements Element {
 			// try to use id instead
 			expression = this.getId();
 		} else {
-			CommandPanel.logger.warning("Element's name is null! Type:" + this.remark);
+			CommandPanel.logger.warning("Element's name is null! Type:" + this.type + " "+ this.Id);
 			return "null";
 		}
 
@@ -220,6 +220,11 @@ public class RequirementElement implements Element {
 		case SECURITY_MECHANISM:
 			// remove "(S)"
 			expression = "sec_mechanism(" + this.getFormalName() + ").";
+			break;
+		case RESOURCE:
+			// resource is only used in attack pattern analysis, here it is processed differently
+//			expression = "resource(" + this.getFormalName() + ").";
+			expression = "resource(" + Func.prepareFormalExpression(this.getName()) + ").";
 			break;
 		case ANTI_GOAL:
 			// remove "(S)"
